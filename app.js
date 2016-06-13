@@ -10,18 +10,24 @@ var game = new Phaser.Game(
 
 function preload() {
 
-	game.load.spritesheet('hero', 'assets/Characters/characters.png', 16, 16, 3);
+	game.load.spritesheet('characters', 'assets/Characters/characters.png', 16, 16);
 }
 
-var hero;
+var player;
+var cursors;
 
 function create() {
 
-	hero = game.add.sprite(200, 360, 'hero', 0);
-	hero.scale.set(2);
+    player = new Player(200, 400, 4);
+
+    game.physics.enable(player.sprite, Phaser.Physics.ARCADE);
+
+    cursors = game.input.keyboard.createCursorKeys();
 }
 
 function update() {
+
+    player.move();
 }
 
 function render() {
