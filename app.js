@@ -18,6 +18,7 @@ function preload() {
 var hero;
 var map, layer;
 var player;
+var skeleton;
 var cursors;
 
 function create() {
@@ -25,33 +26,36 @@ function create() {
     map = game.add.tilemap('map');
     map.addTilesetImage('Cave','cave');
 
-    map.setCollisionBetween(0, 6);
-    map.setCollisionBetween(8, 35);
-    map.setCollisionBetween(37, 57);
-    map.setCollisionBetween(66, 78);
-    map.setCollisionBetween(95, 107);
-    map.setCollisionBetween(124, 136);
-    map.setCollisionBetween(145, 202);
-    map.setCollisionBetween(0, 521);
+    // map.setCollisionBetween(0, 6);
+    // map.setCollisionBetween(8, 35);
+    // map.setCollisionBetween(37, 57);
+    // map.setCollisionBetween(66, 78);
+    // map.setCollisionBetween(95, 107);
+    // map.setCollisionBetween(124, 136);
+    // map.setCollisionBetween(145, 202);
+    map.setCollisionBetween(1, 521);
 
     //map.addTilesetImage('Rogue','rogue');
 
     layer = map.createLayer('Walls');
     layer.resizeWorld();
+    layer.debug = true;
 
-    player = new Player(game.world.centerX, game.world.centerY, 2);
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    player = new Player(game.world.centerX, game.world.centerY, 1);
+    player.sprite.body.linearDamping = 1;
 
     game.camera.follow(player.sprite);
 
-    game.physics.enable(player.sprite, Phaser.Physics.ARCADE);
-
     cursors = game.input.keyboard.createCursorKeys();
-
 }
 
 function update() {
 
-    player.move();
+    game.physics.arcade.collide(player.sprite, layer);
+    //player.move();
+    player.moveVelocity()
 }
 
 function render() {

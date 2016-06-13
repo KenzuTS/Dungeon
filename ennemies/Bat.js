@@ -1,4 +1,4 @@
-function Player(x, y, scale){
+function Bat(x, y, scale){
 	this.x = x;
 	this.y = y;
 	this.scale = scale;
@@ -10,21 +10,20 @@ function Player(x, y, scale){
 
 	this.Awake = function(){
 
-		this.sprite = game.add.sprite(this.x, this.y, 'characters', 4);
+		this.sprite = game.add.sprite(this.x, this.y, 'characters', 10);
 		this.sprite.scale.set(this.scale);
 	    this.sprite.smoothed = false;
 
 	    game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 	    this.sprite.body.collideWorldBounds = true;
 
-	    this.sprite.animations.add('down', [3,4,5], 10, true);
-	    this.sprite.animations.add('left', [15,16,17], 10, true);
-	    this.sprite.animations.add('right', [27,28,29], 10, true);
-	    this.sprite.animations.add('up', [39,40,41], 10, true);
+	    this.sprite.animations.add('down', [51,52,53], 6, true);
+	    this.sprite.animations.add('left', [63,64,65], 6, true);
+	    this.sprite.animations.add('right', [75,76,77], 6, true);
+	    this.sprite.animations.add('up', [87,88,89], 6, true);
 
-	    this.tween = game.add.tween(this.sprite).to( { x: this.distX, y: this.distY }, 300);
-	}
-	
+	    this.sprite.play('down');
+	}	
 
     this.move = function(){
 	
@@ -97,36 +96,6 @@ function Player(x, y, scale){
     	    	    break;
     	    	}
     	    }
-    	}
-    }
-
-    this.moveVelocity = function(){
-
-    	this.sprite.body.velocity.set(0);
-
-    	if (cursors.left.isDown)
-    	{
-    	    this.sprite.body.velocity.x = -100;
-    	    this.sprite.play('left');
-    	}
-    	else if (cursors.right.isDown)
-    	{
-    	    this.sprite.body.velocity.x = 100;
-    	    this.sprite.play('right');
-    	}
-    	else if (cursors.up.isDown)
-    	{
-    	    this.sprite.body.velocity.y = -100;
-    	    this.sprite.play('up');
-    	}
-    	else if (cursors.down.isDown)
-    	{
-    	    this.sprite.body.velocity.y = 100;
-    	    this.sprite.play('down');
-    	}
-    	else
-    	{
-    	    this.sprite.animations.stop();
     	}
     }
 
