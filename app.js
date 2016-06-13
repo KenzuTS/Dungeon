@@ -9,14 +9,20 @@ var game = new Phaser.Game(
         render: render });
 
 function preload() {
-	game.load.image('');
+
+	game.load.spritesheet('hero', 'assets/Characters/characters.png', 16, 16, 3);
 }
+
+var hero;
 
 function create() {
+
+	hero = game.add.sprite(200, 360, 'hero', 0);
+	hero.scale.set(2);
 }
 
-function update () {
+function update() {
 }
 
-function render () {
+function render() {
 }
