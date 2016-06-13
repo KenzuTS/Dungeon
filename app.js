@@ -21,14 +21,27 @@ var player;
 var cursors;
 
 function create() {
+
     map = game.add.tilemap('map');
     map.addTilesetImage('Cave','cave');
-    map.addTilesetImage('Rogue','rogue');
-    layer = map.createLayer('Ground');
+
+    map.setCollisionBetween(0, 6);
+    map.setCollisionBetween(8, 35);
+    map.setCollisionBetween(37, 57);
+    map.setCollisionBetween(66, 78);
+    map.setCollisionBetween(95, 107);
+    map.setCollisionBetween(124, 136);
+    map.setCollisionBetween(145, 202);
+    map.setCollisionBetween(0, 521);
+
+    //map.addTilesetImage('Rogue','rogue');
+
+    layer = map.createLayer('Walls');
     layer.resizeWorld();
-	//hero = game.add.sprite(200, 360, 'hero', 0);
-	//hero.scale.set(2);
-    player = new Player(200, 400, 2);
+
+    player = new Player(game.world.centerX, game.world.centerY, 2);
+
+    game.camera.follow(player.sprite);
 
     game.physics.enable(player.sprite, Phaser.Physics.ARCADE);
 
@@ -39,8 +52,9 @@ function create() {
 function update() {
 
     player.move();
-
 }
 
 function render() {
+
+    game.debug.body(player.sprite);
 }

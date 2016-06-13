@@ -14,6 +14,9 @@ function Player(x, y, scale){
 		this.sprite.scale.set(this.scale);
 	    this.sprite.smoothed = false;
 
+	    game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
+	    this.sprite.body.collideWorldBounds = true;
+
 	    this.sprite.animations.add('down', [3,4,5], 10, true);
 	    this.sprite.animations.add('left', [15,16,17], 10, true);
 	    this.sprite.animations.add('right', [27,28,29], 10, true);
