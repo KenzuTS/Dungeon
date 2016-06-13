@@ -23,11 +23,14 @@ function create() {
     game.physics.enable(player.sprite, Phaser.Physics.ARCADE);
 
     cursors = game.input.keyboard.createCursorKeys();
+    console.log(player.tween)
+
 }
 
 function update() {
 
     player.move();
+
 }
 
 function render() {
