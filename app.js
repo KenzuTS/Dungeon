@@ -8,7 +8,8 @@ var game = new Phaser.Game(
         update: update, 
         render: render });
 
-function preload() {    
+function preload() {
+	game.load.image('');
 }
 
 function create() {
