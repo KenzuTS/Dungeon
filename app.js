@@ -28,12 +28,11 @@ function create() {
     layer.resizeWorld();
 	//hero = game.add.sprite(200, 360, 'hero', 0);
 	//hero.scale.set(2);
-    player = new Player(200, 400, 4);
+    player = new Player(200, 400, 2);
 
     game.physics.enable(player.sprite, Phaser.Physics.ARCADE);
 
     cursors = game.input.keyboard.createCursorKeys();
-    console.log(player.tween)
 
 }
 
