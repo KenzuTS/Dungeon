@@ -11,27 +11,33 @@ var game = new Phaser.Game(
 function preload() {
 
     game.load.tilemap('map', 'assets/tilemaps/json/dungeonTest.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.spritesheet('dead', 'assets/Characters/dead.png', 16, 16);
     game.load.image('Cave', 'assets/roguelike-cave-pack/Spritesheet/roguelikeDungeon_transparent.png');
     game.load.image('Rogue', 'assets/roguelike-pack/Spritesheet/roguelikeSheet_transparent.png');
 	game.load.spritesheet('characters', 'assets/Characters/characters.png', 16, 16);
 }
 
 var hero;
-var map, layer, ground;
+var map, layer;
 var player;
-var skeleton;
+var skeleton, bat;
 var cursors;
 
 function create() {
 
+    game.world.setBounds(-800,-800,800,800);
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     map = game.add.tilemap('map');
     map.addTilesetImage('Cave');
 
-    ground = map.createLayer('Ground');
+    map.createLayer('Ground');
+    map.createLayer('GroundOverlay');
+    map.createLayer('BackgroundObject');
+    map.createLayer('Objects');
 
     layer = map.createLayer('Walls');
+
     layer.resizeWorld();
 
     map.setCollisionBetween(0, 6, true, layer);

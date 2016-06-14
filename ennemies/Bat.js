@@ -1,7 +1,9 @@
 function Bat(x, y, scale){
-	this.x = x;
+	Etre.call(this, x, y, scale);
+	this.idDeadTexture = 8;
+/*	this.x = x;
 	this.y = y;
-	this.scale = scale;
+	this.scale = scale;*/
 	this.sprite = null;
 	this.tween;
 	this.distX = x;
@@ -10,7 +12,7 @@ function Bat(x, y, scale){
 
 	this.Awake = function(){
 
-		this.sprite = game.add.sprite(this.x, this.y, 'characters', 10);
+		this.sprite = game.add.sprite(this.initPosX, this.initPosY, 'characters', 52);
 		this.sprite.scale.set(this.scale);
 	    this.sprite.smoothed = false;
 

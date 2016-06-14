@@ -1,16 +1,19 @@
 function Player(x, y, scale){
-	this.x = x;
-	this.y = y;
-	this.scale = scale;
+	Etre.call(this, x, y, scale);
+/*	this.initPosX = x;
+	this.initPosY = y;
+	this.scale = scale;*/
 	this.sprite = null;
 	this.tween;
 	this.distX = x;
 	this.distY = y;
 	this.isWalking = false;
+	this.idDeadTexture = 1;
+	
 
 	this.Awake = function(){
 
-		this.sprite = game.add.sprite(this.x, this.y, 'characters', 4);
+		this.sprite = game.add.sprite(this.initPosX, this.initPosY, 'characters', 4);
 		this.sprite.scale.set(this.scale);
 	    this.sprite.smoothed = false;
 
