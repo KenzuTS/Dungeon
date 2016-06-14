@@ -11,10 +11,13 @@ var game = new Phaser.Game(
 function preload() {
 
     game.load.tilemap('map', 'assets/tilemaps/json/dungeonTest.json', null, Phaser.Tilemap.TILED_JSON);
-    game.load.spritesheet('dead', 'assets/Characters/dead.png', 16, 16);
     game.load.image('Cave', 'assets/roguelike-cave-pack/Spritesheet/roguelikeDungeon_transparent.png');
     game.load.image('Rogue', 'assets/roguelike-pack/Spritesheet/roguelikeSheet_transparent.png');
+
+    game.load.image('key', 'assets/DawnLike/Items/Key.png');
+
 	game.load.spritesheet('characters', 'assets/Characters/characters.png', 16, 16);
+    game.load.spritesheet('dead', 'assets/Characters/dead.png', 16, 16);
 }
 
 var hero;
@@ -22,10 +25,14 @@ var map, layer;
 var player;
 var skeleton, bat;
 var cursors;
+var ennemiesGroup, itemsGroup;
 
 function create() {
 
+
     game.world.setBounds(-800,-800,800,800);
+
+    /* MAP */
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     map = game.add.tilemap('map');
@@ -51,22 +58,40 @@ function create() {
 
     map.addTilesetImage('Rogue');
 
+    /* PLAYER */
     player = new Player(game.world.centerX, game.world.centerY, 1);
 
+    /* CAMERA */
     game.camera.follow(player.sprite);
 
+    /* INPUTS */
     cursors = game.input.keyboard.createCursorKeys();
+
+    /* GROUPS */
+    ennemiesGroup = game.add.group();
+    skeleton = new Skeleton(game.world.centerX - 16, game.world.centerY - 16, 1);
+    
+    ennemiesGroup.add(skeleton.sprite);
+
+    itemsGroup = game.add.group();
 }
 
 function update() {
 
     game.physics.arcade.collide(player.sprite, layer);
+    game.physics.arcade.overlap(player.sprite, itemsGroup, collisionHandler, null, this);
 
     //player.move();
-    player.moveVelocity()
+    player.moveVelocity();
 }
 
 function render() {
 
     game.debug.body(player.sprite);
+}
+
+function collisionHandler(player, item){
+
+    console.log(item)
+    item.kill();
 }
