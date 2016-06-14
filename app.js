@@ -69,7 +69,7 @@ function create() {
 
     /* GROUPS */
     ennemiesGroup = game.add.group();
-    skeleton = new Skeleton(game.world.centerX - 16, game.world.centerY - 16, 1);
+    skeleton = new Bat(game.world.centerX - 16, game.world.centerY - 16, 1);
     
     ennemiesGroup.add(skeleton.sprite);
 
