@@ -1,4 +1,4 @@
-function Key(x, y){
+function Ressource(x, y){
 
 	this.sprite;
 	this.x = x;
@@ -6,7 +6,7 @@ function Key(x, y){
 
 	this.Awake = function(){
 		
-		this.sprite = game.add.sprite(this.x, this.y, 'key');
+		this.sprite = game.add.sprite(this.x, this.y, 'ressource');
 		game.physics.arcade.enable(this.sprite);
 	}
 
