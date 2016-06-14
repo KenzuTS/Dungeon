@@ -1,12 +1,15 @@
 function Skeleton(x, y, scale){
-	this.x = x;
+
+	Etre.call(this, x, y, scale);
+	this.idDeadTexture = 8;
+/*	this.x = x;
 	this.y = y;
-	this.scale = scale;
+	this.scale = scale;*/
 	this.sprite = null;
 
 	this.Awake = function(){
 
-		this.sprite = game.add.sprite(this.x, this.y, 'characters', 10);
+		this.sprite = game.add.sprite(this.initPosX, this.initPosY, 'characters', 10);
 		this.sprite.scale.set(this.scale);
 	    this.sprite.smoothed = false;
 
@@ -21,6 +24,7 @@ function Skeleton(x, y, scale){
 	    this.sprite.play('down');
 	}
 
+	// TODO
 	this.kill = function(){
 
 		var key = new Key(this.sprite.position.x, this.sprite.position.y)

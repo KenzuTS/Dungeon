@@ -15,6 +15,7 @@ function preload() {
     game.load.image('Rogue', 'assets/roguelike-pack/Spritesheet/roguelikeSheet_transparent.png');
 
     game.load.image('key', 'assets/DawnLike/Items/Key.png');
+    game.load.image('ressource', 'assets/DawnLike/Items/Rock.png');
 
 	game.load.spritesheet('characters', 'assets/Characters/characters.png', 16, 16);
     game.load.spritesheet('dead', 'assets/Characters/dead.png', 16, 16);
@@ -70,8 +71,10 @@ function create() {
     /* GROUPS */
     ennemiesGroup = game.add.group();
     skeleton = new Skeleton(game.world.centerX - 16, game.world.centerY - 16, 1);
+    bat = new Bat(game.world.centerX - 32, game.world.centerY - 32, 1);
     
     ennemiesGroup.add(skeleton.sprite);
+    ennemiesGroup.add(bat.sprite);
 
     itemsGroup = game.add.group();
 }

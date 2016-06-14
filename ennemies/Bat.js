@@ -1,14 +1,11 @@
 function Bat(x, y, scale){
+
 	Etre.call(this, x, y, scale);
 	this.idDeadTexture = 8;
 /*	this.x = x;
 	this.y = y;
 	this.scale = scale;*/
 	this.sprite = null;
-	this.tween;
-	this.distX = x;
-	this.distY = y;
-	this.isWalking = false;
 
 	this.Awake = function(){
 
@@ -25,81 +22,15 @@ function Bat(x, y, scale){
 	    this.sprite.animations.add('up', [87,88,89], 6, true);
 
 	    this.sprite.play('down');
-	}	
+	}
 
-    this.move = function(){
-	
-		if (!this.isWalking) {
+	// TODO
+	this.kill = function(){
 
-	    	if (cursors.down.isDown)
-	    	{
-	    		this.isWalking = true;
-	    	    this.sprite.play('down');
-	    	    this.distY = this.sprite.position.y + 16 * this.scale;
-	    	    this.tween = game.add.tween(this.sprite).to( { x: this.distX, y: this.distY }, 300);
-	    		this.tween.start();
-	    	}
-		
-	    	else if (cursors.left.isDown)
-	    	{
-	    		this.isWalking = true;
-	    	    this.sprite.play('left');
-	    	    this.distX = this.sprite.position.x - 16 * this.scale;
-	    	    this.tween = game.add.tween(this.sprite).to( { x: this.distX, y: this.distY }, 300);
-	    		this.tween.start();
-	    	}
-		
-	    	else if (cursors.right.isDown)
-	    	{
-	    		this.isWalking = true;
-	    	    this.sprite.play('right');
-	    	    this.distX = this.sprite.position.x + 16 * this.scale;
-	    	    this.tween = game.add.tween(this.sprite).to( { x: this.distX, y: this.distY }, 300);
-	    		this.tween.start();
-	    	}
-		
-	    	else if (cursors.up.isDown)
-	    	{
-	    		this.isWalking = true;
-	    	    this.sprite.play('up');
-	    	    this.distY = this.sprite.position.y - 16 * this.scale;
-	    	    this.tween = game.add.tween(this.sprite).to( { x: this.distX, y: this.distY }, 300);
-	    		this.tween.start();
-	    	}
-		}
-	
-		// stop animations
-    	if (this.sprite.position.x == this.distX && this.sprite.position.y == this.distY)
-    	{
-    	    this.isWalking = false;
-
-    	    if (cursors.down.isUp && cursors.left.isUp && cursors.right.isUp && cursors.up.isUp) {
-
-    	    	switch(this.sprite.animations.currentAnim.name){
-		
-    	    	    case "down":
-    	    	        this.sprite.animations.stop();
-    	    	        this.sprite.frame = 4;
-    	    	    break;
-		
-    	    	    case "left":
-    	    	        this.sprite.animations.stop();
-    	    	        this.sprite.frame = 16;
-    	    	    break;
-		
-    	    	    case "right":
-    	    	        this.sprite.animations.stop();
-    	    	        this.sprite.frame = 28;
-    	    	    break;
-		
-    	    	    case "up":
-    	    	        this.sprite.animations.stop();
-    	    	        this.sprite.frame = 40;
-    	    	    break;
-    	    	}
-    	    }
-    	}
-    }
+		var ressource = new Ressource(this.sprite.position.x, this.sprite.position.y)
+		itemsGroup.add(ressource.sprite);
+		this.sprite.kill();
+	}
 
     this.Awake();
 }
