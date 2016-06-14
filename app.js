@@ -28,20 +28,22 @@ function create() {
 
     map = game.add.tilemap('map');
     map.addTilesetImage('Cave');
-    map.setCollisionBetween(0, 6);
-    map.setCollisionBetween(8, 35);
-    map.setCollisionBetween(37, 57);
-    map.setCollisionBetween(66, 78);
-    map.setCollisionBetween(95, 107);
-    map.setCollisionBetween(124, 136);
-    map.setCollisionBetween(145, 202);
-
-    map.addTilesetImage('Rogue');
 
     ground = map.createLayer('Ground');
 
     layer = map.createLayer('Walls');
     layer.resizeWorld();
+
+    map.setCollisionBetween(0, 6, true, layer);
+    map.setCollisionBetween(8, 35, true, layer);
+    map.setCollisionBetween(37, 57, true, layer);
+    map.setCollisionBetween(66, 78, true, layer);
+    map.setCollisionBetween(95, 107, true, layer);
+    map.setCollisionBetween(124, 136, true, layer);
+    map.setCollisionBetween(145, 202, true, layer);
+    map.setCollision(326, true, layer);
+
+    map.addTilesetImage('Rogue');
 
     player = new Player(game.world.centerX, game.world.centerY, 1);
 
