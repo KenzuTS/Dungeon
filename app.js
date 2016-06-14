@@ -16,13 +16,14 @@ function preload() {
 
     game.load.image('key', 'assets/DawnLike/Items/Key.png');
     game.load.image('ressource', 'assets/DawnLike/Items/Rock.png');
+    game.load.image('bloc', 'assets/DawnLike/Objects/bloc.png');
 
 	game.load.spritesheet('characters', 'assets/Characters/characters.png', 16, 16);
     game.load.spritesheet('dead', 'assets/Characters/dead.png', 16, 16);
 }
 
 var hero;
-var map, layer;
+var map, layerWalls;
 var player;
 var skeleton, bat;
 var cursors;
@@ -30,58 +31,56 @@ var ennemiesGroup, itemsGroup;
 
 function create() {
 
-
     game.world.setBounds(-800,-800,800,800);
 
     /* MAP */
-    game.physics.startSystem(Phaser.Physics.ARCADE);
+        game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    map = game.add.tilemap('map');
-    map.addTilesetImage('Cave');
+        map = game.add.tilemap('map');
+        map.addTilesetImage('Cave');
 
-    map.createLayer('Ground');
-    map.createLayer('GroundOverlay');
-    map.createLayer('BackgroundObject');
-    map.createLayer('Objects');
+        map.createLayer('Ground');
+        map.createLayer('GroundOverlay');
+        layerWalls = map.createLayer('Walls');
+        map.createLayer('BackgroundObject');
+        map.createLayer('Objects');
 
-    layer = map.createLayer('Walls');
+        layerWalls.resizeWorld();
 
-    layer.resizeWorld();
+        // collisions sur les tiles du layerWalls
+        map.setCollisionBetween(1, 5000, true, layerWalls);
 
-    map.setCollisionBetween(0, 6, true, layer);
-    map.setCollisionBetween(8, 35, true, layer);
-    map.setCollisionBetween(37, 57, true, layer);
-    map.setCollisionBetween(66, 78, true, layer);
-    map.setCollisionBetween(95, 107, true, layer);
-    map.setCollisionBetween(124, 136, true, layer);
-    map.setCollisionBetween(145, 202, true, layer);
-    map.setCollision(326, true, layer);
+        map.createFromObjects('Walls', 34, 'bloc', 0, true, false);
 
-    map.addTilesetImage('Rogue');
+        map.addTilesetImage('Rogue');
 
     /* PLAYER */
-    player = new Player(game.world.centerX, game.world.centerY, 1);
+        player = new Player(game.world.centerX, game.world.centerY, 1);
+        player.sprite.body.setSize(10, 10, 3, 6);
+
+        // le joueur passe dessous ce layer
+        map.createLayer('Roof');
 
     /* CAMERA */
-    game.camera.follow(player.sprite);
+        game.camera.follow(player.sprite);
 
     /* INPUTS */
-    cursors = game.input.keyboard.createCursorKeys();
+        cursors = game.input.keyboard.createCursorKeys();
 
     /* GROUPS */
-    ennemiesGroup = game.add.group();
-    skeleton = new Skeleton(game.world.centerX - 16, game.world.centerY - 16, 1);
-    bat = new Bat(game.world.centerX - 32, game.world.centerY - 32, 1);
-    
-    ennemiesGroup.add(skeleton.sprite);
-    ennemiesGroup.add(bat.sprite);
+        ennemiesGroup = game.add.group();
+        skeleton = new Skeleton(game.world.centerX - 16, game.world.centerY - 16, 1);
+        bat = new Bat(game.world.centerX - 32, game.world.centerY - 32, 1);
+        
+        ennemiesGroup.add(skeleton.sprite);
+        ennemiesGroup.add(bat.sprite);
 
-    itemsGroup = game.add.group();
+        itemsGroup = game.add.group();
 }
 
 function update() {
 
-    game.physics.arcade.collide(player.sprite, layer);
+    game.physics.arcade.collide(player.sprite, layerWalls);
     game.physics.arcade.overlap(player.sprite, itemsGroup, collisionHandler, null, this);
 
     //player.move();
@@ -97,4 +96,29 @@ function collisionHandler(player, item){
 
     console.log(item)
     item.kill();
+}
+
+function pushBlock(player, bloc){
+
+    console.log(bloc)
+
+    switch(player.animations.currentAnim.name){
+
+        case "down":
+            var tween = game.add.tween(bloc).to( { y: bloc.y + 16 }, 300);
+            tween.start();
+        break;
+
+        case "left":
+
+        break;
+
+        case "right":
+
+        break;
+
+        case "up":
+
+        break;
+    }
 }

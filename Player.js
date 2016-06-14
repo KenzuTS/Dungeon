@@ -107,29 +107,58 @@ function Player(x, y, scale){
 
     	this.sprite.body.velocity.set(0);
 
-    	if (cursors.left.isDown)
+ 		if (cursors.up.isDown)
     	{
-    	    this.sprite.body.velocity.x = -100;
-    	    this.sprite.play('left');
-    	}
-    	else if (cursors.right.isDown)
-    	{
-    	    this.sprite.body.velocity.x = 100;
-    	    this.sprite.play('right');
-    	}
-    	else if (cursors.up.isDown)
-    	{
-    	    this.sprite.body.velocity.y = -100;
+    	    this.sprite.body.velocity.y = -75;
     	    this.sprite.play('up');
     	}
     	else if (cursors.down.isDown)
     	{
-    	    this.sprite.body.velocity.y = 100;
+    	    this.sprite.body.velocity.y = 75;
     	    this.sprite.play('down');
     	}
-    	else
+
+    	if (cursors.left.isDown)
     	{
-    	    this.sprite.animations.stop();
+    	    this.sprite.body.velocity.x = -75;
+    	    if (!cursors.up.isDown && !cursors.down.isDown) {
+    	    	this.sprite.play('left');
+    	    }
+    	    
+    	}
+    	else if (cursors.right.isDown)
+    	{
+    	    this.sprite.body.velocity.x = 75;
+    	    if (!cursors.up.isDown && !cursors.down.isDown) {
+    	    	this.sprite.play('right');
+    	    }
+    	}
+    	
+
+    	if (cursors.down.isUp && cursors.left.isUp && cursors.right.isUp && cursors.up.isUp)
+    	{
+	    	switch(this.sprite.animations.currentAnim.name){
+	
+	    	    case "down":
+	    	        this.sprite.animations.stop();
+	    	        this.sprite.frame = 4;
+	    	    break;
+	
+	    	    case "left":
+	    	        this.sprite.animations.stop();
+	    	        this.sprite.frame = 16;
+	    	    break;
+	
+	    	    case "right":
+	    	        this.sprite.animations.stop();
+	    	        this.sprite.frame = 28;
+	    	    break;
+	
+	    	    case "up":
+	    	        this.sprite.animations.stop();
+	    	        this.sprite.frame = 40;
+	    	    break;
+    	    }
     	}
     }
 
