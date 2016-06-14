@@ -9,42 +9,41 @@ var game = new Phaser.Game(
         render: render });
 
 function preload() {
+
     game.load.tilemap('map', 'assets/tilemaps/json/dungeonTest.json', null, Phaser.Tilemap.TILED_JSON);
-    game.load.image('cave', 'assets/roguelike-cave-pack/Spritesheet/roguelikeDungeon_transparent.png');
-    game.load.image('rogue', 'assets/roguelike-pack/Spritesheet/roguelikeSheet_transparent.png');
+    game.load.image('Cave', 'assets/roguelike-cave-pack/Spritesheet/roguelikeDungeon_transparent.png');
+    game.load.image('Rogue', 'assets/roguelike-pack/Spritesheet/roguelikeSheet_transparent.png');
 	game.load.spritesheet('characters', 'assets/Characters/characters.png', 16, 16);
 }
 
 var hero;
-var map, layer;
+var map, layer, ground;
 var player;
 var skeleton;
 var cursors;
 
 function create() {
 
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+
     map = game.add.tilemap('map');
-    map.addTilesetImage('Cave','cave');
+    map.addTilesetImage('Cave');
+    map.setCollisionBetween(0, 6);
+    map.setCollisionBetween(8, 35);
+    map.setCollisionBetween(37, 57);
+    map.setCollisionBetween(66, 78);
+    map.setCollisionBetween(95, 107);
+    map.setCollisionBetween(124, 136);
+    map.setCollisionBetween(145, 202);
 
-    // map.setCollisionBetween(0, 6);
-    // map.setCollisionBetween(8, 35);
-    // map.setCollisionBetween(37, 57);
-    // map.setCollisionBetween(66, 78);
-    // map.setCollisionBetween(95, 107);
-    // map.setCollisionBetween(124, 136);
-    // map.setCollisionBetween(145, 202);
-    map.setCollisionBetween(1, 521);
+    map.addTilesetImage('Rogue');
 
-    //map.addTilesetImage('Rogue','rogue');
+    ground = map.createLayer('Ground');
 
     layer = map.createLayer('Walls');
     layer.resizeWorld();
-    layer.debug = true;
-
-    game.physics.startSystem(Phaser.Physics.ARCADE);
 
     player = new Player(game.world.centerX, game.world.centerY, 1);
-    player.sprite.body.linearDamping = 1;
 
     game.camera.follow(player.sprite);
 
@@ -54,6 +53,7 @@ function create() {
 function update() {
 
     game.physics.arcade.collide(player.sprite, layer);
+
     //player.move();
     player.moveVelocity()
 }
