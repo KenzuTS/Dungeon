@@ -20,7 +20,7 @@ function Spider(x, y, scale){
 	    this.sprite.animations.add('left', [69,70,71], 6, true);
 	    this.sprite.animations.add('right', [81,82,83], 6, true);
 	    this.sprite.animations.add('up', [93,94,95], 6, true);
-
+	    this.sprite.etre = this;
 	    this.sprite.play('down');
 	}
 
@@ -29,7 +29,7 @@ function Spider(x, y, scale){
 
 		var key = new Key(this.sprite.position.x, this.sprite.position.y)
 		itemsGroup.add(key.sprite);
-		this.sprite.kill();
+		//this.sprite.kill();
 	}
 
     this.Awake();

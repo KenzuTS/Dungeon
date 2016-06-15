@@ -9,7 +9,10 @@ function Player(x, y, scale){
 	this.distY = y;
 	this.isWalking = false;
 	this.idDeadTexture = 1;
-	
+	this.damage = {
+		min : 20,
+		max : 30
+	}
 
 	this.Awake = function(){
 
@@ -25,6 +28,7 @@ function Player(x, y, scale){
 	    this.sprite.animations.add('right', [27,28,29], 10, true);
 	    this.sprite.animations.add('up', [39,40,41], 10, true);
 
+	    this.sprite.etre = this;
 	    this.tween = game.add.tween(this.sprite).to( { x: this.distX, y: this.distY }, 300);
 	}
 	
@@ -32,7 +36,6 @@ function Player(x, y, scale){
     this.move = function(){
 	
 		if (!this.isWalking) {
-
 	    	if (cursors.down.isDown)
 	    	{
 	    		this.isWalking = true;
@@ -104,61 +107,62 @@ function Player(x, y, scale){
     }
 
     this.moveVelocity = function(){
-
     	this.sprite.body.velocity.set(0);
+    	if (!this.inCombat) {
 
- 		if (cursors.up.isDown)
-    	{
-    	    this.sprite.body.velocity.y = -75;
-    	    this.sprite.play('up');
-    	}
-    	else if (cursors.down.isDown)
-    	{
-    	    this.sprite.body.velocity.y = 75;
-    	    this.sprite.play('down');
-    	}
+	 		if (cursors.up.isDown)
+	    	{
+	    	    this.sprite.body.velocity.y = -75;
+	    	    this.sprite.play('up');
+	    	}
+	    	else if (cursors.down.isDown)
+	    	{
+	    	    this.sprite.body.velocity.y = 75;
+	    	    this.sprite.play('down');
+	    	}
 
-    	if (cursors.left.isDown)
-    	{
-    	    this.sprite.body.velocity.x = -75;
-    	    if (!cursors.up.isDown && !cursors.down.isDown) {
-    	    	this.sprite.play('left');
-    	    }
-    	    
-    	}
-    	else if (cursors.right.isDown)
-    	{
-    	    this.sprite.body.velocity.x = 75;
-    	    if (!cursors.up.isDown && !cursors.down.isDown) {
-    	    	this.sprite.play('right');
-    	    }
-    	}
-    	
+	    	if (cursors.left.isDown)
+	    	{
+	    	    this.sprite.body.velocity.x = -75;
+	    	    if (!cursors.up.isDown && !cursors.down.isDown) {
+	    	    	this.sprite.play('left');
+	    	    }
+	    	    
+	    	}
+	    	else if (cursors.right.isDown)
+	    	{
+	    	    this.sprite.body.velocity.x = 75;
+	    	    if (!cursors.up.isDown && !cursors.down.isDown) {
+	    	    	this.sprite.play('right');
+	    	    }
+	    	}
+	    	
 
-    	if (cursors.down.isUp && cursors.left.isUp && cursors.right.isUp && cursors.up.isUp)
-    	{
-	    	switch(this.sprite.animations.currentAnim.name){
-	
-	    	    case "down":
-	    	        this.sprite.animations.stop();
-	    	        this.sprite.frame = 4;
-	    	    break;
-	
-	    	    case "left":
-	    	        this.sprite.animations.stop();
-	    	        this.sprite.frame = 16;
-	    	    break;
-	
-	    	    case "right":
-	    	        this.sprite.animations.stop();
-	    	        this.sprite.frame = 28;
-	    	    break;
-	
-	    	    case "up":
-	    	        this.sprite.animations.stop();
-	    	        this.sprite.frame = 40;
-	    	    break;
-    	    }
+	    	if (cursors.down.isUp && cursors.left.isUp && cursors.right.isUp && cursors.up.isUp)
+	    	{
+		    	switch(this.sprite.animations.currentAnim.name){
+		
+		    	    case "down":
+		    	        this.sprite.animations.stop();
+		    	        this.sprite.frame = 4;
+		    	    break;
+		
+		    	    case "left":
+		    	        this.sprite.animations.stop();
+		    	        this.sprite.frame = 16;
+		    	    break;
+		
+		    	    case "right":
+		    	        this.sprite.animations.stop();
+		    	        this.sprite.frame = 28;
+		    	    break;
+		
+		    	    case "up":
+		    	        this.sprite.animations.stop();
+		    	        this.sprite.frame = 40;
+		    	    break;
+	    	    }
+	    	}
     	}
     }
 

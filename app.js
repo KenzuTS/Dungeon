@@ -69,6 +69,7 @@ function create() {
 
     /* GROUPS */
         ennemiesGroup = game.add.group();
+        //ennemiesGroup = game.add.physicsGroup();
         skeleton = new Skeleton(game.world.centerX - 16, game.world.centerY - 16, 1);
         bat = new Bat(game.world.centerX - 32, game.world.centerY - 32, 1);
         
@@ -81,21 +82,88 @@ function create() {
 function update() {
 
     game.physics.arcade.collide(player.sprite, layerWalls);
-    game.physics.arcade.overlap(player.sprite, itemsGroup, collisionHandler, null, this);
+    game.physics.arcade.overlap(player.sprite, itemsGroup, collisionHandler, function (spritePlayer,item) {
+        return !spritePlayer.etre.inCombat;
+    }, this);
+    game.physics.arcade.collide(player.sprite, ennemiesGroup, combatHandler, processAttack, this);
 
     //player.move();
     player.moveVelocity();
 }
 
 function render() {
-
     game.debug.body(player.sprite);
 }
 
+function combatHandler(sprite, target) {
+    switch(sprite.animations.currentAnim.name){
+        case "down":
+            sprite.animations.stop();
+            sprite.frame = 4;
+        break;
+
+        case "left":
+            sprite.animations.stop();
+            sprite.frame = 16;
+        break;
+
+        case "right":
+            sprite.animations.stop();
+            sprite.frame = 28;
+        break;
+
+        case "up":
+            sprite.animations.stop();
+            sprite.frame = 40;
+        break;
+    }
+    target.body.enable = false;
+    target.body.velocity.x = 0;
+    target.body.velocity.y = 0;
+    var diff = {
+        x : (sprite.position.x - target.position.x),
+        y : (sprite.position.y - target.position.y)
+    }
+    if (diff.x > 4) {
+        if (diff.y > 8) {
+            sprite.animations.currentAnim.name = "up";
+            sprite.frame = 40;
+        }
+        else if(diff.y < -8){
+            sprite.animations.currentAnim.name = "down";
+            sprite.frame = 4;
+        }
+        else {
+            sprite.frame = 16;
+        }
+    }
+    else if (diff.x < 8) {
+        if (diff.y > 8) {
+            sprite.animations.currentAnim.name = "up";
+            sprite.frame = 40;
+        }
+        else if(diff.y < -8){
+            sprite.frame = 4;
+            sprite.animations.currentAnim.name = "down";
+        }
+        else {
+            sprite.frame = 28;
+        }
+    }
+    player.attack(target.etre);
+}
 function collisionHandler(player, item){
 
     console.log(item)
     item.kill();
+}
+
+function processAttack(spritePlayer, target) {
+    if (!spritePlayer.etre.inCombat) {
+        spritePlayer.etre.inCombat = true;
+        return true;
+    }
+    return false;
 }
 
 function pushBlock(player, bloc){
