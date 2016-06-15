@@ -32,6 +32,7 @@ var ennemiesGroup, itemsGroup, blocsGroup;
 function create() {
 
     game.world.setBounds(-800,-800,800,800);
+    
 
     /* MAP */
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -42,6 +43,7 @@ function create() {
         map.createLayer('Ground');
         map.createLayer('GroundOverlay');
         layerWalls = map.createLayer('Walls');
+        layerWalls.debug = true;
         map.createLayer('BackgroundObject');
         map.createLayer('Objects');
 
@@ -77,6 +79,7 @@ function create() {
 
     /* PLAYER */
         player = new Player(game.world.centerX, game.world.centerY, 1);
+
         player.sprite.body.setSize(10, 10, 3, 6);
 
         // le joueur passe dessous ce layer
@@ -84,6 +87,8 @@ function create() {
 
     /* CAMERA */
         game.camera.follow(player.sprite);
+        game.camera.setSize(320,160);
+        //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
 }
 
 function update() {
@@ -105,6 +110,7 @@ function update() {
 
 function render() {
     game.debug.body(player.sprite);
+
 }
 
 function combatHandler(sprite, target) {

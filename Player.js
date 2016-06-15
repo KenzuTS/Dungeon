@@ -1,8 +1,5 @@
 function Player(x, y, scale){
 	Etre.call(this, x, y, scale);
-/*	this.initPosX = x;
-	this.initPosY = y;
-	this.scale = scale;*/
 	this.sprite = null;
 	this.tween;
 	this.distX = x;
@@ -112,28 +109,27 @@ function Player(x, y, scale){
 
 	 		if (cursors.up.isDown)
 	    	{
-	    	    this.sprite.body.velocity.y = -75;
-	    	    this.sprite.play('up');
+	    	    this.sprite.body.velocity.y = -Application.Player.VELOCITY;
+	    	    this.sprite.animations.play('up');
 	    	}
 	    	else if (cursors.down.isDown)
 	    	{
-	    	    this.sprite.body.velocity.y = 75;
-	    	    this.sprite.play('down');
+	    	    this.sprite.body.velocity.y = Application.Player.VELOCITY;
+	    	    this.sprite.animations.play('down');
 	    	}
 
 	    	if (cursors.left.isDown)
 	    	{
-	    	    this.sprite.body.velocity.x = -75;
+	    	    this.sprite.body.velocity.x = -Application.Player.VELOCITY;
 	    	    if (!cursors.up.isDown && !cursors.down.isDown) {
-	    	    	this.sprite.play('left');
+	    	    	this.sprite.animations.play('left');
 	    	    }
-	    	    
 	    	}
 	    	else if (cursors.right.isDown)
 	    	{
-	    	    this.sprite.body.velocity.x = 75;
+	    	    this.sprite.body.velocity.x = Application.Player.VELOCITY;
 	    	    if (!cursors.up.isDown && !cursors.down.isDown) {
-	    	    	this.sprite.play('right');
+	    	    	this.sprite.animations.play('right');
 	    	    }
 	    	}
 	    	
