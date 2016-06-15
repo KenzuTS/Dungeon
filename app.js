@@ -83,13 +83,22 @@ function create() {
         cursors = game.input.keyboard.createCursorKeys();
 
     /* GROUPS */
-        ennemiesGroup = game.add.group();
-        //ennemiesGroup = game.add.physicsGroup();
-        skeleton = new Skeleton(game.world.centerX - 16, game.world.centerY - 16, Application.SCALE);
-        bat = new Bat(game.world.centerX - 32, game.world.centerY - 32, Application.SCALE);
-        
-        ennemiesGroup.add(skeleton.sprite);
-        ennemiesGroup.add(bat.sprite);
+        // Ennemies
+            ennemiesGroup = game.add.group();
+            map.createFromObjects('Ennemies', 2300, 'characters', 52, true, false, ennemiesGroup);
+            for (var i = 0; i < ennemiesGroup.hash.length; i++) {
+
+                ennemiesGroup.hash[i].body.setSize(13, 14, 2, 2);
+                ennemiesGroup.hash[i].scale.setTo(Application.SCALE);
+                ennemiesGroup.hash[i].position.x *= Application.SCALE;
+                ennemiesGroup.hash[i].position.y *= Application.SCALE;
+            }
+
+            skeleton = new Skeleton(game.world.centerX - 16, game.world.centerY - 16, Application.SCALE);
+            bat = new Bat(game.world.centerX - 32, game.world.centerY - 32, Application.SCALE);
+            
+            ennemiesGroup.add(skeleton.sprite);
+            ennemiesGroup.add(bat.sprite);
 
         itemsGroup = game.add.group();
 
@@ -98,11 +107,12 @@ function create() {
         map.createFromObjects('PushableBloc', 1186, 'bloc', 0, true, false, blocsGroup);
 
         for (var i = 0; i < blocsGroup.hash.length; i++) {
+
             blocsGroup.hash[i].body.mass = -100;
             blocsGroup.hash[i].body.setSize(13, 14, 2, 2);
             blocsGroup.hash[i].scale.setTo(Application.SCALE);
-            blocsGroup.hash[i].position.x *= 2;
-            blocsGroup.hash[i].position.y *= 2;
+            blocsGroup.hash[i].position.x *= Application.SCALE;
+            blocsGroup.hash[i].position.y *= Application.SCALE;
         }
 
     /* PLAYER */

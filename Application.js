@@ -16,7 +16,7 @@ var Application = {
 			RIGHT : 28,
 			UP : 40
 		},
-		VELOCITY : 7500
+		VELOCITY : 200
 	},
 	
 	Time : {
