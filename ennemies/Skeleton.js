@@ -21,15 +21,16 @@ function Skeleton(x, y, scale){
 	    this.sprite.animations.add('right', [33,34,35], 6, true);
 	    this.sprite.animations.add('up', [45,46,47], 6, true);
 
+	    this.sprite.etre = this;
 	    this.sprite.play('down');
 	}
 
 	// TODO
 	this.kill = function(){
-
+		Etre.prototype.kill.call(this);
 		var key = new Key(this.sprite.position.x, this.sprite.position.y)
 		itemsGroup.add(key.sprite);
-		this.sprite.kill();
+		//this.sprite.kill();
 	}
 
     this.Awake();

@@ -3,6 +3,7 @@ function Etre(x,y,scale){
 	this.initPosY = y;
 	this.scale = scale;
 	this.idDeadTexture = 4;
+	this.inCombat = false;
 
 	this.HP = 100;
 	this.isAlive = true;
@@ -15,11 +16,12 @@ function Etre(x,y,scale){
 		this.HP = value;
 		if (this.HP < 1) {
 			this.isAlive = false;
-			/* 1 Texture sur le ventre
-			   4 Texture sur le dos */
-			this.sprite.loadTexture('dead', this.idDeadTexture);
-			//this.callbackOnDead();
+			this.kill();
 		}
+	}
+
+	this.takeDamage = function (damage) {
+		this.setHP(this.HP - damage);
 	}
 
 	this.attack = function (target) {
@@ -31,7 +33,7 @@ function Etre(x,y,scale){
 			x : this.sprite.position.x + (target.sprite.position.x - this.sprite.position.x) / 2,
 			y : this.sprite.position.y + (target.sprite.position.y - this.sprite.position.y) / 2
 		}
-		
+
 		var self = this;
 		var tweenA =  game.add.tween(this.sprite).to(move, 300, "Linear");
 		var tweenB =  game.add.tween(this.sprite).to(init, 300, "Linear");
@@ -42,11 +44,14 @@ function Etre(x,y,scale){
 		});
 		tweenB.onComplete.add(function(){
 			if (target.isAlive) { target.attack(self); }
+			else {
+				self.inCombat = false;
+			}
 		});
 		tweenA.start();
 	}
+}
 
-	this.takeDamage = function (damage) {
-		this.setHP(this.HP - damage);
-	}
+Etre.prototype.kill = function(){
+	this.sprite.loadTexture('dead', this.idDeadTexture);
 }

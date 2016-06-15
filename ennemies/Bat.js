@@ -21,15 +21,16 @@ function Bat(x, y, scale){
 	    this.sprite.animations.add('right', [75,76,77], 6, true);
 	    this.sprite.animations.add('up', [87,88,89], 6, true);
 
+	    this.sprite.etre = this;
 	    this.sprite.play('down');
 	}
 
 	// TODO
 	this.kill = function(){
-
+		this.sprite.loadTexture('dead', this.idDeadTexture);
 		var ressource = new Ressource(this.sprite.position.x, this.sprite.position.y)
 		itemsGroup.add(ressource.sprite);
-		this.sprite.kill();
+		//this.sprite.kill();
 	}
 
     this.Awake();
