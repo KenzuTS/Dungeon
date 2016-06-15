@@ -1,5 +1,4 @@
 function Bat(x, y, scale){
-
 	Etre.call(this, x, y, scale);
 	this.idDeadTexture = 8;
 /*	this.x = x;
@@ -27,7 +26,7 @@ function Bat(x, y, scale){
 
 	// TODO
 	this.kill = function(){
-		this.sprite.loadTexture('dead', this.idDeadTexture);
+		Etre.prototype.kill.call(this);
 		var ressource = new Ressource(this.sprite.position.x, this.sprite.position.y)
 		itemsGroup.add(ressource.sprite);
 		//this.sprite.kill();

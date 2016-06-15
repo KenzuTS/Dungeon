@@ -1,7 +1,7 @@
 function Skeleton(x, y, scale){
 
 	Etre.call(this, x, y, scale);
-	this.idDeadTexture = 8;
+	this.idDeadTexture = 6;
 /*	this.x = x;
 	this.y = y;
 	this.scale = scale;*/
@@ -22,7 +22,7 @@ function Skeleton(x, y, scale){
 	    this.sprite.animations.add('up', [45,46,47], 6, true);
 
 	    this.sprite.etre = this;
-	    this.sprite.play('down');
+	    //this.sprite.play('down');
 	}
 
 	// TODO

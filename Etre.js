@@ -35,12 +35,12 @@ function Etre(x,y,scale){
 		}
 
 		var self = this;
-		var tweenA =  game.add.tween(this.sprite).to(move, 300, "Linear");
-		var tweenB =  game.add.tween(this.sprite).to(init, 300, "Linear");
+		var tweenA =  game.add.tween(this.sprite).to(move, Application.Time.TWEEN_ATTACK, "Linear");
+		var tweenB =  game.add.tween(this.sprite).to(init, Application.Time.TWEEN_ATTACK, "Linear");
 
 		tweenA.chain(tweenB);
 		tweenA.onComplete.add(function() {
-			target.takeDamage(self.damage.min + Math.random() * (self.damage.max - self.damage.min));
+			target.takeDamage((self.damage.min + Math.random() * (self.damage.max - self.damage.min))|0);
 		});
 		tweenB.onComplete.add(function(){
 			if (target.isAlive) { target.attack(self); }
@@ -54,4 +54,9 @@ function Etre(x,y,scale){
 
 Etre.prototype.kill = function(){
 	this.sprite.loadTexture('dead', this.idDeadTexture);
+	if (!(this instanceof Player)) {
+		game.time.events.add(Application.Time.FADE_DEATH, function(){
+			this.kill();
+		},this.sprite);
+	}
 }

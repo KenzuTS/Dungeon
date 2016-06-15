@@ -1,6 +1,6 @@
 var game = new Phaser.Game(
-    800, 
-    600,
+    Application.Canvas.WIDTH, 
+    Application.Canvas.HEIGHT,
     Phaser.AUTO, 
     "phaser-example", 
     {   preload: preload, 
@@ -24,9 +24,9 @@ function preload() {
     game.load.image('key', 'assets/DawnLike/Items/Key.png');
     game.load.image('ressource', 'assets/DawnLike/Items/Rock.png');
 
-    game.load.spritesheet('bloc', 'assets/DawnLike/Objects/bloc.png', 16, 16);
-	game.load.spritesheet('characters', 'assets/Characters/characters.png', 16, 16);
-    game.load.spritesheet('dead', 'assets/Characters/dead.png', 16, 16);
+    game.load.spritesheet('bloc', 'assets/DawnLike/Objects/bloc.png', Application.TILE_SIZE, Application.TILE_SIZE);
+	game.load.spritesheet('characters', 'assets/Characters/characters.png', Application.TILE_SIZE, Application.TILE_SIZE);
+    game.load.spritesheet('dead', 'assets/Characters/dead.png', Application.TILE_SIZE, Application.TILE_SIZE);
 }
 
 var hero;
@@ -38,7 +38,8 @@ var ennemiesGroup, itemsGroup, blocsGroup;
 
 function create() {
 
-    game.world.setBounds(-800,-800,800,800);
+    game.world.setBounds(-Application.WORLD_SIZE.WIDTH / 2, -Application.WORLD_SIZE.HEIGHT / 2,Application.WORLD_SIZE.WIDTH / 2, Application.WORLD_SIZE.HEIGHT / 2);
+    
 
     /* MAP */
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -56,20 +57,22 @@ function create() {
         layerGround = map.createLayer('Ground');
         layerGroundOverlay = map.createLayer('GroundOverlay');
         layerWalls = map.createLayer('Walls');
+
         layerBackgroundObject = map.createLayer('BackgroundObject');
         layerObjects = map.createLayer('Objects');
 
-        layerGround.setScale(2, 2);
-        layerGroundOverlay.setScale(2, 2);
-        layerWalls.setScale(2, 2);
-        layerBackgroundObject.setScale(2, 2);
-        layerObjects.setScale(2, 2);        
+        layerGround.setScale(Application.SCALE);
+        layerGroundOverlay.setScale(Application.SCALE);
+        layerWalls.setScale(Application.SCALE);
+        layerBackgroundObject.setScale(Application.SCALE);
+        layerObjects.setScale(Application.SCALE);        
 
         layerGround.smoothed = false;
         layerGroundOverlay.smoothed = false;
         layerWalls.smoothed = false;
         layerBackgroundObject.smoothed = false;
         layerObjects.smoothed = false;
+
 
         layerWalls.resizeWorld();
 
@@ -82,8 +85,8 @@ function create() {
     /* GROUPS */
         ennemiesGroup = game.add.group();
         //ennemiesGroup = game.add.physicsGroup();
-        skeleton = new Skeleton(game.world.centerX - 16, game.world.centerY - 16, 2);
-        bat = new Bat(game.world.centerX - 32, game.world.centerY - 32, 2);
+        skeleton = new Skeleton(game.world.centerX - 16, game.world.centerY - 16, Application.SCALE);
+        bat = new Bat(game.world.centerX - 32, game.world.centerY - 32, Application.SCALE);
         
         ennemiesGroup.add(skeleton.sprite);
         ennemiesGroup.add(bat.sprite);
@@ -97,21 +100,26 @@ function create() {
         for (var i = 0; i < blocsGroup.hash.length; i++) {
             blocsGroup.hash[i].body.mass = -100;
             blocsGroup.hash[i].body.setSize(13, 14, 2, 2);
-            blocsGroup.hash[i].scale.setTo(2,2);
+            blocsGroup.hash[i].scale.setTo(Application.SCALE);
             blocsGroup.hash[i].position.x *= 2;
             blocsGroup.hash[i].position.y *= 2;
         }
 
     /* PLAYER */
-        player = new Player(game.world.centerX, game.world.centerY, 2);
+
+        player = new Player(game.world.centerX, game.world.centerY, Application.SCALE);
+
 
         // le joueur passe dessous ce layer
         layerRoof = map.createLayer('Roof');
-        layerRoof.setScale(2, 2);
+        layerRoof.setScale(Application.SCALE);
         layerRoof.smoothed = false;
 
     /* CAMERA */
-        game.camera.follow(player.sprite); 
+
+        game.camera.follow(player.sprite);
+        //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
+
 }
 
 function update() {
@@ -133,6 +141,7 @@ function update() {
 
 function render() {
     game.debug.body(player.sprite);
+
 }
 
 function combatHandler(sprite, target) {

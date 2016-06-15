@@ -1,7 +1,7 @@
 function Spider(x, y, scale){
 
 	Etre.call(this, x, y, scale);
-	this.idDeadTexture = 8;
+	this.idDeadTexture = 10;
 /*	this.x = x;
 	this.y = y;
 	this.scale = scale;*/
@@ -9,7 +9,7 @@ function Spider(x, y, scale){
 
 	this.Awake = function(){
 
-		this.sprite = game.add.sprite(this.initPosX, this.initPosY, 'characters', 10);
+		this.sprite = game.add.sprite(this.initPosX, this.initPosY, 'characters', 58);
 		this.sprite.scale.set(this.scale);
 	    this.sprite.smoothed = false;
 
@@ -26,7 +26,7 @@ function Spider(x, y, scale){
 
 	// TODO
 	this.kill = function(){
-
+		Etre.prototype.kill.call(this);
 		var key = new Key(this.sprite.position.x, this.sprite.position.y)
 		itemsGroup.add(key.sprite);
 		//this.sprite.kill();
