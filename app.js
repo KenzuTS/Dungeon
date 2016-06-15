@@ -199,7 +199,7 @@ function collisionHandler(player, item){
     item.kill();
 }
 
-function blocInWater(bloc, tile){    
+function blocInWater(bloc, tile){
 
     if (tile.index == 326) {
 
