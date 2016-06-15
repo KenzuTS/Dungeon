@@ -17,11 +17,13 @@ function Player(x, y, scale){
 	this.Awake = function(){
 
 		this.sprite = game.add.sprite(this.initPosX, this.initPosY, 'characters', 4);
-		this.sprite.scale.set(this.scale);
-	    this.sprite.smoothed = false;
 
 	    game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 	    this.sprite.body.collideWorldBounds = true;
+
+		this.sprite.body.setSize(10, 10, 4, 11);
+		this.sprite.scale.set(this.scale);
+	    this.sprite.smoothed = false;
 
 	    this.sprite.animations.add('down', [3,4,5], 10, true);
 	    this.sprite.animations.add('left', [15,16,17], 10, true);
@@ -112,18 +114,18 @@ function Player(x, y, scale){
 
 	 		if (cursors.up.isDown)
 	    	{
-	    	    this.sprite.body.velocity.y = -75;
+	    	    this.sprite.body.velocity.y = -150;
 	    	    this.sprite.play('up');
 	    	}
 	    	else if (cursors.down.isDown)
 	    	{
-	    	    this.sprite.body.velocity.y = 75;
+	    	    this.sprite.body.velocity.y = 150;
 	    	    this.sprite.play('down');
 	    	}
 
 	    	if (cursors.left.isDown)
 	    	{
-	    	    this.sprite.body.velocity.x = -75;
+	    	    this.sprite.body.velocity.x = -150;
 	    	    if (!cursors.up.isDown && !cursors.down.isDown) {
 	    	    	this.sprite.play('left');
 	    	    }
@@ -131,7 +133,7 @@ function Player(x, y, scale){
 	    	}
 	    	else if (cursors.right.isDown)
 	    	{
-	    	    this.sprite.body.velocity.x = 75;
+	    	    this.sprite.body.velocity.x = 150;
 	    	    if (!cursors.up.isDown && !cursors.down.isDown) {
 	    	    	this.sprite.play('right');
 	    	    }
