@@ -18,7 +18,6 @@ var Application = {
 		},
 		VELOCITY : 200
 	},
-	
 	Time : {
 		FADE_DEATH : 1000,
 		TWEEN_ATTACK : 300
