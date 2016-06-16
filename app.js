@@ -111,6 +111,7 @@ function create() {
             blocsGroup.hash[i].scale.setTo(Application.SCALE);
             blocsGroup.hash[i].position.x *= Application.SCALE;
             blocsGroup.hash[i].position.y *= Application.SCALE;
+            blocsGroup.hash[i].smoothed = false;
         }
 
     /* PLAYER */
@@ -213,17 +214,17 @@ function combatHandler(sprite, target) {
 }
 
 function collectItem(player, item){
+    console.log(item)
+    player.inventory[item.key]++;
     item.destroy();
 }
 
 function blocInWater(bloc, tile){
-
     if (tile.index == 326) {
 
-        bloc.frame = 1;      
         map.layers[1].data[tile.y][tile.x].index = 1541;
         map.removeTile(tile.x, tile.y, "Walls");
-        bloc.destroy();
+        bloc.kill();
     }
 }
 
@@ -237,9 +238,8 @@ function processAttack(spritePlayer, target) {
 
 function OpenDoor(player, door){
 
-    console.log(door)
-    // player.key > 0
-    if (false) {
+    if (player.inventory.key) {
         map.removeTile(door.x, door.y, "Objects");
+        player.inventory.key--;
     }
 }

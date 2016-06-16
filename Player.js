@@ -7,6 +7,10 @@ function Player(x, y){
 		min : 20,
 		max : 30
 	}
+	this.inventory = {
+		"key" : 0,
+		"ressource" : 0
+	}
 
 	this.Awake = function(){
 

@@ -21,8 +21,8 @@ function Skeleton(game, x, y, key, frame){
 	// TODO
 	this.onDead = function(){
 		Etre.prototype.onDead.call(this);
-		Application.key = new Key(this.position.x, this.position.y);
-		itemsGroup.add(Application.key);
+		var key = new Key(this.position.x, this.position.y);
+		itemsGroup.add(key);
 		//this.sprite.kill();
 	}
 
