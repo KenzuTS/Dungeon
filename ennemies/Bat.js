@@ -1,10 +1,9 @@
-function Bat(x, y, scale){
-	Etre.call(this, x, y, scale);
+function Bat(game, x, y, key, frame){
+	Etre.call(this, game, x, y, key, frame);
 	this.idDeadTexture = 8;
 
 	this.Awake = function(){
 
-		this.scale.set(this.scale);
 	    this.smoothed = false;
 
 	    game.physics.enable(this, Phaser.Physics.ARCADE);
@@ -28,3 +27,6 @@ function Bat(x, y, scale){
 
     this.Awake();
 }
+
+Bat.prototype = Object.create(Etre.prototype);
+Bat.prototype.constructor = Bat;

@@ -58,7 +58,6 @@ function create() {
         layerGround = map.createLayer('Ground');
         layerGroundOverlay = map.createLayer('GroundOverlay');
         layerWalls = map.createLayer('Walls');
-
         layerBackgroundObject = map.createLayer('BackgroundObject');
         layerObjects = map.createLayer('Objects');
 
@@ -74,11 +73,11 @@ function create() {
         layerBackgroundObject.smoothed = false;
         layerObjects.smoothed = false;
 
-
         layerWalls.resizeWorld();
 
-        // collisions sur les tiles du layerWalls
+        // collisions sur les tiles des layers voulu
         map.setCollisionBetween(1, 5000, true, layerWalls);
+        map.setCollisionBetween(1, 5000, true, layerObjects);
 
     /* INPUTS */
         cursors = game.input.keyboard.createCursorKeys();
@@ -87,6 +86,7 @@ function create() {
         // Ennemies
             ennemiesGroup = game.add.group();
             map.createFromObjects('Ennemies', 2300, 'characters', 10, true, false, ennemiesGroup, Skeleton);
+            map.createFromObjects('Ennemies', 2342, 'characters', 52, true, false, ennemiesGroup, Bat);
             for (var i = 0; i < ennemiesGroup.hash.length; i++) {
 
                 ennemiesGroup.hash[i].body.setSize(13, 14, 2, 2);
@@ -118,7 +118,7 @@ function create() {
     /* PLAYER */
 
         //player = new Player(game.world.centerX, game.world.centerY, Application.SCALE);
-        player = new Player(game, game.world.centerX, game.world.centerY, 'characters', 4);
+        player = new Player(game, game.world.centerX + 320, game.world.centerY, 'characters', 4);
         game.add.existing(player);
 
         // le joueur passe dessous ce layer
@@ -137,12 +137,13 @@ function update() {
 
     game.physics.arcade.collide(player, layerWalls);
     game.physics.arcade.collide(player, blocsGroup);
+    game.physics.arcade.collide(player, layerObjects, OpenDoor, null, this);
     game.physics.arcade.collide(layerWalls, blocsGroup, blocInWater, null, this);
 
-/*    game.physics.arcade.overlap(player, itemsGroup, collisionHandler,
+    game.physics.arcade.overlap(player, itemsGroup, collectItem,
         function (spritePlayer,item) {
             return !spritePlayer.inCombat;
-        }, this);*/
+        }, this);
 
     game.physics.arcade.collide(player, ennemiesGroup, combatHandler, processAttack, this);
 
@@ -155,8 +156,6 @@ function render() {
     if (Application.key) {
         game.debug.body(Application.key.sprite);
     }
-    
-
 }
 
 function combatHandler(sprite, target) {
@@ -217,7 +216,7 @@ function combatHandler(sprite, target) {
     player.attack(target);
 }
 
-function collisionHandler(player, item){
+function collectItem(player, item){
 
     console.log(item)
     item.kill();
@@ -240,4 +239,13 @@ function processAttack(spritePlayer, target) {
         return true;
     }
     return false;
+}
+
+function OpenDoor(player, door){
+
+    console.log(door)
+    // player.key > 0
+    if (false) {
+        map.removeTile(door.x, door.y, "Objects");
+    }
 }
