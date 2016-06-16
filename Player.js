@@ -18,7 +18,7 @@ function Player(x, y, scale){
 	    game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
 	    this.sprite.body.collideWorldBounds = true;
 
-		this.sprite.body.setSize(10, 10, 4, 11);
+		this.sprite.body.setSize(10, 10, 5, 11);
 		this.sprite.scale.set(this.scale);
 	    this.sprite.smoothed = false;
 
