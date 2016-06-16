@@ -94,8 +94,8 @@ function create() {
                 ennemiesGroup.hash[i].position.y *= Application.SCALE;
             }
 
-            skeleton = new Skeleton(game.world.centerX - 16, game.world.centerY - 16, Application.SCALE);
-            bat = new Bat(game.world.centerX - 32, game.world.centerY - 32, Application.SCALE);
+            skeleton = new Skeleton(game.world.centerX - 32, game.world.centerY - 32, Application.SCALE);
+            bat = new Bat(game.world.centerX - 64, game.world.centerY - 64, Application.SCALE);
             
             ennemiesGroup.add(skeleton.sprite);
             ennemiesGroup.add(bat.sprite);
@@ -213,8 +213,7 @@ function combatHandler(sprite, target) {
 }
 
 function collisionHandler(player, item){
-
-    console.log(item)
+    //console.log(item)
     item.kill();
 }
 
