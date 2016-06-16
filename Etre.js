@@ -59,7 +59,7 @@ Etre.prototype.onDead = function(){
 	this.loadTexture('dead', this.idDeadTexture);
 	if (!(this instanceof Player)) {
 		game.time.events.add(Application.Time.FADE_DEATH, function(){
-			this.kill();
+			this.destroy();
 		},this);
 	}
 }
