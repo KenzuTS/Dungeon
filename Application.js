@@ -25,3 +25,4 @@ var Application = {
 	SCALE : 2,
 	key : null
 }
+

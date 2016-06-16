@@ -9,7 +9,7 @@ var game = new Phaser.Game(
         render: render });
 
 function preload() {
-
+    
     game.load.tilemap('map', 'assets/tilemaps/json/dungeonTest.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('Cave', 'assets/roguelike-cave-pack/Spritesheet/roguelikeDungeon_transparent.png');
     game.load.image('Rogue', 'assets/roguelike-pack/Spritesheet/roguelikeSheet_transparent.png');
@@ -31,7 +31,6 @@ function preload() {
 
 var hero;
 var map, layerWalls, layerGround, layerGroundOverlay, layerBackgroundObject, layerObjects, layerRoof, layerEnnemies, layerPushableBloc;
-var key;
 var player;
 var skeleton, bat;
 var cursors;
@@ -107,7 +106,6 @@ function create() {
 
         map.createFromObjects('PushableBloc', 1186, 'bloc', 0, true, false, blocsGroup);
         for (var i = 0; i < blocsGroup.hash.length; i++) {
-
             blocsGroup.hash[i].body.mass = -100;
             blocsGroup.hash[i].body.setSize(13, 14, 2, 2);
             blocsGroup.hash[i].scale.setTo(Application.SCALE);
@@ -117,8 +115,7 @@ function create() {
 
     /* PLAYER */
 
-        //player = new Player(game.world.centerX, game.world.centerY, Application.SCALE);
-        player = new Player(game, game.world.centerX + 320, game.world.centerY, 'characters', 4);
+        player = new Player(game.world.centerX + 312, game.world.centerY);
         game.add.existing(player);
 
         // le joueur passe dessous ce layer
@@ -130,7 +127,6 @@ function create() {
 
         game.camera.follow(player);
         //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
-
 }
 
 function update() {
@@ -154,7 +150,7 @@ function update() {
 function render() {
     game.debug.body(player);
     if (Application.key) {
-        game.debug.body(Application.key.sprite);
+        game.debug.body(Application.key);
     }
 }
 
@@ -217,9 +213,7 @@ function combatHandler(sprite, target) {
 }
 
 function collectItem(player, item){
-
-    console.log(item)
-    item.kill();
+    item.destroy();
 }
 
 function blocInWater(bloc, tile){
@@ -229,7 +223,7 @@ function blocInWater(bloc, tile){
         bloc.frame = 1;      
         map.layers[1].data[tile.y][tile.x].index = 1541;
         map.removeTile(tile.x, tile.y, "Walls");
-        bloc.kill();
+        bloc.destroy();
     }
 }
 

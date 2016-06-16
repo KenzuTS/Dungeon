@@ -1,6 +1,5 @@
 function Etre(game, x, y, key, frame){
 	Phaser.Sprite.call(this, game, x, y, key, frame);
-	/*this.scale = scale;*/
 	this.idDeadTexture = 4;
 	this.inCombat = false;
 

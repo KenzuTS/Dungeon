@@ -4,6 +4,7 @@ function Skeleton(game, x, y, key, frame){
 
 	this.Awake = function(){
 
+		this.scale.set(Application.SCALE);
 	    this.smoothed = false;
 
 	    game.physics.enable(this, Phaser.Physics.ARCADE);
@@ -21,7 +22,7 @@ function Skeleton(game, x, y, key, frame){
 	this.onDead = function(){
 		Etre.prototype.onDead.call(this);
 		Application.key = new Key(this.position.x, this.position.y);
-		itemsGroup.add(Application.key.sprite);
+		itemsGroup.add(Application.key);
 		//this.sprite.kill();
 	}
 

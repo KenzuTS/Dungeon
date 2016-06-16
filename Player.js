@@ -1,5 +1,5 @@
-function Player(game, x, y, key, frame){
-	Etre.call(this, game, x, y, key, frame);
+function Player(x, y){
+	Etre.call(this, game, x, y, 'characters', Application.Player.Frame.DOWN);
 	//this.tween;
 	this.isWalking = false;
 	this.idDeadTexture = 1;
@@ -9,8 +9,6 @@ function Player(game, x, y, key, frame){
 	}
 
 	this.Awake = function(){
-
-		//this.sprite = game.add.sprite(this.initPosX, this.initPosY, 'characters', 4);
 
 	    game.physics.enable(this, Phaser.Physics.ARCADE);
 	    this.body.collideWorldBounds = true;
