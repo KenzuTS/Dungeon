@@ -3,14 +3,21 @@ function Player(x, y){
 	//this.tween;
 	this.isWalking = false;
 	this.idDeadTexture = 1;
-	this.damage = {
-		min : 20,
-		max : 30
-	}
+
 	this.inventory = {
 		"key" : 0,
 		"ressource" : 0
-	}
+	};
+
+	this.equipement = {
+		weapon: new Weapon(10, 0, 50),
+		shield: new Armor(0, 5, 50)
+	};
+
+	this.damage = {
+		min : 20,
+		max : 30
+	};
 
 	this.Awake = function(){
 
@@ -27,10 +34,9 @@ function Player(x, y){
 	    this.animations.add('up', [39,40,41], 10, true);
 
 	    //this.tween = game.add.tween(this).to( { x: this.distX, y: this.distY }, 300);
-	}
-	
+	}	
 
-/*    this.move = function(){
+	/*this.move = function(){
 	
 		if (!this.isWalking) {
 	    	if (cursors.down.isDown)
@@ -167,8 +173,32 @@ function Player(x, y){
     	}
     }
 
-    this.attack = function(target) {
+    this.attack = function(target){
     	Etre.prototype.attack.call(this, target);
+    	this.equipement.weapon.looseDurability();
+    }
+
+    this.takeDamage = function(damage){
+    	if (!this.equipement.shield.break) {
+			damage -= this.equipement.shield.defense;    		
+    	}
+
+    	if (damage<= 0) {
+    		Etre.prototype.takeDamage.call(this, 1);
+    	}
+    	else {
+    		Etre.prototype.takeDamage.call(this, damage);
+    	}
+
+    	this.equipement.shield.looseDurability();
+    }
+
+    this.calculDamage = function(){
+
+    	Etre.prototype.calculDamage.call(this);
+    	if (!this.equipement.weapon.break) {
+    		this.attackDamage += this.equipement.weapon.attack;
+    	}
     }
 
     this.Awake();
