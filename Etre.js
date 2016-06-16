@@ -12,13 +12,13 @@ function Etre(game, x, y, key, frame){
 	}
 	this.attackDamage = 0;
 
-/*	this.setHP = function (value) {
+	this.setHP = function (value) {
 		this.HP = value;
 		if (this.HP < 1) {
 			this.isAlive = false;
 			this.onDead();
 		}
-	}*/
+	}
 }
 
 Etre.prototype = Object.create(Phaser.Sprite.prototype);
@@ -68,16 +68,6 @@ Etre.prototype.takeDamage = function (damage) {
 	console.log(damage)
 }
 
-
 Etre.prototype.calculDamage = function(){
-
 	this.attackDamage = this.damage.min + Math.random() * (this.damage.max - this.damage.min)|0;
-}
-
-Etre.prototype.setHP = function (value) {
-	this.HP = value;
-	if (this.HP < 1) {
-		this.isAlive = false;
-		this.onDead();
-	}
 }
