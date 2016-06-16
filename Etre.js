@@ -1,7 +1,6 @@
-function Etre(x,y,scale){
-	this.initPosX = x;
-	this.initPosY = y;
-	this.scale = scale;
+function Etre(game, x, y, key, frame){
+	Phaser.Sprite.call(this, game, x, y, key, frame);
+	/*this.scale = scale;*/
 	this.idDeadTexture = 4;
 	this.inCombat = false;
 
@@ -16,7 +15,7 @@ function Etre(x,y,scale){
 		this.HP = value;
 		if (this.HP < 1) {
 			this.isAlive = false;
-			this.kill();
+			this.onDead();
 		}
 	}
 
@@ -26,17 +25,17 @@ function Etre(x,y,scale){
 
 	this.attack = function (target) {
 		var init = {
-			x : this.sprite.position.x,
-			y : this.sprite.position.y,
+			x : this.position.x,
+			y : this.position.y,
 		}
 		var move = {
-			x : this.sprite.position.x + (target.sprite.position.x - this.sprite.position.x) / 2,
-			y : this.sprite.position.y + (target.sprite.position.y - this.sprite.position.y) / 2
+			x : this.position.x + (target.position.x - this.position.x) / 2,
+			y : this.position.y + (target.position.y - this.position.y) / 2
 		}
 
 		var self = this;
-		var tweenA =  game.add.tween(this.sprite).to(move, Application.Time.TWEEN_ATTACK, "Linear");
-		var tweenB =  game.add.tween(this.sprite).to(init, Application.Time.TWEEN_ATTACK, "Linear");
+		var tweenA =  game.add.tween(this).to(move, Application.Time.TWEEN_ATTACK, "Linear");
+		var tweenB =  game.add.tween(this).to(init, Application.Time.TWEEN_ATTACK, "Linear");
 
 		tweenA.chain(tweenB);
 		tweenA.onComplete.add(function() {
@@ -52,11 +51,16 @@ function Etre(x,y,scale){
 	}
 }
 
-Etre.prototype.kill = function(){
-	this.sprite.loadTexture('dead', this.idDeadTexture);
+
+
+Etre.prototype = Object.create(Phaser.Sprite.prototype);
+Etre.prototype.constructor = Etre;
+
+Etre.prototype.onDead = function(){
+	this.loadTexture('dead', this.idDeadTexture);
 	if (!(this instanceof Player)) {
 		game.time.events.add(Application.Time.FADE_DEATH, function(){
 			this.kill();
-		},this.sprite);
+		},this);
 	}
 }

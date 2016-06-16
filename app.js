@@ -31,6 +31,7 @@ function preload() {
 
 var hero;
 var map, layerWalls, layerGround, layerGroundOverlay, layerBackgroundObject, layerObjects, layerRoof, layerEnnemies, layerPushableBloc;
+var key;
 var player;
 var skeleton, bat;
 var cursors;
@@ -85,7 +86,7 @@ function create() {
     /* GROUPS */
         // Ennemies
             ennemiesGroup = game.add.group();
-            map.createFromObjects('Ennemies', 2300, 'characters', 52, true, false, ennemiesGroup);
+            map.createFromObjects('Ennemies', 2300, 'characters', 10, true, false, ennemiesGroup, Skeleton);
             for (var i = 0; i < ennemiesGroup.hash.length; i++) {
 
                 ennemiesGroup.hash[i].body.setSize(13, 14, 2, 2);
@@ -94,18 +95,17 @@ function create() {
                 ennemiesGroup.hash[i].position.y *= Application.SCALE;
             }
 
-            skeleton = new Skeleton(game.world.centerX - 16, game.world.centerY - 16, Application.SCALE);
-            bat = new Bat(game.world.centerX - 32, game.world.centerY - 32, Application.SCALE);
+            // skeleton = new Skeleton(game.world.centerX - 16, game.world.centerY - 16, Application.SCALE);
+            // bat = new Bat(game.world.centerX - 32, game.world.centerY - 32, Application.SCALE);
             
-            ennemiesGroup.add(skeleton.sprite);
-            ennemiesGroup.add(bat.sprite);
+            // ennemiesGroup.add(skeleton.sprite);
+            // ennemiesGroup.add(bat.sprite);
 
         itemsGroup = game.add.group();
 
         blocsGroup = game.add.physicsGroup();
 
         map.createFromObjects('PushableBloc', 1186, 'bloc', 0, true, false, blocsGroup);
-
         for (var i = 0; i < blocsGroup.hash.length; i++) {
 
             blocsGroup.hash[i].body.mass = -100;
@@ -117,8 +117,9 @@ function create() {
 
     /* PLAYER */
 
-        player = new Player(game.world.centerX, game.world.centerY, Application.SCALE);
-
+        //player = new Player(game.world.centerX, game.world.centerY, Application.SCALE);
+        player = new Player(game, game.world.centerX, game.world.centerY, 'characters', 4);
+        game.add.existing(player);
 
         // le joueur passe dessous ce layer
         layerRoof = map.createLayer('Roof');
@@ -127,30 +128,34 @@ function create() {
 
     /* CAMERA */
 
-        game.camera.follow(player.sprite);
+        game.camera.follow(player);
         //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
 
 }
 
 function update() {
 
-    game.physics.arcade.collide(player.sprite, layerWalls);
-    game.physics.arcade.collide(player.sprite, blocsGroup);
+    game.physics.arcade.collide(player, layerWalls);
+    game.physics.arcade.collide(player, blocsGroup);
     game.physics.arcade.collide(layerWalls, blocsGroup, blocInWater, null, this);
 
-    game.physics.arcade.overlap(player.sprite, itemsGroup, collisionHandler,
+/*    game.physics.arcade.overlap(player, itemsGroup, collisionHandler,
         function (spritePlayer,item) {
-            return !spritePlayer.etre.inCombat;
-        }, this);
+            return !spritePlayer.inCombat;
+        }, this);*/
 
-    game.physics.arcade.collide(player.sprite, ennemiesGroup, combatHandler, processAttack, this);
+    game.physics.arcade.collide(player, ennemiesGroup, combatHandler, processAttack, this);
 
     //player.move();
     player.moveVelocity();
 }
 
 function render() {
-    game.debug.body(player.sprite);
+    game.debug.body(player);
+    if (Application.key) {
+        game.debug.body(Application.key.sprite);
+    }
+    
 
 }
 
@@ -209,7 +214,7 @@ function combatHandler(sprite, target) {
             sprite.frame = 28;
         }
     }
-    player.attack(target.etre);
+    player.attack(target);
 }
 
 function collisionHandler(player, item){
@@ -230,8 +235,8 @@ function blocInWater(bloc, tile){
 }
 
 function processAttack(spritePlayer, target) {
-    if (!spritePlayer.etre.inCombat) {
-        spritePlayer.etre.inCombat = true;
+    if (!spritePlayer.inCombat) {
+        spritePlayer.inCombat = true;
         return true;
     }
     return false;
