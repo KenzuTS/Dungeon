@@ -20,7 +20,9 @@ var Application = {
 	},
 	Time : {
 		FADE_DEATH : 1000,
-		TWEEN_ATTACK : 30
+		TWEEN_ATTACK : 300
 	},
-	SCALE : 2
+	SCALE : 2,
+	key : null
 }
+

@@ -1,9 +1,6 @@
-function Player(x, y, scale){
-	Etre.call(this, x, y, scale);
-	this.sprite = null;
-	this.tween;
-	this.distX = x;
-	this.distY = y;
+function Player(x, y){
+	Etre.call(this, game, x, y, 'characters', Application.Player.Frame.DOWN);
+	//this.tween;
 	this.isWalking = false;
 	this.idDeadTexture = 1;
 	this.damage = {
@@ -13,26 +10,23 @@ function Player(x, y, scale){
 
 	this.Awake = function(){
 
-		this.sprite = game.add.sprite(this.initPosX, this.initPosY, 'characters', 4);
+	    game.physics.enable(this, Phaser.Physics.ARCADE);
+	    this.body.collideWorldBounds = true;
 
-	    game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
-	    this.sprite.body.collideWorldBounds = true;
+		this.body.setSize(10, 10, 5, 11);
+		this.scale.set(Application.SCALE);
+	    this.smoothed = false;
 
-		this.sprite.body.setSize(10, 10, 5, 11);
-		this.sprite.scale.set(this.scale);
-	    this.sprite.smoothed = false;
+	    this.animations.add('down', [3,4,5], 10, true);
+	    this.animations.add('left', [15,16,17], 10, true);
+	    this.animations.add('right', [27,28,29], 10, true);
+	    this.animations.add('up', [39,40,41], 10, true);
 
-	    this.sprite.animations.add('down', [3,4,5], 10, true);
-	    this.sprite.animations.add('left', [15,16,17], 10, true);
-	    this.sprite.animations.add('right', [27,28,29], 10, true);
-	    this.sprite.animations.add('up', [39,40,41], 10, true);
-
-	    this.sprite.etre = this;
-	    this.tween = game.add.tween(this.sprite).to( { x: this.distX, y: this.distY }, 300);
+	    //this.tween = game.add.tween(this).to( { x: this.distX, y: this.distY }, 300);
 	}
 	
 
-    this.move = function(){
+/*    this.move = function(){
 	
 		if (!this.isWalking) {
 	    	if (cursors.down.isDown)
@@ -103,66 +97,66 @@ function Player(x, y, scale){
     	    	}
     	    }
     	}
-    }
+    }*/
 
     this.moveVelocity = function(){
-    	this.sprite.body.velocity.set(0);
+    	this.body.velocity.set(0);
     	if (!this.inCombat) {
 
 	 		if (cursors.up.isDown)
 	    	{
-	    	    this.sprite.body.velocity.y = -Application.Player.VELOCITY;
-	    	    this.sprite.animations.play('up');
+	    	    this.body.velocity.y = -Application.Player.VELOCITY;
+	    	    this.animations.play('up');
 	    	}
 	    	else if (cursors.down.isDown)
 	    	{
-	    	    this.sprite.body.velocity.y = Application.Player.VELOCITY;
-	    	    this.sprite.animations.play('down');
+	    	    this.body.velocity.y = Application.Player.VELOCITY;
+	    	    this.animations.play('down');
 	    	}
 
 	    	if (cursors.left.isDown)
 	    	{
 
-	    	    this.sprite.body.velocity.x = -Application.Player.VELOCITY;
+	    	    this.body.velocity.x = -Application.Player.VELOCITY;
 
 	    	    if (!cursors.up.isDown && !cursors.down.isDown) {
-	    	    	this.sprite.animations.play('left');
+	    	    	this.animations.play('left');
 	    	    }
 	    	}
 	    	else if (cursors.right.isDown)
 	    	{
 
-	    	    this.sprite.body.velocity.x = Application.Player.VELOCITY;
+	    	    this.body.velocity.x = Application.Player.VELOCITY;
 
 
 	    	    if (!cursors.up.isDown && !cursors.down.isDown) {
-	    	    	this.sprite.animations.play('right');
+	    	    	this.animations.play('right');
 	    	    }
 	    	}
 	    	
 
 	    	if (cursors.down.isUp && cursors.left.isUp && cursors.right.isUp && cursors.up.isUp)
 	    	{
-		    	switch(this.sprite.animations.currentAnim.name){
+		    	switch(this.animations.currentAnim.name){
 		
 		    	    case "down":
-		    	        this.sprite.animations.stop();
-		    	        this.sprite.frame = 4;
+		    	        this.animations.stop();
+		    	        this.frame = Application.Player.Frame.DOWN;
 		    	    break;
 		
 		    	    case "left":
-		    	        this.sprite.animations.stop();
-		    	        this.sprite.frame = 16;
+		    	        this.animations.stop();
+		    	        this.frame = 16;
 		    	    break;
 		
 		    	    case "right":
-		    	        this.sprite.animations.stop();
-		    	        this.sprite.frame = 28;
+		    	        this.animations.stop();
+		    	        this.frame = 28;
 		    	    break;
 		
 		    	    case "up":
-		    	        this.sprite.animations.stop();
-		    	        this.sprite.frame = 40;
+		    	        this.animations.stop();
+		    	        this.frame = 40;
 		    	    break;
 	    	    }
 	    	}
@@ -171,3 +165,6 @@ function Player(x, y, scale){
 
     this.Awake();
 }
+
+Player.prototype = Object.create(Etre.prototype);
+Player.prototype.constructor = Player;
