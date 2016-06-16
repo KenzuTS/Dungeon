@@ -101,8 +101,8 @@ function create() {
             blocsGroup.hash[i].body.mass = -100;
             blocsGroup.hash[i].body.setSize(13, 14, 2, 2);
             blocsGroup.hash[i].scale.setTo(Application.SCALE);
-            blocsGroup.hash[i].position.x *= 2;
-            blocsGroup.hash[i].position.y *= 2;
+            blocsGroup.hash[i].position.x *= Application.SCALE;
+            blocsGroup.hash[i].position.y *= Application.SCALE;
         }
 
     /* PLAYER */
@@ -148,22 +148,22 @@ function combatHandler(sprite, target) {
     switch(sprite.animations.currentAnim.name){
         case "down":
             sprite.animations.stop();
-            sprite.frame = 4;
+            sprite.frame = Application.Player.Frame.DOWN;
         break;
 
         case "left":
             sprite.animations.stop();
-            sprite.frame = 16;
+            sprite.frame = Application.Player.Frame.LEFT;
         break;
 
         case "right":
             sprite.animations.stop();
-            sprite.frame = 28;
+            sprite.frame = Application.Player.Frame.RIGHT;
         break;
 
         case "up":
             sprite.animations.stop();
-            sprite.frame = 40;
+            sprite.frame = Application.Player.Frame.UP;
         break;
     }
     target.body.enable = false;
@@ -173,30 +173,30 @@ function combatHandler(sprite, target) {
         x : (sprite.position.x - target.position.x),
         y : (sprite.position.y - target.position.y)
     }
-    if (diff.x > 4) {
-        if (diff.y > 8) {
+    if (diff.x > Application.TILE_SIZE / 4) {
+        if (diff.y > Application.TILE_SIZE / 2) {
             sprite.animations.currentAnim.name = "up";
-            sprite.frame = 40;
+            sprite.frame = Application.Player.Frame.UP;
         }
-        else if(diff.y < -8){
+        else if(diff.y < -Application.TILE_SIZE / 2){
             sprite.animations.currentAnim.name = "down";
-            sprite.frame = 4;
+            sprite.frame = Application.Player.Frame.DOWN;
         }
         else {
-            sprite.frame = 16;
+            sprite.frame = Application.Player.Frame.LEFT;
         }
     }
-    else if (diff.x < 8) {
-        if (diff.y > 8) {
+    else if (diff.x < -Application.TILE_SIZE / 4) {
+        if (diff.y > Application.TILE_SIZE / 2) {
             sprite.animations.currentAnim.name = "up";
-            sprite.frame = 40;
+            sprite.frame = Application.Player.Frame.UP;
         }
-        else if(diff.y < -8){
-            sprite.frame = 4;
+        else if(diff.y < -Application.TILE_SIZE / 2){
+            sprite.frame = Application.Player.Frame.DOWN;
             sprite.animations.currentAnim.name = "down";
         }
         else {
-            sprite.frame = 28;
+            sprite.frame = Application.Player.Frame.RIGHT;
         }
     }
     player.attack(target.etre);

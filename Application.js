@@ -16,9 +16,8 @@ var Application = {
 			RIGHT : 28,
 			UP : 40
 		},
-		VELOCITY : 7500
+		VELOCITY : 750
 	},
-	
 	Time : {
 		FADE_DEATH : 1000,
 		TWEEN_ATTACK : 30
