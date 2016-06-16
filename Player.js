@@ -167,6 +167,10 @@ function Player(x, y){
     	}
     }
 
+    this.attack = function(target) {
+    	Etre.prototype.attack.call(this, target);
+    }
+
     this.Awake();
 }
 

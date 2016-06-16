@@ -22,7 +22,7 @@ function Etre(game, x, y, key, frame){
 		this.setHP(this.HP - damage);
 	}
 
-	this.attack = function (target) {
+	/*this.attack = function (target) {
 		var init = {
 			x : this.position.x,
 			y : this.position.y,
@@ -47,10 +47,8 @@ function Etre(game, x, y, key, frame){
 			}
 		});
 		tweenA.start();
-	}
+	}*/
 }
-
-
 
 Etre.prototype = Object.create(Phaser.Sprite.prototype);
 Etre.prototype.constructor = Etre;
@@ -62,4 +60,32 @@ Etre.prototype.onDead = function(){
 			this.destroy();
 		},this);
 	}
+}
+
+Etre.prototype.attack = function (target) {
+	console.log(this);
+	var init = {
+		x : this.position.x,
+		y : this.position.y,
+	}
+	var move = {
+		x : this.position.x + (target.position.x - this.position.x) / 2,
+		y : this.position.y + (target.position.y - this.position.y) / 2
+	}
+
+	var self = this;
+	var tweenA =  game.add.tween(this).to(move, Application.Time.TWEEN_ATTACK, "Linear");
+	var tweenB =  game.add.tween(this).to(init, Application.Time.TWEEN_ATTACK, "Linear");
+
+	tweenA.chain(tweenB);
+	tweenA.onComplete.add(function() {
+		target.takeDamage((self.damage.min + Math.random() * (self.damage.max - self.damage.min))|0);
+	});
+	tweenB.onComplete.add(function(){
+		if (target.isAlive) { target.attack(self); }
+		else {
+			self.inCombat = false;
+		}
+	});
+	tweenA.start();
 }
