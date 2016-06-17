@@ -24,6 +24,8 @@ function preload() {
     game.load.image('key', 'assets/DawnLike/Items/Key.png');
     game.load.image('ressource', 'assets/DawnLike/Items/Rock.png');
 
+    game.load.spritesheet('sword', 'assets/DawnLike/GUI/sword.png', Application.TILE_SIZE, Application.TILE_SIZE);
+    game.load.spritesheet('shield', 'assets/DawnLike/GUI/shield.png', Application.TILE_SIZE, Application.TILE_SIZE);
     game.load.spritesheet('bloc', 'assets/DawnLike/Objects/bloc.png', Application.TILE_SIZE, Application.TILE_SIZE);
 	game.load.spritesheet('characters', 'assets/Characters/characters.png', Application.TILE_SIZE, Application.TILE_SIZE);
     game.load.spritesheet('dead', 'assets/Characters/dead.png', Application.TILE_SIZE, Application.TILE_SIZE);
@@ -36,7 +38,7 @@ var cursors;
 var ennemiesGroup, itemsGroup, blocsGroup;
 var textHP, textKey, textRessource, style;
 var healthBar;
-var keyGUI, ressourceGUI;
+var keyGUI, ressourceGUI, swordGUI, shieldGUI;
 
 function create() {
 
@@ -84,7 +86,7 @@ function create() {
         cursors = game.input.keyboard.createCursorKeys();
 
     /* GROUPS */
-        // Ennemies
+        /* Ennemies */
             ennemiesGroup = game.add.group();
             map.createFromObjects('Ennemies', 2300, 'characters', 10, true, false, ennemiesGroup, Skeleton);
             map.createFromObjects('Ennemies', 2342, 'characters', 52, true, false, ennemiesGroup, Bat);
@@ -195,7 +197,15 @@ function create() {
             textRessource.strokeThickness = 5;
 
         /* icon sword */
-            
+            swordGUI = game.add.sprite(-game.camera.world.position.x + 20, -game.camera.world.position.y + 40, 'sword');
+            swordGUI.fixedToCamera = true;
+            swordGUI.scale.setTo(Application.SCALE);
+            swordGUI.smoothed = false;
+            //swordGUI.tint = "0xff0000";
+            swordGUI.visible = false;
+            // icon filtre orange when 50% durability
+            // icon filtre rouge when 10 % durability
+            // icon frame 1 when 0% durability
 }
 
 function update() {
@@ -215,11 +225,18 @@ function update() {
 
     /* Player Methods */
         //player.move();
-        player.moveVelocity();
+        player.moveVelocity();        
+        player.percentHP = numberToPercent(player.HP, player.maxHP);
+
+    /* Equipement Methods */
+        for(var i in player.equipement){
+
+            player.equipement[i].percentDurability = numberToPercent(player.equipement[i].durability, player.equipement[i].maxDurability);
+            setEquipementStatus(player.equipement);
+        }
 
     /* GUI UPDATE */
-        player.lifeToPoucent();
-        healthBar.setPercent(player.poucentHP);
+        healthBar.setPercent(player.percentHP);
         textHP.text = player.HP + " / " + player.maxHP;
         textKey.text = player.inventory.key;
         textRessource.text = player.inventory.ressource;
@@ -319,4 +336,28 @@ function OpenDoor(player, door){
         map.removeTile(door.x, door.y, "Objects");
         player.inventory.key--;
     }
+}
+
+//todo same for shield OR trouver moyen de boucler sur les spriteGUI
+function setEquipementStatus(equipement){
+
+    if (equipement.weapon.break) {
+        swordGUI.frame = 1;
+        swordGUI.visible = true;
+        swordGUI.tint = "0xff0000";
+    }
+    else if (equipement.weapon.percentDurability <= 10) {
+        swordGUI.visible = true;
+        swordGUI.tint = "0xff0000";
+    }
+    else if (equipement.weapon.percentDurability <= 50) {
+
+        swordGUI.visible = true;
+        swordGUI.tint = "0xffb000";
+    }
+}
+
+function numberToPercent(number, max){
+
+    return (number / max) * 100;
 }

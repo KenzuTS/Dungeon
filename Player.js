@@ -19,7 +19,7 @@ function Player(x, y){
 		max : 30
 	};
 
-	this.poucentHP = 100;
+	this.percentHP = 100;
 
 	this.Awake = function(){
 
@@ -203,11 +203,6 @@ function Player(x, y){
     		this.attackDamage += this.equipement.weapon.attack;
     	}
     }
-
-	this.lifeToPoucent = function(){
-
-    	this.poucentHP = (this.HP / this.maxHP) * 100;
-	}
 
     this.Awake();
 }

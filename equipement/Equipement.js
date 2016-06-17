@@ -4,6 +4,7 @@ function Equipement(attack, defense, maxDurability){
 	this.defense = defense;
 	this.maxDurability = maxDurability;
 	this.durability = maxDurability;
+	this.percentDurability = 100;
 	this.break = false;
 
 	this.looseDurability = function(){
