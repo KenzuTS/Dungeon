@@ -5,6 +5,7 @@ function Etre(game, x, y, key, frame){
 	this.inCombat = false;
 
 	this.HP = 100;
+	this.maxHP = this.HP;
 	this.isAlive = true;
 	this.damage = {
 		min : 1,

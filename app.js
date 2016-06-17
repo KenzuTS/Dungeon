@@ -32,9 +32,10 @@ function preload() {
 var hero;
 var map, layerWalls, layerGround, layerGroundOverlay, layerBackgroundObject, layerObjects, layerRoof, layerEnnemies, layerPushableBloc;
 var player;
-var skeleton, bat;
 var cursors;
 var ennemiesGroup, itemsGroup, blocsGroup;
+var text, style;
+var healthBar;
 
 function create() {
 
@@ -128,24 +129,49 @@ function create() {
 
         game.camera.follow(player);
         //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
+
+    /* GUI */
+        /* Text HP */
+            // style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center" };
+            // text = game.add.text(0, 0, player.HP, style);
+            // text.setTextBounds(-game.camera.world.position.x, -game.camera.world.position.y, Application.Canvas.WIDTH, 0);
+            // text.fixedToCamera = true;
+            // text.smoothed = false;
+            // text.stroke = "black";
+            // text.strokeThickness = 5;
+
+        /* HealthBar */
+            var barConfig = {   x: -game.camera.world.position.x + Application.Canvas.WIDTH / 2,
+                                y: -game.camera.world.position.y + 20,
+                                width: 250,
+                                height: 20};
+            healthBar = new HealthBar(this.game, barConfig);
+            healthBar.height = 20;
+            healthBar.setFixedToCamera(true);
+            // todo set position
+            // todo set lifebar with player.HP (règle de 3) => setPourcent
 }
 
 function update() {
 
-    game.physics.arcade.collide(player, layerWalls);
-    game.physics.arcade.collide(player, blocsGroup);
-    game.physics.arcade.collide(player, layerObjects, OpenDoor, null, this);
-    game.physics.arcade.collide(layerWalls, blocsGroup, blocInWater, null, this);
+    /* COLLIDE */
+        game.physics.arcade.collide(player, layerWalls);
+        game.physics.arcade.collide(player, blocsGroup);
+        game.physics.arcade.collide(player, layerObjects, OpenDoor, null, this);
+        game.physics.arcade.collide(player, ennemiesGroup, combatHandler, processAttack, this);
+        game.physics.arcade.collide(layerWalls, blocsGroup, blocInWater, null, this);
 
-    game.physics.arcade.overlap(player, itemsGroup, collectItem,
-        function (spritePlayer,item) {
-            return !spritePlayer.inCombat;
-        }, this);
+    /* OVERLAP */
+        game.physics.arcade.overlap(player, itemsGroup, collectItem,
+            function (spritePlayer,item) {
+                return !spritePlayer.inCombat;
+            }, this);
 
-    game.physics.arcade.collide(player, ennemiesGroup, combatHandler, processAttack, this);
+    /* Player Methods */
+        //player.move();
+        player.moveVelocity();
 
-    //player.move();
-    player.moveVelocity();
+
 }
 
 function render() {

@@ -27,6 +27,7 @@ function Player(x, y){
 		this.body.setSize(10, 10, 5, 11);
 		this.scale.set(Application.SCALE);
 	    this.smoothed = false;
+	    this.anchor.set(0.5);
 
 	    this.animations.add('down', [3,4,5], 10, true);
 	    this.animations.add('left', [15,16,17], 10, true);
