@@ -34,8 +34,9 @@ var map, layerWalls, layerGround, layerGroundOverlay, layerBackgroundObject, lay
 var player;
 var cursors;
 var ennemiesGroup, itemsGroup, blocsGroup;
-var text, style;
+var textHP, textKey, textRessource, style;
 var healthBar;
+var keyGUI, ressourceGUI;
 
 function create() {
 
@@ -131,25 +132,70 @@ function create() {
         //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
 
     /* GUI */
-        /* Text HP */
-            // style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center" };
-            // text = game.add.text(0, 0, player.HP, style);
-            // text.setTextBounds(-game.camera.world.position.x, -game.camera.world.position.y, Application.Canvas.WIDTH, 0);
-            // text.fixedToCamera = true;
-            // text.smoothed = false;
-            // text.stroke = "black";
-            // text.strokeThickness = 5;
-
         /* HealthBar */
-            var barConfig = {   x: -game.camera.world.position.x + Application.Canvas.WIDTH / 2,
+            var barConfig = {   x: -game.camera.world.position.x + 150,
                                 y: -game.camera.world.position.y + 20,
                                 width: 250,
-                                height: 20};
+                                height: 20,
+                                bg: {
+                                    color: '#651828'
+                                },
+                                bar: {
+                                  color: 'lime'
+                                }};
             healthBar = new HealthBar(this.game, barConfig);
-            healthBar.height = 20;
             healthBar.setFixedToCamera(true);
-            // todo set position
-            // todo set lifebar with player.HP (règle de 3) => setPourcent
+            healthBar.setPercent(player.poucentHP);
+
+        /* Text HP */
+            style = { font: "bold 16px Arial", fill: "#fff" };
+            textHP = game.add.text(0,
+                                    2,
+                                    player.HP + " | " + player.maxHP,
+                                    style);
+            textHP.anchor.set(0, 0.5);
+            textHP.setTextBounds(healthBar.x - healthBar.config.width / 2, healthBar.y, healthBar.config.width, healthBar.config.width);
+            textHP.fixedToCamera = true;
+            textHP.smoothed = false;
+            textHP.stroke = "black";
+            textHP.strokeThickness = 5;
+
+        /* Keys */
+            keyGUI = game.add.sprite(-game.camera.world.position.x + Application.Canvas.WIDTH / 2, -game.camera.world.position.y + 2, 'key');
+            keyGUI.fixedToCamera = true;
+            keyGUI.scale.setTo(Application.SCALE);
+            keyGUI.smoothed = false;
+
+        /* Ressources */
+            ressourceGUI = game.add.sprite(-game.camera.world.position.x + Application.Canvas.WIDTH / 2 + 100, -game.camera.world.position.y + 2, 'ressource');
+            ressourceGUI.fixedToCamera = true;
+            ressourceGUI.scale.setTo(Application.SCALE);
+            ressourceGUI.smoothed = false;
+
+        /* Text Keys */
+            style = { font: "bold 16px Arial", fill: "#fff" };
+            textKey = game.add.text(keyGUI.x - 20,
+                                    keyGUI.y + 2,
+                                    player.inventory.key,
+                                    style);
+            textKey.fixedToCamera = true;
+            textKey.smoothed = false;
+            textKey.stroke = "black";
+            textKey.strokeThickness = 5;
+
+        /* Text Ressources */
+            style = { font: "bold 16px Arial", fill: "#fff" };
+            textRessource = game.add.text(ressourceGUI.x - 20,
+                                    ressourceGUI.y + 2,
+                                    player.inventory.ressource,
+                                    style);
+            textRessource.fixedToCamera = true;
+            textRessource.smoothed = false;
+            textRessource.stroke = "black";
+            textRessource.strokeThickness = 5;
+
+        /* icon sword */
+            
 }
 
 function update() {
@@ -171,7 +217,12 @@ function update() {
         //player.move();
         player.moveVelocity();
 
-
+    /* GUI UPDATE */
+        player.lifeToPoucent();
+        healthBar.setPercent(player.poucentHP);
+        textHP.text = player.HP + " / " + player.maxHP;
+        textKey.text = player.inventory.key;
+        textRessource.text = player.inventory.ressource;
 }
 
 function render() {

@@ -19,6 +19,8 @@ function Player(x, y){
 		max : 30
 	};
 
+	this.poucentHP = 100;
+
 	this.Awake = function(){
 
 	    game.physics.enable(this, Phaser.Physics.ARCADE);
@@ -201,6 +203,11 @@ function Player(x, y){
     		this.attackDamage += this.equipement.weapon.attack;
     	}
     }
+
+	this.lifeToPoucent = function(){
+
+    	this.poucentHP = (this.HP / this.maxHP) * 100;
+	}
 
     this.Awake();
 }
