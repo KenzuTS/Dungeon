@@ -31,14 +31,15 @@ function preload() {
     game.load.spritesheet('dead', 'assets/Characters/dead.png', Application.TILE_SIZE, Application.TILE_SIZE);
 }
 
-var hero;
-var map, layerWalls, layerGround, layerGroundOverlay, layerBackgroundObject, layerObjects, layerRoof, layerEnnemies, layerPushableBloc;
-var player;
-var cursors;
-var ennemiesGroup, itemsGroup, blocsGroup;
-var textHP, textKey, textRessource, style;
-var healthBar;
-var keyGUI, ressourceGUI, swordGUI, shieldGUI;
+/* variables global */
+    var hero;
+    var map, layerWalls, layerGround, layerGroundOverlay, layerBackgroundObject, layerObjects, layerRoof, layerEnnemies, layerPushableBloc;
+    var player;
+    var cursors;
+    var ennemiesGroup, itemsGroup, blocsGroup;
+    var textHP, textKey, textRessource, style;
+    var healthBar;
+    var keyGUI, ressourceGUI, swordGUI, shieldGUI;
 
 function create() {
 
@@ -201,11 +202,7 @@ function create() {
             swordGUI.fixedToCamera = true;
             swordGUI.scale.setTo(Application.SCALE);
             swordGUI.smoothed = false;
-            //swordGUI.tint = "0xff0000";
             swordGUI.visible = false;
-            // icon filtre orange when 50% durability
-            // icon filtre rouge when 10 % durability
-            // icon frame 1 when 0% durability
 }
 
 function update() {
