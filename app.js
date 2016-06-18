@@ -37,9 +37,7 @@ function preload() {
     var player;
     var cursors;
     var ennemiesGroup, itemsGroup, blocsGroup;
-    var textHP, textKey, textRessource, style;
-    var healthBar;
-    var keyGUI, ressourceGUI, swordGUI, shieldGUI;
+    var gui;
 
 function create() {
 
@@ -135,81 +133,7 @@ function create() {
         //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
 
     /* GUI */
-        /* HealthBar */
-            var barConfig = {   x: -game.camera.world.position.x + 150,
-                                y: -game.camera.world.position.y + 20,
-                                width: 250,
-                                height: 20,
-                                bg: {
-                                    color: '#651828'
-                                },
-                                bar: {
-                                  color: 'lime'
-                                }};
-            healthBar = new HealthBar(this.game, barConfig);
-            healthBar.setFixedToCamera(true);
-            healthBar.setPercent(player.poucentHP);
-
-        /* Text HP */
-            style = { font: "bold 16px Arial", fill: "#fff" };
-            textHP = game.add.text(0,
-                                    2,
-                                    player.HP + " | " + player.maxHP,
-                                    style);
-            textHP.anchor.set(0, 0.5);
-            textHP.setTextBounds(healthBar.x - healthBar.config.width / 2, healthBar.y, healthBar.config.width, healthBar.config.width);
-            textHP.fixedToCamera = true;
-            textHP.smoothed = false;
-            textHP.stroke = "black";
-            textHP.strokeThickness = 5;
-
-        /* Keys */
-            keyGUI = game.add.sprite(-game.camera.world.position.x + Application.Canvas.WIDTH / 2, -game.camera.world.position.y + 2, 'key');
-            keyGUI.fixedToCamera = true;
-            keyGUI.scale.setTo(Application.SCALE);
-            keyGUI.smoothed = false;
-
-        /* Ressources */
-            ressourceGUI = game.add.sprite(-game.camera.world.position.x + Application.Canvas.WIDTH / 2 + 100, -game.camera.world.position.y + 2, 'ressource');
-            ressourceGUI.fixedToCamera = true;
-            ressourceGUI.scale.setTo(Application.SCALE);
-            ressourceGUI.smoothed = false;
-
-        /* Text Keys */
-            style = { font: "bold 16px Arial", fill: "#fff" };
-            textKey = game.add.text(keyGUI.x - 20,
-                                    keyGUI.y + 2,
-                                    player.inventory.key,
-                                    style);
-            textKey.fixedToCamera = true;
-            textKey.smoothed = false;
-            textKey.stroke = "black";
-            textKey.strokeThickness = 5;
-
-        /* Text Ressources */
-            style = { font: "bold 16px Arial", fill: "#fff" };
-            textRessource = game.add.text(ressourceGUI.x - 20,
-                                    ressourceGUI.y + 2,
-                                    player.inventory.ressource,
-                                    style);
-            textRessource.fixedToCamera = true;
-            textRessource.smoothed = false;
-            textRessource.stroke = "black";
-            textRessource.strokeThickness = 5;
-
-        /* icon sword */
-            swordGUI = game.add.sprite(-game.camera.world.position.x + 20, -game.camera.world.position.y + 40, 'sword');
-            swordGUI.fixedToCamera = true;
-            swordGUI.scale.setTo(Application.SCALE);
-            swordGUI.smoothed = false;
-            swordGUI.visible = false;
-
-        /* icon shield */
-            shieldGUI = game.add.sprite(-game.camera.world.position.x + 20, -game.camera.world.position.y + 70, 'shield');
-            shieldGUI.fixedToCamera = true;
-            shieldGUI.scale.setTo(Application.SCALE);
-            shieldGUI.smoothed = false;
-            shieldGUI.visible = false;
+        gui = new GUI();
 }
 
 function update() {
@@ -239,10 +163,10 @@ function update() {
             setEquipementStatus(player.equipement[i]);
         }
 
-        healthBar.setPercent(player.percentHP);
-        textHP.text = player.HP + " / " + player.maxHP;
-        textKey.text = player.inventory.key;
-        textRessource.text = player.inventory.ressource;
+        gui.healthBar.setPercent(player.percentHP);
+        gui.textHP.text = player.HP + " / " + player.maxHP;
+        gui.textKey.text = player.inventory.key;
+        gui.textRessource.text = player.inventory.ressource;
 }
 
 function render() {
@@ -346,11 +270,11 @@ function setEquipementStatus(equipement){
     switch(equipement.constructor){
 
         case Armor:
-        setGUIStatus(equipement, shieldGUI);
+        setGUIStatus(equipement, gui.shieldGUI);
         break;
 
         case Weapon:
-        setGUIStatus(equipement, swordGUI);
+        setGUIStatus(equipement, gui.swordGUI);
         break;
     }
 
