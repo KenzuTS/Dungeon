@@ -203,6 +203,13 @@ function create() {
             swordGUI.scale.setTo(Application.SCALE);
             swordGUI.smoothed = false;
             swordGUI.visible = false;
+
+        /* icon shield */
+            shieldGUI = game.add.sprite(-game.camera.world.position.x + 20, -game.camera.world.position.y + 70, 'shield');
+            shieldGUI.fixedToCamera = true;
+            shieldGUI.scale.setTo(Application.SCALE);
+            shieldGUI.smoothed = false;
+            shieldGUI.visible = false;
 }
 
 function update() {
@@ -223,16 +230,15 @@ function update() {
     /* Player Methods */
         //player.move();
         player.moveVelocity();        
-        player.percentHP = numberToPercent(player.HP, player.maxHP);
+        player.percentHP = numberToPercent(player.HP, player.maxHP);        
 
-    /* Equipement Methods */
+    /* GUI UPDATE */
         for(var i in player.equipement){
 
             player.equipement[i].percentDurability = numberToPercent(player.equipement[i].durability, player.equipement[i].maxDurability);
-            setEquipementStatus(player.equipement);
+            setEquipementStatus(player.equipement[i]);
         }
 
-    /* GUI UPDATE */
         healthBar.setPercent(player.percentHP);
         textHP.text = player.HP + " / " + player.maxHP;
         textKey.text = player.inventory.key;
@@ -335,22 +341,35 @@ function OpenDoor(player, door){
     }
 }
 
-//todo same for shield OR trouver moyen de boucler sur les spriteGUI
 function setEquipementStatus(equipement){
 
-    if (equipement.weapon.break) {
-        swordGUI.frame = 1;
-        swordGUI.visible = true;
-        swordGUI.tint = "0xff0000";
-    }
-    else if (equipement.weapon.percentDurability <= 10) {
-        swordGUI.visible = true;
-        swordGUI.tint = "0xff0000";
-    }
-    else if (equipement.weapon.percentDurability <= 50) {
+    switch(equipement.constructor){
 
-        swordGUI.visible = true;
-        swordGUI.tint = "0xffb000";
+        case Armor:
+        setGUIStatus(equipement, shieldGUI);
+        break;
+
+        case Weapon:
+        setGUIStatus(equipement, swordGUI);
+        break;
+    }
+
+    function setGUIStatus(equipement, guiElem) {
+
+        if (equipement.break) {
+            guiElem.frame = 1;
+            guiElem.visible = true;
+            guiElem.tint = "0xff0000";
+        }
+        else if (equipement.percentDurability <= 10) {
+            guiElem.visible = true;
+            guiElem.tint = "0xff0000";
+        }
+        else if (equipement.percentDurability <= 50) {
+
+            guiElem.visible = true;
+            guiElem.tint = "0xffb000";
+        }
     }
 }
 

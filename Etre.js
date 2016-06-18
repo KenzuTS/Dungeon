@@ -15,7 +15,8 @@ function Etre(game, x, y, key, frame){
 
 	this.setHP = function (value) {
 		this.HP = value;
-		if (this.HP < 1) {
+		if (this.HP <= 0) {
+			this.HP = 0;
 			this.isAlive = false;
 			this.onDead();
 		}
