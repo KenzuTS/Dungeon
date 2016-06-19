@@ -3,6 +3,7 @@ function Etre(game, x, y, key, frame){
 	Phaser.Sprite.call(this, game, x, y, key, frame);
 	this.idDeadTexture = 4;
 	this.inCombat = false;
+	this.canWalking = true;
 
 	this.HP = 100;
 	this.maxHP = this.HP;

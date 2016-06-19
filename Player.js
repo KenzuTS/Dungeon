@@ -1,7 +1,6 @@
 function Player(x, y){
 	Etre.call(this, game, x, y, 'characters', Application.Player.Frame.DOWN);
 	//this.tween;
-	this.isWalking = false;
 	this.idDeadTexture = 1;
 
 	this.inventory = {
@@ -114,7 +113,7 @@ function Player(x, y){
 
     this.moveVelocity = function(){
     	this.body.velocity.set(0);
-    	if (!this.inCombat) {
+    	if (!this.inCombat && this.canWalking) {
 
 	 		if (cursors.up.isDown)
 	    	{
