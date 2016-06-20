@@ -37,11 +37,13 @@ function preload() {
     var map, layerWalls, layerGround, layerGroundOverlay, layerBackgroundObject, layerObjects, layerRoof, layerEnnemies, layerPushableBloc;
     var player;
     var cursors;
-    var ennemiesGroup, itemsGroup, blocsGroup;
+    var ennemiesGroup, itemsGroup, blocsGroup, menuInvGroup;
     var gui;
     var inventoryInput, inputI, menuInv;
 
 function create() {
+
+    game.time.advancedTiming = true;
 
     game.world.setBounds(-Application.WORLD_SIZE.WIDTH / 2, -Application.WORLD_SIZE.HEIGHT / 2,Application.WORLD_SIZE.WIDTH / 2, Application.WORLD_SIZE.HEIGHT / 2);   
 
@@ -90,6 +92,23 @@ function create() {
         inventoryInput.onDown.add(pause, self);
         inventoryInput.onUp.add(pause, self);
 
+    /* PLAYER */
+
+        player = new Player(game.world.centerX + 312, game.world.centerY);
+        game.add.existing(player);
+
+        // le joueur passe dessous ce layer
+        layerRoof = map.createLayer('Roof');
+        layerRoof.setScale(Application.SCALE);
+        layerRoof.smoothed = false;
+
+    /* CAMERA */
+        game.camera.follow(player);
+        //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
+
+    /* GUI */
+        gui = new GUI();
+
     /* GROUPS */
         /* Ennemies */
             ennemiesGroup = game.add.group();
@@ -118,24 +137,6 @@ function create() {
                 blocsGroup.hash[i].position.y *= Application.SCALE;
                 blocsGroup.hash[i].smoothed = false;
             }
-
-    /* PLAYER */
-
-        player = new Player(game.world.centerX + 312, game.world.centerY);
-        game.add.existing(player);
-
-        // le joueur passe dessous ce layer
-        layerRoof = map.createLayer('Roof');
-        layerRoof.setScale(Application.SCALE);
-        layerRoof.smoothed = false;
-
-    /* CAMERA */
-
-        game.camera.follow(player);
-        //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
-
-    /* GUI */
-        gui = new GUI();
 }
 
 function update() {
@@ -160,9 +161,10 @@ function update() {
 
     /* GUI UPDATE */
         for(var i in player.equipement){
-
-            player.equipement[i].percentDurability = numberToPercent(player.equipement[i].durability, player.equipement[i].maxDurability);
-            setEquipementStatus(player.equipement[i]);
+            if (player.equipement[i]) {
+                player.equipement[i].percentDurability = numberToPercent(player.equipement[i].durability, player.equipement[i].maxDurability);
+                setEquipementStatus(player.equipement[i]); 
+            }
         }
 
         gui.healthBar.setPercent(player.percentHP);
@@ -173,9 +175,8 @@ function update() {
 
 function render() {
     game.debug.body(player);
-    if (Application.key) {
-        game.debug.body(Application.key);
-    }
+    // game.debug.text(game.time.fps, Application.Canvas.WIDTH / 2,
+    //     Application.Canvas.HEIGHT / 2);
 }
 
 function combatHandler(sprite, target) {
@@ -291,7 +292,7 @@ function setEquipementStatus(equipement){
 
     switch(equipement.constructor){
 
-        case Armor:
+        case Shield:
         setGUIStatus(equipement, gui.shieldGUI);
         break;
 
@@ -332,22 +333,60 @@ function pause(event){
 
             game.paused = true;
             inputI = true;
-            menuInv = game.add.sprite(  -game.camera.world.position.x + Application.Canvas.WIDTH / 2,
-                                        -game.camera.world.position.y + Application.Canvas.HEIGHT / 2, 'interface');
-            menuInv.anchor.setTo(0.5, 0.5);
+            menuInv = game.add.sprite(  0,
+                                        0, 'interface');
+            //menuInv.anchor.setTo(0.5, 0.5);
             menuInv.scale.setTo(Application.SCALE);
             menuInv.smoothed = false;
+            var x = (Application.Canvas.WIDTH - menuInv.width) / 2;
+            var y = (Application.Canvas.HEIGHT - menuInv.height) / 2;
 
-        } else {
+            menuInvGroup = game.add.group();
+            menuInvGroup.position.x = -game.camera.world.position.x + x;
+            menuInvGroup.position.y = -game.camera.world.position.y + y;
+
+            menuInvGroup.add(menuInv);
+            menuInv.slot = [];
+
+            for (var i = 0; i < 24; i++) {
+                
+                //menuInv.slot[i] = { x: 18, y: 468 };
+                menuInv.slot[i] = { x : 16 * Application.SCALE, y : 224 * Application.SCALE + 32}
+            }
+
+            // gestion de l'inventaire player
+            for (var i = 0; i < player.inventory.slot.length; i++) {
+
+                switch(player.inventory.slot[i].constructor){
+
+                    case Weapon:
+                        var sprite = game.add.sprite(menuInv.slot[i].x, menuInv.slot[i].y, 'sword');
+                        sprite.scale.setTo(Application.SCALE);
+                        sprite.smoothed = false;
+                        sprite.anchor.setTo(0.5);
+                        menuInvGroup.add(sprite);
+                    break;
+
+                    case Shield:
+                        var sprite = game.add.sprite(menuInv.slot[i].x, menuInv.slot[i].y, 'shield');
+                        sprite.scale.setTo(Application.SCALE);
+                        sprite.smoothed = false;
+                        sprite.anchor.setTo(0.5);
+                        menuInvGroup.add(sprite);
+                    break;
+                }                
+            }
+        }
+        else {
 
             game.paused = false;
             inputI = true;
-            menuInv.destroy();
+            menuInvGroup.destroy();
             this.game.canvas.style.cursor = "default";
         }
     }
-    if (inventoryInput.isUp) {
+        if (inventoryInput.isUp) {
 
-        inputI = false;
-    }
+            inputI = false;
+        }
 }
