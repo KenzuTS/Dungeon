@@ -41,8 +41,7 @@ function preload() {
 
 function create() {
 
-    game.world.setBounds(-Application.WORLD_SIZE.WIDTH / 2, -Application.WORLD_SIZE.HEIGHT / 2,Application.WORLD_SIZE.WIDTH / 2, Application.WORLD_SIZE.HEIGHT / 2);
-    
+    game.world.setBounds(-Application.WORLD_SIZE.WIDTH / 2, -Application.WORLD_SIZE.HEIGHT / 2,Application.WORLD_SIZE.WIDTH / 2, Application.WORLD_SIZE.HEIGHT / 2);   
 
     /* MAP */
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -97,25 +96,21 @@ function create() {
                 ennemiesGroup.hash[i].position.y *= Application.SCALE;
             }
 
-            // skeleton = new Skeleton(game.world.centerX - 16, game.world.centerY - 16, Application.SCALE);
-            // bat = new Bat(game.world.centerX - 32, game.world.centerY - 32, Application.SCALE);
-            
-            // ennemiesGroup.add(skeleton.sprite);
-            // ennemiesGroup.add(bat.sprite);
+        /* Items */
+            itemsGroup = game.add.group();
 
-        itemsGroup = game.add.group();
-
-        blocsGroup = game.add.physicsGroup();
-
-        map.createFromObjects('PushableBloc', 1186, 'bloc', 0, true, false, blocsGroup);
-        for (var i = 0; i < blocsGroup.hash.length; i++) {
-            blocsGroup.hash[i].body.mass = -100;
-            blocsGroup.hash[i].body.setSize(13, 14, 2, 2);
-            blocsGroup.hash[i].scale.setTo(Application.SCALE);
-            blocsGroup.hash[i].position.x *= Application.SCALE;
-            blocsGroup.hash[i].position.y *= Application.SCALE;
-            blocsGroup.hash[i].smoothed = false;
-        }
+        /* Blocs */
+            blocsGroup = game.add.physicsGroup();
+    
+            map.createFromObjects('PushableBloc', 1186, 'bloc', 0, true, false, blocsGroup);
+            for (var i = 0; i < blocsGroup.hash.length; i++) {
+                blocsGroup.hash[i].body.mass = -100;
+                blocsGroup.hash[i].body.setSize(13, 14, 2, 2);
+                blocsGroup.hash[i].scale.setTo(Application.SCALE);
+                blocsGroup.hash[i].position.x *= Application.SCALE;
+                blocsGroup.hash[i].position.y *= Application.SCALE;
+                blocsGroup.hash[i].smoothed = false;
+            }
 
     /* PLAYER */
 
@@ -141,7 +136,7 @@ function update() {
     /* COLLIDE */
         game.physics.arcade.collide(player, layerWalls);
         game.physics.arcade.collide(player, blocsGroup);
-        game.physics.arcade.collide(player, layerObjects, OpenDoor, null, this);
+        game.physics.arcade.collide(player, layerObjects, collideObject, null, this);
         game.physics.arcade.collide(player, ennemiesGroup, combatHandler, processAttack, this);
         game.physics.arcade.collide(layerWalls, blocsGroup, blocInWater, null, this);
 
@@ -257,11 +252,31 @@ function processAttack(spritePlayer, target) {
     return false;
 }
 
-function OpenDoor(player, door){
+function collideObject(player, tile){
 
-    if (player.inventory.key) {
-        map.removeTile(door.x, door.y, "Objects");
-        player.inventory.key--;
+    switch(tile.index){
+
+        // gold closed door
+        case 4973:
+        openDoor(player, tile);
+        break;
+
+        // enclume
+        case 538:
+        useForge(player, tile);
+        break;
+    }
+
+    function openDoor(player, door){
+
+        if (player.inventory.key) {
+            map.removeTile(door.x, door.y, "Objects");
+            player.inventory.key--;
+        }
+    }
+
+    function useForge(player, forge){
+        console.log(forge);
     }
 }
 
