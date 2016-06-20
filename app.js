@@ -29,6 +29,11 @@ function preload() {
     game.load.spritesheet('bloc', 'assets/DawnLike/Objects/bloc.png', Application.TILE_SIZE, Application.TILE_SIZE);
 	game.load.spritesheet('characters', 'assets/Characters/characters.png', Application.TILE_SIZE, Application.TILE_SIZE);
     game.load.spritesheet('dead', 'assets/Characters/dead.png', Application.TILE_SIZE, Application.TILE_SIZE);
+
+    game.load.audio('pain', 'assets/audio/pain.ogg');
+    game.load.audio('sword', 'assets/audio/ZBOUB.wav');
+    game.load.audio('repare', 'assets/audio/repare.wav');
+    game.load.audio('plouf', 'assets/audio/PLOUF.wav');
 }
 
 /* variables global */
@@ -42,7 +47,9 @@ function preload() {
 function create() {
 
     game.world.setBounds(-Application.WORLD_SIZE.WIDTH / 2, -Application.WORLD_SIZE.HEIGHT / 2,Application.WORLD_SIZE.WIDTH / 2, Application.WORLD_SIZE.HEIGHT / 2);
-    
+    Application.Sounds["sword"] = game.add.audio('sword');
+    Application.Sounds["pain"] = game.add.audio('pain');
+    Application.Sounds["plouf"] = game.add.audio('plouf');
 
     /* MAP */
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -128,8 +135,8 @@ function create() {
         layerRoof.smoothed = false;
 
     /* CAMERA */
-
         game.camera.follow(player);
+
         //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
 
     /* GUI */
@@ -235,14 +242,13 @@ function combatHandler(sprite, target) {
 }
 
 function collectItem(player, item){
-    console.log(item)
     player.inventory[item.key]++;
     item.destroy();
 }
 
 function blocInWater(bloc, tile){
     if (tile.index == 326) {
-
+        Application.Sounds["plouf"].play();
         map.layers[1].data[tile.y][tile.x].index = 1541;
         map.removeTile(tile.x, tile.y, "Walls");
         bloc.kill();

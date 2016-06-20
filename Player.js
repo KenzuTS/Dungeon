@@ -176,11 +176,13 @@ function Player(x, y){
     }
 
     this.attack = function(target){
+    	Application.Sounds["sword"].play();
     	Etre.prototype.attack.call(this, target);
     	this.equipement.weapon.looseDurability();
     }
 
     this.takeDamage = function(damage){
+    	Application.Sounds["pain"].play();
     	if (!this.equipement.shield.break) {
 			damage -= this.equipement.shield.defense;    		
     	}

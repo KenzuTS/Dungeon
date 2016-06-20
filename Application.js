@@ -20,8 +20,9 @@ var Application = {
 	},
 	Time : {
 		FADE_DEATH : 1000,
-		TWEEN_ATTACK : 100
+		TWEEN_ATTACK : 250
 	},
 	SCALE : 2,
+	Sounds : {}
 }
 

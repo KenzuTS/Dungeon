@@ -67,8 +67,6 @@ Etre.prototype.attack = function (target) {
 
 Etre.prototype.takeDamage = function (damage) {
 	this.setHP(this.HP - damage);
-	console.log(this)
-	console.log(damage)
 }
 
 Etre.prototype.calculDamage = function(){
