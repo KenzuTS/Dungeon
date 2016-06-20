@@ -23,6 +23,7 @@ function preload() {
 
     game.load.image('key', 'assets/DawnLike/Items/Key.png');
     game.load.image('ressource', 'assets/DawnLike/Items/Rock.png');
+    game.load.image('interface', 'assets/DawnLike/GUI/interface.png');
 
     game.load.spritesheet('sword', 'assets/DawnLike/GUI/sword.png', Application.TILE_SIZE, Application.TILE_SIZE);
     game.load.spritesheet('shield', 'assets/DawnLike/GUI/shield.png', Application.TILE_SIZE, Application.TILE_SIZE);
@@ -43,6 +44,7 @@ function preload() {
     var cursors;
     var ennemiesGroup, itemsGroup, blocsGroup;
     var gui;
+    var inventoryInput, inputI, menuInv;
 
 function create() {
 
@@ -90,6 +92,11 @@ function create() {
 
     /* INPUTS */
         cursors = game.input.keyboard.createCursorKeys();
+        inventoryInput = game.input.keyboard.addKey(Phaser.KeyCode.I);
+        inputI = false;
+        
+        inventoryInput.onDown.add(pause, self);
+        inventoryInput.onUp.add(pause, self);
 
     /* GROUPS */
         /* Ennemies */
@@ -104,25 +111,21 @@ function create() {
                 ennemiesGroup.hash[i].position.y *= Application.SCALE;
             }
 
-            // skeleton = new Skeleton(game.world.centerX - 16, game.world.centerY - 16, Application.SCALE);
-            // bat = new Bat(game.world.centerX - 32, game.world.centerY - 32, Application.SCALE);
-            
-            // ennemiesGroup.add(skeleton.sprite);
-            // ennemiesGroup.add(bat.sprite);
+        /* Items */
+            itemsGroup = game.add.group();
 
-        itemsGroup = game.add.group();
-
-        blocsGroup = game.add.physicsGroup();
-
-        map.createFromObjects('PushableBloc', 1186, 'bloc', 0, true, false, blocsGroup);
-        for (var i = 0; i < blocsGroup.hash.length; i++) {
-            blocsGroup.hash[i].body.mass = -100;
-            blocsGroup.hash[i].body.setSize(13, 14, 2, 2);
-            blocsGroup.hash[i].scale.setTo(Application.SCALE);
-            blocsGroup.hash[i].position.x *= Application.SCALE;
-            blocsGroup.hash[i].position.y *= Application.SCALE;
-            blocsGroup.hash[i].smoothed = false;
-        }
+        /* Blocs */
+            blocsGroup = game.add.physicsGroup();
+    
+            map.createFromObjects('PushableBloc', 1186, 'bloc', 0, true, false, blocsGroup);
+            for (var i = 0; i < blocsGroup.hash.length; i++) {
+                blocsGroup.hash[i].body.mass = -100;
+                blocsGroup.hash[i].body.setSize(13, 14, 2, 2);
+                blocsGroup.hash[i].scale.setTo(Application.SCALE);
+                blocsGroup.hash[i].position.x *= Application.SCALE;
+                blocsGroup.hash[i].position.y *= Application.SCALE;
+                blocsGroup.hash[i].smoothed = false;
+            }
 
     /* PLAYER */
 
@@ -148,7 +151,7 @@ function update() {
     /* COLLIDE */
         game.physics.arcade.collide(player, layerWalls);
         game.physics.arcade.collide(player, blocsGroup);
-        game.physics.arcade.collide(player, layerObjects, OpenDoor, null, this);
+        game.physics.arcade.collide(player, layerObjects, collideObject, null, this);
         game.physics.arcade.collide(player, ennemiesGroup, combatHandler, processAttack, this);
         game.physics.arcade.collide(layerWalls, blocsGroup, blocInWater, null, this);
 
@@ -263,11 +266,31 @@ function processAttack(spritePlayer, target) {
     return false;
 }
 
-function OpenDoor(player, door){
+function collideObject(player, tile){
 
-    if (player.inventory.key) {
-        map.removeTile(door.x, door.y, "Objects");
-        player.inventory.key--;
+    switch(tile.index){
+
+        // gold closed door
+        case 4973:
+        openDoor(player, tile);
+        break;
+
+        // enclume
+        case 538:
+        useForge(player, tile);
+        break;
+    }
+
+    function openDoor(player, door){
+
+        if (player.inventory.key) {
+            map.removeTile(door.x, door.y, "Objects");
+            player.inventory.key--;
+        }
+    }
+
+    function useForge(player, forge){
+        console.log(forge);
     }
 }
 
@@ -306,4 +329,32 @@ function setEquipementStatus(equipement){
 function numberToPercent(number, max){
 
     return (number / max) * 100;
+}
+
+function pause(event){
+
+    if (inventoryInput.isDown && !inputI) {
+
+        if (!game.paused) {
+
+            game.paused = true;
+            inputI = true;
+            menuInv = game.add.sprite(  -game.camera.world.position.x + Application.Canvas.WIDTH / 2,
+                                        -game.camera.world.position.y + Application.Canvas.HEIGHT / 2, 'interface');
+            menuInv.anchor.setTo(0.5, 0.5);
+            menuInv.scale.setTo(Application.SCALE);
+            menuInv.smoothed = false;
+
+        } else {
+
+            game.paused = false;
+            inputI = true;
+            menuInv.destroy();
+            this.game.canvas.style.cursor = "default";
+        }
+    }
+    if (inventoryInput.isUp) {
+
+        inputI = false;
+    }
 }
