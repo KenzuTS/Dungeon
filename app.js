@@ -23,6 +23,7 @@ function preload() {
 
     game.load.image('key', 'assets/DawnLike/Items/Key.png');
     game.load.image('ressource', 'assets/DawnLike/Items/Rock.png');
+    game.load.image('interface', 'assets/DawnLike/GUI/interface.png');
 
     game.load.spritesheet('sword', 'assets/DawnLike/GUI/sword.png', Application.TILE_SIZE, Application.TILE_SIZE);
     game.load.spritesheet('shield', 'assets/DawnLike/GUI/shield.png', Application.TILE_SIZE, Application.TILE_SIZE);
@@ -38,6 +39,7 @@ function preload() {
     var cursors;
     var ennemiesGroup, itemsGroup, blocsGroup;
     var gui;
+    var inventoryInput, inputI, menuInv;
 
 function create() {
 
@@ -82,6 +84,11 @@ function create() {
 
     /* INPUTS */
         cursors = game.input.keyboard.createCursorKeys();
+        inventoryInput = game.input.keyboard.addKey(Phaser.KeyCode.I);
+        inputI = false;
+        
+        inventoryInput.onDown.add(pause, self);
+        inventoryInput.onUp.add(pause, self);
 
     /* GROUPS */
         /* Ennemies */
@@ -315,4 +322,31 @@ function setEquipementStatus(equipement){
 function numberToPercent(number, max){
 
     return (number / max) * 100;
+}
+
+function pause(event){
+
+    if (inventoryInput.isDown && !inputI) {
+
+        if (!game.paused) {
+
+            game.paused = true;
+            inputI = true;
+            menuInv = game.add.sprite(  -game.camera.world.position.x + Application.Canvas.WIDTH / 2,
+                                        -game.camera.world.position.y + Application.Canvas.HEIGHT / 2, 'interface');
+            menuInv.anchor.setTo(0.5, 0.5);
+            menuInv.scale.setTo(Application.SCALE);
+            menuInv.smoothed = false;
+
+        } else {
+
+            game.paused = false;
+            inputI = true;
+            menuInv.destroy();
+        }
+    }
+    if (inventoryInput.isUp) {
+
+        inputI = false;
+    }
 }
