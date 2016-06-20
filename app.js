@@ -343,6 +343,7 @@ function pause(event){
             game.paused = false;
             inputI = true;
             menuInv.destroy();
+            this.game.canvas.style.cursor = "default";
         }
     }
     if (inventoryInput.isUp) {
