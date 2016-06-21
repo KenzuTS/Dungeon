@@ -4,11 +4,6 @@ function Bat(game, x, y, key, frame){
 
 	this.Awake = function(){
 
-	    this.smoothed = false;
-
-	    game.physics.enable(this, Phaser.Physics.ARCADE);
-	    this.body.collideWorldBounds = true;
-
 	    this.animations.add('down', [51,52,53], 6, true);
 	    this.animations.add('left', [63,64,65], 6, true);
 	    this.animations.add('right', [75,76,77], 6, true);

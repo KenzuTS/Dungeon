@@ -44,7 +44,8 @@ function preload() {
     var cursors;
     var ennemiesGroup, itemsGroup, blocsGroup, menuInvGroup;
     var gui;
-    var inventoryInput, inputI, menuInv;
+    var inventoryInput, invOpen, menuInv;
+    var repareMode = false;
 
 function create() {
 
@@ -94,7 +95,7 @@ function create() {
     /* INPUTS */
         cursors = game.input.keyboard.createCursorKeys();
         inventoryInput = game.input.keyboard.addKey(Phaser.KeyCode.I);
-        inputI = false;
+        invOpen = false;
         
         inventoryInput.onDown.add(pause, self);
         inventoryInput.onUp.add(pause, self);
@@ -182,8 +183,8 @@ function update() {
 
 function render() {
     game.debug.body(player);
-    // game.debug.text(game.time.fps, Application.Canvas.WIDTH / 2,
-    //     Application.Canvas.HEIGHT / 2);
+     game.debug.text(game.time.fps, Application.Canvas.WIDTH / 2,
+         Application.Canvas.HEIGHT / 2);
 }
 
 function combatHandler(sprite, target) {
@@ -209,8 +210,7 @@ function combatHandler(sprite, target) {
         break;
     }
     target.body.enable = false;
-    target.body.velocity.x = 0;
-    target.body.velocity.y = 0;
+    target.body.velocity.set(0);
     var diff = {
         x : (sprite.position.x - target.position.x),
         y : (sprite.position.y - target.position.y)
@@ -333,12 +333,13 @@ function numberToPercent(number, max){
 
 function pause(event){
 
-    if (inventoryInput.isDown && !inputI) {
+    if (inventoryInput.isDown) {
 
-        if (!game.paused) {
+        if (!invOpen) {
 
+            game.input.onDown.add(checkClick, game);
             game.paused = true;
-            inputI = true;
+            invOpen = true;
             menuInv = game.add.sprite(  0,
                                         0, 'interface');
             //menuInv.anchor.setTo(0.5, 0.5);
@@ -355,11 +356,10 @@ function pause(event){
             menuInv.slot = [];
 
             for (var i = 0; i < 24; i++) {
-                
                 //menuInv.slot[i] = { x: 18, y: 468 };
-                menuInv.slot[i] = { x : 16 * Application.SCALE, y : 224 * Application.SCALE + 32}
+                menuInv.slot[i] = { x : 16 * Application.SCALE + (i%12) * 64, 
+                                    y : 224 * Application.SCALE + 32 + Math.floor(i / 12) * 64 }
             }
-
             // gestion de l'inventaire player
             for (var i = 0; i < player.inventory.slot.length; i++) {
 
@@ -370,6 +370,11 @@ function pause(event){
                         sprite.scale.setTo(Application.SCALE);
                         sprite.smoothed = false;
                         sprite.anchor.setTo(0.5);
+                        /*sprite.inputEnabled = true;
+                        sprite.input.enableDrag(true);*/
+                        atari.events.onDragStart.add(function () {
+                            console.log(drag);
+                        }, this);
                         menuInvGroup.add(sprite);
                     break;
 
@@ -378,21 +383,68 @@ function pause(event){
                         sprite.scale.setTo(Application.SCALE);
                         sprite.smoothed = false;
                         sprite.anchor.setTo(0.5);
+                        /*sprite.inputEnabled = true;
+                        sprite.input.enableDrag(true);*/
                         menuInvGroup.add(sprite);
                     break;
                 }                
             }
+            var sprite = game.add.sprite(192, 176, 'sword');
+            sprite.scale.setTo(Application.SCALE);
+            sprite.smoothed = false;
+            sprite.anchor.setTo(0.5);
+            menuInvGroup.add(sprite);
+
+            var sprite = game.add.sprite(192 + 186, 176, 'shield');
+            sprite.scale.setTo(Application.SCALE);
+            sprite.smoothed = false;
+            sprite.anchor.setTo(0.5);
+            menuInvGroup.add(sprite);
+
+            
+            back_label = game.add.text(640, 20, 'Back', { font: '24px Arial', fill: '#fff' });
+            //back_label.inputEnabled = true;
+            //back_label.events.onInputUp.add(returnToGame);
+            menuInvGroup.add(back_label);
+
+            repare_label = game.add.text(640, 60, 'Repare', { font: '24px Arial', fill: '#fff' });
+            //repare_label.inputEnabled = true;
+            //repare_label.events.onInputUp.add(toggleRepareMode);
+            menuInvGroup.add(repare_label);
         }
         else {
-
-            game.paused = false;
-            inputI = true;
-            menuInvGroup.destroy();
-            this.game.canvas.style.cursor = "default";
+            returnToGame();
         }
     }
-        if (inventoryInput.isUp) {
+}
 
-            inputI = false;
+function returnToGame(){
+    invOpen = false;
+    game.input.onDown.remove(checkClick, game);
+    menuInvGroup.destroy();
+    this.game.canvas.style.cursor = "default";
+    game.paused = false;
+}
+
+function toggleRepareMode(){
+    repareMode = !repareMode;
+    console.log(repareMode);
+}
+
+function checkClick(event) {
+    if (invOpen) {
+        var x1 = menuInvGroup.position.x + 576, x2 = menuInvGroup.position.x + 768,
+            y1 = menuInvGroup.position.y, y2 = menuInvGroup.position.y + 80;
+
+        var x = event.x + Math.abs(game.camera.world.position.x),
+            y = event.y + Math.abs(game.camera.world.position.y);
+
+        if (x > x1 && x < x2 && y > y1 && y < y2) {
+            if (y - y1 < 40) {
+                returnToGame();
+            }else if (y - y1 < 80) {
+                toggleRepareMode();
+            }
         }
+    }
 }

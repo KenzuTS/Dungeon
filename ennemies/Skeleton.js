@@ -4,12 +4,6 @@ function Skeleton(game, x, y, key, frame){
 
 	this.Awake = function(){
 
-		this.scale.set(Application.SCALE);
-	    this.smoothed = false;
-
-	    game.physics.enable(this, Phaser.Physics.ARCADE);
-	    this.body.collideWorldBounds = true;
-
 	    this.animations.add('down', [9,10,11], 6, true);
 	    this.animations.add('left', [21,22,23], 6, true);
 	    this.animations.add('right', [33,34,35], 6, true);

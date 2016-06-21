@@ -23,19 +23,14 @@ function Player(x, y){
 
 	this.Awake = function(){
 
-	    game.physics.enable(this, Phaser.Physics.ARCADE);
-	    this.body.collideWorldBounds = true;
-
 		this.body.setSize(10, 10, 5, 11);
-		this.scale.set(Application.SCALE);
-	    this.smoothed = false;
-	    this.anchor.set(0.5);
-
+		this.anchor.setTo(0.5);
 	    this.animations.add('down', [3,4,5], 10, true);
 	    this.animations.add('left', [15,16,17], 10, true);
 	    this.animations.add('right', [27,28,29], 10, true);
 	    this.animations.add('up', [39,40,41], 10, true);
 
+	    //this.position.setTo(this.position.x + 16, this.position.y + 16)
 	    //this.tween = game.add.tween(this).to( { x: this.distX, y: this.distY }, 300);
 	}	
 
