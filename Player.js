@@ -6,12 +6,12 @@ function Player(x, y){
 	this.inventory = {
 		"key" : 0,
 		"ressource" : 0,
-		"slot" : []
+		"slot" : [new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45)]
 	};
 
 	this.equipement = {
 		weapon: new Weapon(10, 0, 50),
-		shield: new Armor(0, 5, 50)
+		shield: new Shield(0, 5, 50)
 	};
 
 	this.damage = {
@@ -159,17 +159,17 @@ function Player(x, y){
 		
 		    	    case "left":
 		    	        this.animations.stop();
-		    	        this.frame = 16;
+		    	        this.frame = Application.Player.Frame.LEFT;
 		    	    break;
 		
 		    	    case "right":
 		    	        this.animations.stop();
-		    	        this.frame = 28;
+		    	        this.frame = Application.Player.Frame.RIGHT;
 		    	    break;
 		
 		    	    case "up":
 		    	        this.animations.stop();
-		    	        this.frame = 40;
+		    	        this.frame = Application.Player.Frame.UP;
 		    	    break;
 	    	    }
 	    	}
@@ -179,12 +179,15 @@ function Player(x, y){
     this.attack = function(target){
     	Application.Sounds["sword"].play();
     	Etre.prototype.attack.call(this, target);
-    	this.equipement.weapon.looseDurability();
+    	if (this.equipement.weapon) {
+    		this.equipement.weapon.looseDurability();
+    	}
     }
 
     this.takeDamage = function(damage){
     	Application.Sounds["pain"].play();
-    	if (!this.equipement.shield.break) {
+
+    	if (this.equipement.shield && !this.equipement.shield.break) {
 			damage -= this.equipement.shield.defense;    		
     	}
 
@@ -195,13 +198,13 @@ function Player(x, y){
     		Etre.prototype.takeDamage.call(this, damage);
     	}
 
-    	this.equipement.shield.looseDurability();
+    	if (this.equipement.shield)	this.equipement.shield.looseDurability();
     }
 
     this.calculDamage = function(){
 
     	Etre.prototype.calculDamage.call(this);
-    	if (!this.equipement.weapon.break) {
+    	if (this.equipement.weapon && !this.equipement.weapon.break) {
     		this.attackDamage += this.equipement.weapon.attack;
     	}
     }

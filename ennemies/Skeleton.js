@@ -15,7 +15,7 @@ function Skeleton(game, x, y, key, frame){
 	    this.animations.add('right', [33,34,35], 6, true);
 	    this.animations.add('up', [45,46,47], 6, true);
 
-	    this.play('down');
+	    //this.play('down');
 	}
 
 	// TODO

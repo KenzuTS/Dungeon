@@ -1,7 +1,7 @@
 var Application = {
 	Canvas : {
-		WIDTH : 800,
-		HEIGHT : 600
+		WIDTH : window.innerWidth - 1,
+		HEIGHT : window.innerHeight - 1
 	},
 	WORLD_SIZE : {
 		WIDTH : 1600,
