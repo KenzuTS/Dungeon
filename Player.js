@@ -6,7 +6,8 @@ function Player(x, y){
 	this.inventory = {
 		"key" : 0,
 		"ressource" : 0,
-		"slot" : [new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45)]
+		"slot" : []
+		//[new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45)]
 	};
 
 	this.equipement = {

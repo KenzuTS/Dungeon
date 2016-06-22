@@ -44,7 +44,7 @@ function preload() {
     var cursors;
     var ennemiesGroup, itemsGroup, blocsGroup, menuInvGroup;
     var gui;
-    var inventoryInput, invOpen, menuInv;
+    var inventoryInput, invOpen, menuInv, selectedItem, graphicSelectedItem;
     var repareMode = false;
 
 function create() {
@@ -183,7 +183,7 @@ function update() {
 
 function render() {
     game.debug.body(player);
-     game.debug.text(game.time.fps, Application.Canvas.WIDTH / 2,
+    game.debug.text(game.time.fps, Application.Canvas.WIDTH / 2,
          Application.Canvas.HEIGHT / 2);
 }
 
@@ -245,8 +245,17 @@ function combatHandler(sprite, target) {
 }
 
 function collectItem(player, item){
-    player.inventory[item.key]++;
-    item.destroy();
+    if (item instanceof Item) {
+        player.inventory[item.key]++; 
+        item.destroy();
+    }
+    else if (item instanceof Equipement) {
+        var i = player.inventory.slot.length;
+        item.x = 16 * Application.SCALE + (i%12) * 64;
+        item.y = 224 * Application.SCALE + 32 + Math.floor(i / 12) * 64 
+        player.inventory.slot.push(item);
+    }
+    
 }
 
 function blocInWater(bloc, tile){
@@ -337,8 +346,8 @@ function pause(event){
 
         if (!invOpen) {
 
-            game.input.onDown.add(checkClick, game);
-            game.paused = true;
+            //game.input.onDown.add(checkClick, game);
+            //game.paused = true;
             invOpen = true;
             menuInv = game.add.sprite(  0,
                                         0, 'interface');
@@ -366,25 +375,38 @@ function pause(event){
                 switch(player.inventory.slot[i].constructor){
 
                     case Weapon:
-                        var sprite = game.add.sprite(menuInv.slot[i].x, menuInv.slot[i].y, 'sword');
+                        //var sprite = game.add.sprite(menuInv.slot[i].x, menuInv.slot[i].y, 'sword');
+                        var sprite = game.add.sprite(player.inventory.slot[i].x, player.inventory.slot[i].y, 'sword');
+
                         sprite.scale.setTo(Application.SCALE);
                         sprite.smoothed = false;
                         sprite.anchor.setTo(0.5);
-                        /*sprite.inputEnabled = true;
-                        sprite.input.enableDrag(true);*/
-                        atari.events.onDragStart.add(function () {
+                        sprite.indexSlot = i;
+                        sprite.inputEnabled = true;
+                        sprite.events.onInputUp.add(function () {
+                            setSelectedItem(this);
+                            this.Describe();
+                        }, player.inventory.slot[i]);
+                        //sprite.input.enableDrag(true);
+/*                        sprite.events.onDragStart.add(function () {
                             console.log(drag);
-                        }, this);
+                        }, this);*/
                         menuInvGroup.add(sprite);
                     break;
 
                     case Shield:
-                        var sprite = game.add.sprite(menuInv.slot[i].x, menuInv.slot[i].y, 'shield');
+                        //var sprite = game.add.sprite(menuInv.slot[i].x, menuInv.slot[i].y, 'shield');
+                        var sprite = game.add.sprite(player.inventory.slot[i].x, player.inventory.slot[i].y, 'shield');
                         sprite.scale.setTo(Application.SCALE);
                         sprite.smoothed = false;
                         sprite.anchor.setTo(0.5);
-                        /*sprite.inputEnabled = true;
-                        sprite.input.enableDrag(true);*/
+                        sprite.indexSlot = i;
+                        sprite.inputEnabled = true;
+                        sprite.events.onInputUp.add(function () {
+                            setSelectedItem(this);
+                            this.Describe();
+                        }, player.inventory.slot[i]);
+                        //sprite.input.enableDrag(true);
                         menuInvGroup.add(sprite);
                     break;
                 }                
@@ -393,24 +415,45 @@ function pause(event){
             sprite.scale.setTo(Application.SCALE);
             sprite.smoothed = false;
             sprite.anchor.setTo(0.5);
+            sprite.inputEnabled = true;
+            sprite.events.onInputUp.add(function () {
+                setSelectedItem(null);
+                this.Describe();
+            }, player.equipement.weapon);
             menuInvGroup.add(sprite);
 
             var sprite = game.add.sprite(192 + 186, 176, 'shield');
             sprite.scale.setTo(Application.SCALE);
             sprite.smoothed = false;
             sprite.anchor.setTo(0.5);
+            sprite.inputEnabled = true;
+            sprite.events.onInputUp.add(function () {
+                setSelectedItem(null);
+                this.Describe();
+            }, player.equipement.shield);
             menuInvGroup.add(sprite);
 
             
             back_label = game.add.text(640, 20, 'Back', { font: '24px Arial', fill: '#fff' });
-            //back_label.inputEnabled = true;
-            //back_label.events.onInputUp.add(returnToGame);
+            back_label.inputEnabled = true;
+            back_label.events.onInputUp.add(returnToGame);
             menuInvGroup.add(back_label);
 
             repare_label = game.add.text(640, 60, 'Repare', { font: '24px Arial', fill: '#fff' });
-            //repare_label.inputEnabled = true;
-            //repare_label.events.onInputUp.add(toggleRepareMode);
+            repare_label.inputEnabled = true;
+            repare_label.events.onInputUp.add(toggleRepareMode);
             menuInvGroup.add(repare_label);
+
+            equip_label = game.add.text(640, 100, 'Equip', { font: '24px Arial', fill: '#fff' });
+            equip_label.visible = false;
+            equip_label.inputEnabled = true;
+            equip_label.events.onInputUp.add(equipItem);
+            menuInvGroup.add(equip_label);
+
+            var description = game.add.group();
+            description.name = "description";
+            description.position.setTo(15,250);
+            menuInvGroup.add(description);
         }
         else {
             returnToGame();
@@ -420,6 +463,7 @@ function pause(event){
 
 function returnToGame(){
     invOpen = false;
+    selectedItem = null;
     game.input.onDown.remove(checkClick, game);
     menuInvGroup.destroy();
     this.game.canvas.style.cursor = "default";
@@ -445,6 +489,38 @@ function checkClick(event) {
             }else if (y - y1 < 80) {
                 toggleRepareMode();
             }
+        }
+    }
+}
+
+function setSelectedItem(value){
+    if (selectedItem == value) {
+        menuInvGroup.children.find(x => x._text == "Equip").visible = false;
+        selectedItem = null;
+    }
+    else {
+        selectedItem = value;
+        menuInvGroup.remove(graphicSelectedItem);
+        
+        if (value != null) {
+            menuInvGroup.children.find(x => x._text == "Equip").visible = true;
+            graphicSelectedItem = game.add.graphics(selectedItem.x -  Application.TILE_SIZE * Application.SCALE , selectedItem.y - Application.TILE_SIZE * Application.SCALE);
+            graphicSelectedItem.lineStyle(2, 0xffd900, 1);
+            //graphics.drawRect(selectedItem.x -Application.TILE_SIZE * Application.SCALE,200 -Application.TILE_SIZE * Application.SCALE, -Application.TILE_SIZE * Application.SCALE, -Application.TILE_SIZE * Application.SCALE);
+            graphicSelectedItem.drawRect(0,0, Application.TILE_SIZE * Application.SCALE * 2, Application.TILE_SIZE * Application.SCALE* 2);
+            menuInvGroup.add(graphicSelectedItem);
+        }
+        else
+            menuInvGroup.children.find(x => x._text == "Equip").visible = false;
+    }
+}
+function equipItem(){
+    if (selectedItem) {
+        if (selectedItem instanceof Weapon) {
+            
+            var temp = player.equipement.weapon;
+            player.equipement.weapon = selectedItem;
+            selectedItem = temp;
         }
     }
 }
