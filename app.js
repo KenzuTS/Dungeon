@@ -254,8 +254,7 @@ function collectItem(player, item){
         item.x = 16 * Application.SCALE + (i%12) * 64;
         item.y = 224 * Application.SCALE + 32 + Math.floor(i / 12) * 64 
         player.inventory.slot.push(item);
-    }
-    
+    }  
 }
 
 function blocInWater(bloc, tile){
@@ -299,7 +298,7 @@ function collideObject(player, tile){
     }
 
     function useForge(player, forge){
-        console.log(forge);
+        console.log("use forge");
     }
 }
 
@@ -388,7 +387,7 @@ function pause(event){
                             this.Describe();
                         }, player.inventory.slot[i]);
                         //sprite.input.enableDrag(true);
-/*                        sprite.events.onDragStart.add(function () {
+                        /*sprite.events.onDragStart.add(function () {
                             console.log(drag);
                         }, this);*/
                         menuInvGroup.add(sprite);
