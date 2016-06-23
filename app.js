@@ -300,9 +300,6 @@ function collectItem(player, item){
         }, item);
         player.inventory.slot.push(item);
 
-/*      var index = player.inventory.slot.push(item)
-        player.inventory.slot[index].x = menuInv.slot[i].x;
-        player.inventory.slot[index].y = menuInv.slot[i].y;*/
         menuInvGroup.add(item);
         
     }
@@ -350,7 +347,7 @@ function collideObject(player, tile){
     }
 
     function useForge(player, forge){
-        console.log(forge);
+        console.log("use forge");
     }
 }
 
