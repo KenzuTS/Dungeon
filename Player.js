@@ -6,7 +6,8 @@ function Player(x, y){
 	this.inventory = {
 		"key" : 0,
 		"ressource" : 0,
-		"slot" : [new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45)]
+		"slot" : []
+		//[new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45)]
 	};
 
 	this.equipement = {
@@ -23,19 +24,14 @@ function Player(x, y){
 
 	this.Awake = function(){
 
-	    game.physics.enable(this, Phaser.Physics.ARCADE);
-	    this.body.collideWorldBounds = true;
-
 		this.body.setSize(10, 10, 5, 11);
-		this.scale.set(Application.SCALE);
-	    this.smoothed = false;
-	    this.anchor.set(0.5);
-
+		this.anchor.setTo(0.5);
 	    this.animations.add('down', [3,4,5], 10, true);
 	    this.animations.add('left', [15,16,17], 10, true);
 	    this.animations.add('right', [27,28,29], 10, true);
 	    this.animations.add('up', [39,40,41], 10, true);
 
+	    //this.position.setTo(this.position.x + 16, this.position.y + 16)
 	    //this.tween = game.add.tween(this).to( { x: this.distX, y: this.distY }, 300);
 	}	
 
@@ -159,17 +155,17 @@ function Player(x, y){
 		
 		    	    case "left":
 		    	        this.animations.stop();
-		    	        this.frame = 16;
+		    	        this.frame = Application.Player.Frame.LEFT;
 		    	    break;
 		
 		    	    case "right":
 		    	        this.animations.stop();
-		    	        this.frame = 28;
+		    	        this.frame = Application.Player.Frame.RIGHT;
 		    	    break;
 		
 		    	    case "up":
 		    	        this.animations.stop();
-		    	        this.frame = 40;
+		    	        this.frame = Application.Player.Frame.UP;
 		    	    break;
 	    	    }
 	    	}
@@ -177,6 +173,7 @@ function Player(x, y){
     }
 
     this.attack = function(target){
+    	Application.Sounds["sword"].play();
     	Etre.prototype.attack.call(this, target);
     	if (this.equipement.weapon) {
     		this.equipement.weapon.looseDurability();
@@ -184,6 +181,8 @@ function Player(x, y){
     }
 
     this.takeDamage = function(damage){
+    	Application.Sounds["pain"].play();
+
     	if (this.equipement.shield && !this.equipement.shield.break) {
 			damage -= this.equipement.shield.defense;    		
     	}

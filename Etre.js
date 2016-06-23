@@ -22,6 +22,18 @@ function Etre(game, x, y, key, frame){
 			this.onDead();
 		}
 	}
+
+	this.Awake = function() {
+		
+		game.physics.enable(this, Phaser.Physics.ARCADE);
+	    this.body.collideWorldBounds = true
+		//this.anchor.setTo(0.5);
+		this.scale.set(Application.SCALE);
+		this.smoothed = false;
+
+
+	}
+	this.Awake();
 }
 
 Etre.prototype = Object.create(Phaser.Sprite.prototype);
@@ -67,8 +79,6 @@ Etre.prototype.attack = function (target) {
 
 Etre.prototype.takeDamage = function (damage) {
 	this.setHP(this.HP - damage);
-	console.log(this)
-	console.log(damage)
 }
 
 Etre.prototype.calculDamage = function(){
