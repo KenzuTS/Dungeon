@@ -455,7 +455,6 @@ function setSelectedItem(value){
             graphicSelectedItem.drawRect(0,0, Application.TILE_SIZE * Application.SCALE * 2, Application.TILE_SIZE * Application.SCALE* 2);
             menuInvGroup.add(graphicSelectedItem);
         }
-        else
     }
 }
 function equipItem(){
