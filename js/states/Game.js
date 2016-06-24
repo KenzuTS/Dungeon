@@ -200,6 +200,7 @@ Application.Game.prototype = {
 
 
 }
+}
 
 function combatHandler(sprite, target) {
     switch(sprite.animations.currentAnim.name){
