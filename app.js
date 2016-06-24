@@ -5,9 +5,6 @@ var game = new Phaser.Game(
     "Dungeon"
     );
 
-
 game.state.add("Preload", Application.Preload);
 game.state.add("Game", Application.Game);
 game.state.start("Preload");
-
-

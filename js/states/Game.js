@@ -72,8 +72,6 @@ Application.Game.prototype = {
         inventoryInput.onDown.add(pause, self);
         inventoryInput.onUp.add(pause, self);
 
-    
-
     /* GROUPS */
         /* Ennemies */
             ennemiesGroup = game.add.group();
@@ -136,13 +134,12 @@ Application.Game.prototype = {
             description.name = "description";
             description.position.setTo(15,250);
             menuInvGroup.add(description);
-/*            menuInv.slot = [];
+            /*menuInv.slot = [];
             for (var i = 0; i < 24; i++) {
                 menuInv.slot[i] = { x : 16 * Application.SCALE + (i%12) * 64, 
                                     y : 224 * Application.SCALE + 32 + Math.floor(i / 12) * 64 }
             }*/
             menuInvGroup.setAllChildren("visible", false);
-
 
     /* PLAYER */
 
@@ -164,7 +161,7 @@ Application.Game.prototype = {
 
 	update : function () {
 
-    /* COLLIDE */
+     /* COLLIDE */
         game.physics.arcade.collide(player, layerWalls);
         game.physics.arcade.collide(player, blocsGroup);
         game.physics.arcade.collide(player, layerObjects, collideObject, null, this);
@@ -194,7 +191,6 @@ Application.Game.prototype = {
         gui.textHP.text = player.HP + " / " + player.maxHP;
         gui.textKey.text = player.inventory.key;
         gui.textRessource.text = player.inventory.ressource;
-}
 
 /*function render() {
     game.debug.body(player);
@@ -285,6 +281,7 @@ function collectItem(player, item){
 }
 
 function blocInWater(bloc, tile){
+
     if (tile.index == 326) {
         Application.Sounds["plouf"].play();
         map.layers[1].data[tile.y][tile.x].index = 1541;
@@ -303,7 +300,29 @@ function processAttack(spritePlayer, target) {
 
 function collideObject(player, tile){
 
+    console.log(tile.index)
+
     switch(tile.index){
+
+        //sword
+        case 5329:
+        console.log("Getsword");
+        break;
+
+        //statue
+        case 5181:
+        console.log("statue");
+        break;
+
+        //closedChest
+        case 5386:
+        console.log("closedChest 5410 is open");
+        break;
+
+        //stairs
+        case 5318:
+        console.log("stairs");
+        break;
 
         // gold closed door
         case 4973:
