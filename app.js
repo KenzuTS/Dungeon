@@ -10,7 +10,7 @@ var game = new Phaser.Game(
 
 function preload() {
     
-    game.load.tilemap('map', 'assets/tilemaps/json/dungeonTest.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.tilemap('map', 'assets/tilemaps/json/floor2.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('Cave', 'assets/roguelike-cave-pack/Spritesheet/roguelikeDungeon_transparent.png');
     game.load.image('Rogue', 'assets/roguelike-pack/Spritesheet/roguelikeSheet_transparent.png');
 
@@ -20,6 +20,12 @@ function preload() {
     game.load.image('Door0', 'assets/DawnLike/Objects/Door0.png');
     game.load.image('Decor0', 'assets/DawnLike/Objects/Decor0.png');
     game.load.image('Pit0', 'assets/DawnLike/Objects/Pit0.png');
+    game.load.image('Chest0', 'assets/DawnLike/Items/Chest0.png');
+    game.load.image('Chest1', 'assets/DawnLike/Items/Chest1.png');
+    game.load.image('LongWep', 'assets/DawnLike/Items/LongWep.png');
+    game.load.image('Shield', 'assets/DawnLike/Items/Shield.png');
+    game.load.image('Fence', 'assets/DawnLike/Objects/Fence.png');
+    game.load.image('Tile', 'assets/DawnLike/Objects/Tile.png');
 
     game.load.image('key', 'assets/DawnLike/Items/Key.png');
     game.load.image('ressource', 'assets/DawnLike/Items/Rock.png');
@@ -67,6 +73,12 @@ function create() {
         map.addTilesetImage('Door0');
         map.addTilesetImage('Decor0');
         map.addTilesetImage('Pit0');
+        map.addTilesetImage('Chest0');
+        map.addTilesetImage('Chest1');
+        map.addTilesetImage('LongWep');
+        map.addTilesetImage('Shield');
+        map.addTilesetImage('Fence');
+        map.addTilesetImage('Tile');
 
         layerGround = map.createLayer('Ground');
         layerGroundOverlay = map.createLayer('GroundOverlay');
@@ -89,8 +101,8 @@ function create() {
         layerWalls.resizeWorld();
 
         // collisions sur les tiles des layers voulu
-        map.setCollisionBetween(1, 5000, true, layerWalls);
-        map.setCollisionBetween(1, 5000, true, layerObjects);
+        map.setCollisionBetween(1, 10000, true, layerWalls);
+        map.setCollisionBetween(1, 10000, true, layerObjects);
 
     /* INPUTS */
         cursors = game.input.keyboard.createCursorKeys();
@@ -99,23 +111,6 @@ function create() {
         
         inventoryInput.onDown.add(pause, self);
         inventoryInput.onUp.add(pause, self);
-
-    /* PLAYER */
-
-        player = new Player(game.world.centerX + 312, game.world.centerY);
-        game.add.existing(player);
-
-        // le joueur passe dessous ce layer
-        layerRoof = map.createLayer('Roof');
-        layerRoof.setScale(Application.SCALE);
-        layerRoof.smoothed = false;
-
-    /* CAMERA */
-        game.camera.follow(player);
-        //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
-
-    /* GUI */
-        gui = new GUI();
 
     /* GROUPS */
         /* Ennemies */
@@ -179,12 +174,29 @@ function create() {
             description.name = "description";
             description.position.setTo(15,250);
             menuInvGroup.add(description);
-/*            menuInv.slot = [];
+            /*menuInv.slot = [];
             for (var i = 0; i < 24; i++) {
                 menuInv.slot[i] = { x : 16 * Application.SCALE + (i%12) * 64, 
                                     y : 224 * Application.SCALE + 32 + Math.floor(i / 12) * 64 }
             }*/
             //menuInvGroup.setAllChildren("visible", false);
+
+    /* PLAYER */
+
+        player = new Player(game.world.centerX + 312, game.world.centerY);
+        game.add.existing(player);
+
+        // le joueur passe dessous ce layer
+        layerRoof = map.createLayer('Roof');
+        layerRoof.setScale(Application.SCALE);
+        layerRoof.smoothed = false;
+
+    /* CAMERA */
+        game.camera.follow(player);
+        //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
+
+    /* GUI */
+        gui = new GUI();
 }
 
 function update() {
@@ -307,6 +319,7 @@ function collectItem(player, item){
 }
 
 function blocInWater(bloc, tile){
+
     if (tile.index == 326) {
         Application.Sounds["plouf"].play();
         map.layers[1].data[tile.y][tile.x].index = 1541;
@@ -325,7 +338,29 @@ function processAttack(spritePlayer, target) {
 
 function collideObject(player, tile){
 
+    console.log(tile.index)
+
     switch(tile.index){
+
+        //sword
+        case 5329:
+        console.log("Getsword");
+        break;
+
+        //statue
+        case 5181:
+        console.log("statue");
+        break;
+
+        //closedChest
+        case 5386:
+        console.log("closedChest 5410 is open");
+        break;
+
+        //stairs
+        case 5318:
+        console.log("stairs");
+        break;
 
         // gold closed door
         case 4973:
