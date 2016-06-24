@@ -145,6 +145,46 @@ function create() {
                 blocsGroup.hash[i].position.y *= Application.SCALE;
                 blocsGroup.hash[i].smoothed = false;
             }
+
+        /* INIT */
+            menuInv = game.add.sprite(0, 0, 'interface');
+            menuInv.scale.setTo(Application.SCALE);
+            menuInv.smoothed = false;
+            var x = (Application.Canvas.WIDTH - menuInv.width) / 2;
+            var y = (Application.Canvas.HEIGHT - menuInv.height) / 2;
+
+            menuInvGroup = game.add.group();
+            menuInvGroup.position.x = -game.camera.world.position.x + x;
+            menuInvGroup.position.y = -game.camera.world.position.y + y;
+
+            menuInvGroup.add(menuInv);
+
+             back_label = game.add.text(640, 20, 'Back', { font: '24px Arial', fill: '#fff' });
+            back_label.inputEnabled = true;
+            back_label.events.onInputUp.add(returnToGame);
+            menuInvGroup.add(back_label);
+
+            repare_label = game.add.text(640, 60, 'Repare', { font: '24px Arial', fill: '#fff' });
+            repare_label.inputEnabled = true;
+            repare_label.events.onInputUp.add(toggleRepareMode);
+            menuInvGroup.add(repare_label);
+
+            equip_label = game.add.text(640, 100, 'Equip', { font: '24px Arial', fill: '#fff' });
+            equip_label.visible = false;
+            equip_label.inputEnabled = true;
+            equip_label.events.onInputUp.add(equipItem);
+            menuInvGroup.add(equip_label);
+
+            var description = game.add.group();
+            description.name = "description";
+            description.position.setTo(15,250);
+            menuInvGroup.add(description);
+/*            menuInv.slot = [];
+            for (var i = 0; i < 24; i++) {
+                menuInv.slot[i] = { x : 16 * Application.SCALE + (i%12) * 64, 
+                                    y : 224 * Application.SCALE + 32 + Math.floor(i / 12) * 64 }
+            }*/
+            //menuInvGroup.setAllChildren("visible", false);
 }
 
 function update() {
@@ -251,10 +291,19 @@ function collectItem(player, item){
     }
     else if (item instanceof Equipement) {
         var i = player.inventory.slot.length;
-        item.x = 16 * Application.SCALE + (i%12) * 64;
-        item.y = 224 * Application.SCALE + 32 + Math.floor(i / 12) * 64 
+        item.position.x = 16 * Application.SCALE + (i%12) * 64;
+        item.position.y = 224 * Application.SCALE + 32 + Math.floor(i / 12) * 64;
+        item.inputEnabled = true;
+        item.events.onInputUp.add(function () {
+            setSelectedItem(this);
+            this.Describe();
+        }, item);
         player.inventory.slot.push(item);
-    }  
+
+        menuInvGroup.add(item);
+        
+    }
+    
 }
 
 function blocInWater(bloc, tile){
@@ -342,117 +391,16 @@ function numberToPercent(number, max){
 function pause(event){
 
     if (inventoryInput.isDown) {
-
         if (!invOpen) {
-
-            //game.input.onDown.add(checkClick, game);
-            //game.paused = true;
             invOpen = true;
-            menuInv = game.add.sprite(  0,
-                                        0, 'interface');
-            //menuInv.anchor.setTo(0.5, 0.5);
-            menuInv.scale.setTo(Application.SCALE);
             menuInv.smoothed = false;
+            menuInvGroup.setAllChildren("visible", true);
             var x = (Application.Canvas.WIDTH - menuInv.width) / 2;
             var y = (Application.Canvas.HEIGHT - menuInv.height) / 2;
 
-            menuInvGroup = game.add.group();
             menuInvGroup.position.x = -game.camera.world.position.x + x;
             menuInvGroup.position.y = -game.camera.world.position.y + y;
 
-            menuInvGroup.add(menuInv);
-            menuInv.slot = [];
-
-            for (var i = 0; i < 24; i++) {
-                //menuInv.slot[i] = { x: 18, y: 468 };
-                menuInv.slot[i] = { x : 16 * Application.SCALE + (i%12) * 64, 
-                                    y : 224 * Application.SCALE + 32 + Math.floor(i / 12) * 64 }
-            }
-            // gestion de l'inventaire player
-            for (var i = 0; i < player.inventory.slot.length; i++) {
-
-                switch(player.inventory.slot[i].constructor){
-
-                    case Weapon:
-                        //var sprite = game.add.sprite(menuInv.slot[i].x, menuInv.slot[i].y, 'sword');
-                        var sprite = game.add.sprite(player.inventory.slot[i].x, player.inventory.slot[i].y, 'sword');
-
-                        sprite.scale.setTo(Application.SCALE);
-                        sprite.smoothed = false;
-                        sprite.anchor.setTo(0.5);
-                        sprite.indexSlot = i;
-                        sprite.inputEnabled = true;
-                        sprite.events.onInputUp.add(function () {
-                            setSelectedItem(this);
-                            this.Describe();
-                        }, player.inventory.slot[i]);
-                        //sprite.input.enableDrag(true);
-                        /*sprite.events.onDragStart.add(function () {
-                            console.log(drag);
-                        }, this);*/
-                        menuInvGroup.add(sprite);
-                    break;
-
-                    case Shield:
-                        //var sprite = game.add.sprite(menuInv.slot[i].x, menuInv.slot[i].y, 'shield');
-                        var sprite = game.add.sprite(player.inventory.slot[i].x, player.inventory.slot[i].y, 'shield');
-                        sprite.scale.setTo(Application.SCALE);
-                        sprite.smoothed = false;
-                        sprite.anchor.setTo(0.5);
-                        sprite.indexSlot = i;
-                        sprite.inputEnabled = true;
-                        sprite.events.onInputUp.add(function () {
-                            setSelectedItem(this);
-                            this.Describe();
-                        }, player.inventory.slot[i]);
-                        //sprite.input.enableDrag(true);
-                        menuInvGroup.add(sprite);
-                    break;
-                }                
-            }
-            var sprite = game.add.sprite(192, 176, 'sword');
-            sprite.scale.setTo(Application.SCALE);
-            sprite.smoothed = false;
-            sprite.anchor.setTo(0.5);
-            sprite.inputEnabled = true;
-            sprite.events.onInputUp.add(function () {
-                setSelectedItem(null);
-                this.Describe();
-            }, player.equipement.weapon);
-            menuInvGroup.add(sprite);
-
-            var sprite = game.add.sprite(192 + 186, 176, 'shield');
-            sprite.scale.setTo(Application.SCALE);
-            sprite.smoothed = false;
-            sprite.anchor.setTo(0.5);
-            sprite.inputEnabled = true;
-            sprite.events.onInputUp.add(function () {
-                setSelectedItem(null);
-                this.Describe();
-            }, player.equipement.shield);
-            menuInvGroup.add(sprite);
-
-            
-            back_label = game.add.text(640, 20, 'Back', { font: '24px Arial', fill: '#fff' });
-            back_label.inputEnabled = true;
-            back_label.events.onInputUp.add(returnToGame);
-            menuInvGroup.add(back_label);
-
-            repare_label = game.add.text(640, 60, 'Repare', { font: '24px Arial', fill: '#fff' });
-            repare_label.inputEnabled = true;
-            repare_label.events.onInputUp.add(toggleRepareMode);
-            menuInvGroup.add(repare_label);
-
-            equip_label = game.add.text(640, 100, 'Equip', { font: '24px Arial', fill: '#fff' });
-            equip_label.visible = false;
-            equip_label.inputEnabled = true;
-            equip_label.events.onInputUp.add(equipItem);
-            menuInvGroup.add(equip_label);
-
-            var description = game.add.group();
-            description.name = "description";
-            description.position.setTo(15,250);
-            menuInvGroup.add(description);
         }
         else {
             returnToGame();
@@ -464,7 +412,7 @@ function returnToGame(){
     invOpen = false;
     selectedItem = null;
     game.input.onDown.remove(checkClick, game);
-    menuInvGroup.destroy();
+    menuInvGroup.setAllChildren("visible", false);
     this.game.canvas.style.cursor = "default";
     game.paused = false;
 }
@@ -494,32 +442,44 @@ function checkClick(event) {
 
 function setSelectedItem(value){
     if (selectedItem == value) {
-        menuInvGroup.children.find(x => x._text == "Equip").visible = false;
         selectedItem = null;
+        menuInvGroup.remove(graphicSelectedItem);
     }
     else {
         selectedItem = value;
         menuInvGroup.remove(graphicSelectedItem);
         
         if (value != null) {
-            menuInvGroup.children.find(x => x._text == "Equip").visible = true;
             graphicSelectedItem = game.add.graphics(selectedItem.x -  Application.TILE_SIZE * Application.SCALE , selectedItem.y - Application.TILE_SIZE * Application.SCALE);
             graphicSelectedItem.lineStyle(2, 0xffd900, 1);
-            //graphics.drawRect(selectedItem.x -Application.TILE_SIZE * Application.SCALE,200 -Application.TILE_SIZE * Application.SCALE, -Application.TILE_SIZE * Application.SCALE, -Application.TILE_SIZE * Application.SCALE);
             graphicSelectedItem.drawRect(0,0, Application.TILE_SIZE * Application.SCALE * 2, Application.TILE_SIZE * Application.SCALE* 2);
             menuInvGroup.add(graphicSelectedItem);
         }
-        else
-            menuInvGroup.children.find(x => x._text == "Equip").visible = false;
     }
 }
 function equipItem(){
-    if (selectedItem) {
-        if (selectedItem instanceof Weapon) {
-            
-            var temp = player.equipement.weapon;
-            player.equipement.weapon = selectedItem;
-            selectedItem = temp;
+    if (selectedItem && selectedItem != player.equipement.weapon && selectedItem != player.equipement.shield) {
+        if (selectedItem instanceof Equipement) {
+            var temp, tempPos;
+            if (selectedItem instanceof Weapon)
+            {
+               temp = player.equipement.weapon;
+               player.equipement.weapon = selectedItem;
+               player.equipement.weapon.position.x = 192;
+               player.equipement.weapon.position.y = 176;
+
+            }
+            else if(selectedItem instanceof Shield) {
+                temp = player.equipement.shield;
+                player.equipement.shield = selectedItem;
+                player.equipement.shield.position.x = 192 + 186;
+                player.equipement.shield.position.y = 176;
+            }
+            var index = player.inventory.slot.indexOf(selectedItem);
+            if (temp != null) {
+                player.inventory.slot[index] = temp;
+            }
+            menuInvGroup.remove(graphicSelectedItem);
         }
     }
 }
