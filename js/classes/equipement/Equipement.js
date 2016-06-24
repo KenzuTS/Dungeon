@@ -9,10 +9,22 @@ function Equipement(attack, defense, maxDurability, x, y , key, frame){
 	this.break = false;
 
 	this.looseDurability = function(){
-		this.durability--;
+		this.setDurability(this.durability--);
+/*		this.durability--;
 		if (this.durability <= 0) {
 			this.break = true;
 			this.durability = 0;
+		}*/
+	}
+
+	this.setDurability = function(value) {
+		if (this.durability != value) {
+			this.durability = value;
+		} else if (this.durability <= 0) {
+			this.break = true;
+			this.durability = 0;
+		} else if (this.durability > maxDurability) {
+			this.durability = this.maxDurability;
 		}
 	}
 
@@ -24,8 +36,10 @@ function Equipement(attack, defense, maxDurability, x, y , key, frame){
 	    description.add(game.add.text(0, 80, 'Durability : ' + this.durability + " / " + this.maxDurability, { font: '24px Arial', fill: '#fff' }));
 	}
 
-	this.swap = function () {
-		 
+	this.repare = function () {
+		 if (player.inventory.ressource) {
+		 	this.setDurability(this.durability + Application.REPARE);
+		 }
 	}
 	this.scale.setTo(Application.SCALE);
 	this.anchor.setTo(0.5);

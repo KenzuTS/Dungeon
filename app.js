@@ -1,7 +1,7 @@
 var game = new Phaser.Game(
     Application.Canvas.WIDTH, 
     Application.Canvas.HEIGHT,
-    Phaser.AUTO, 
+    Phaser.Canvas, 
     "Dungeon"
     );
 

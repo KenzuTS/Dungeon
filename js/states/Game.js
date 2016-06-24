@@ -101,6 +101,16 @@ Application.Game.prototype = {
                 blocsGroup.hash[i].smoothed = false;
             }
 
+ 		/* PLAYER */
+
+        player = new Player(game.world.centerX + 312, game.world.centerY);
+        game.add.existing(player);
+
+        // le joueur passe dessous ce layer
+        layerRoof = map.createLayer('Roof');
+        layerRoof.setScale(Application.SCALE);
+        layerRoof.smoothed = false;
+
         /* INIT */
             menuInv = game.add.sprite(0, 0, 'interface');
             menuInv.scale.setTo(Application.SCALE);
@@ -141,15 +151,7 @@ Application.Game.prototype = {
             }*/
             menuInvGroup.setAllChildren("visible", false);
 
-    /* PLAYER */
-
-        player = new Player(game.world.centerX + 312, game.world.centerY);
-        game.add.existing(player);
-
-        // le joueur passe dessous ce layer
-        layerRoof = map.createLayer('Roof');
-        layerRoof.setScale(Application.SCALE);
-        layerRoof.smoothed = false;
+   
 
     /* CAMERA */
         game.camera.follow(player);
@@ -192,11 +194,10 @@ Application.Game.prototype = {
         gui.textKey.text = player.inventory.key;
         gui.textRessource.text = player.inventory.ressource;
 
-/*function render() {
+
     game.debug.body(player);
     game.debug.text(game.time.fps, Application.Canvas.WIDTH / 2,
          Application.Canvas.HEIGHT / 2);
-}*/
 
 
 }
@@ -270,7 +271,12 @@ function collectItem(player, item){
         item.position.y = 224 * Application.SCALE + 32 + Math.floor(i / 12) * 64;
         item.inputEnabled = true;
         item.events.onInputUp.add(function () {
-            setSelectedItem(this);
+            if (repareMode) {
+                this.repare();
+            }
+            else {
+              setSelectedItem(this);  
+            }
             this.Describe();
         }, item);
         player.inventory.slot.push(item);
@@ -301,13 +307,14 @@ function processAttack(spritePlayer, target) {
 
 function collideObject(player, tile){
 
-    console.log(tile.index)
+    //console.log(tile.index)
 
     switch(tile.index){
 
         //sword
         case 5329:
         console.log("Getsword");
+        console.log(tile);
         break;
 
         //statue
@@ -327,12 +334,12 @@ function collideObject(player, tile){
 
         // gold closed door
         case 4973:
-        openDoor(player, tile);
+        	openDoor(player, tile);
         break;
 
         // enclume
         case 538:
-        useForge(player, tile);
+        	useForge(player, tile);
         break;
     }
 
@@ -391,6 +398,7 @@ function pause(event){
     if (inventoryInput.isDown) {
         if (!invOpen) {
             invOpen = true;
+            player.canWalking = false;
             menuInv.smoothed = false;
             menuInvGroup.setAllChildren("visible", true);
             var x = (Application.Canvas.WIDTH - menuInv.width) / 2;
