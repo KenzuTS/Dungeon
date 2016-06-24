@@ -12,106 +12,113 @@ Application.Game = function(){}
     var repareMode = false;
 
 Application.Game.prototype = {
- 	create : function() 
- 	{
- 	console.log("Game Screen");
-    game.time.advancedTiming = true;
-    game.world.setBounds(-Application.WORLD_SIZE.WIDTH / 2, -Application.WORLD_SIZE.HEIGHT / 2,Application.WORLD_SIZE.WIDTH / 2, Application.WORLD_SIZE.HEIGHT / 2);
-    Application.Sounds["sword"] = game.add.audio('sword');
-    Application.Sounds["pain"] = game.add.audio('pain');
-    Application.Sounds["plouf"] = game.add.audio('plouf');
+ 	create : function(){
 
-    /* MAP */
-        game.physics.startSystem(Phaser.Physics.ARCADE);
-
-        map = game.add.tilemap('map');
-        map.addTilesetImage('Cave');
-        map.addTilesetImage('Rogue');
-        map.addTilesetImage('Wall');
-        map.addTilesetImage('Ground0');
-        map.addTilesetImage('Floor');
-        map.addTilesetImage('Door0');
-        map.addTilesetImage('Decor0');
-        map.addTilesetImage('Pit0');
-        map.addTilesetImage('Chest0');
-        map.addTilesetImage('Chest1');
-        map.addTilesetImage('LongWep');
-        map.addTilesetImage('Shield');
-        map.addTilesetImage('Fence');
-        map.addTilesetImage('Tile');
-
-        layerGround = map.createLayer('Ground');
-        layerGroundOverlay = map.createLayer('GroundOverlay');
-        layerWalls = map.createLayer('Walls');
-        layerBackgroundObject = map.createLayer('BackgroundObject');
-        layerObjects = map.createLayer('Objects');
-
-        layerGround.setScale(Application.SCALE);
-        layerGroundOverlay.setScale(Application.SCALE);
-        layerWalls.setScale(Application.SCALE);
-        layerBackgroundObject.setScale(Application.SCALE);
-        layerObjects.setScale(Application.SCALE);        
-
-        layerGround.smoothed = false;
-        layerGroundOverlay.smoothed = false;
-        layerWalls.smoothed = false;
-        layerBackgroundObject.smoothed = false;
-        layerObjects.smoothed = false;
-
-        layerWalls.resizeWorld();
-
-        // collisions sur les tiles des layers voulu
-        map.setCollisionBetween(1, 10000, true, layerWalls);
-        map.setCollisionBetween(1, 10000, true, layerObjects);
-
-    /* INPUTS */
-        cursors = game.input.keyboard.createCursorKeys();
-        inventoryInput = game.input.keyboard.addKey(Phaser.KeyCode.I);
-        invOpen = false;
-        
-        inventoryInput.onDown.add(pause, self);
-        inventoryInput.onUp.add(pause, self);
-
-    /* GROUPS */
-        /* Ennemies */
-            ennemiesGroup = game.add.group();
-            map.createFromObjects('Ennemies', 2300, 'characters', 10, true, false, ennemiesGroup, Skeleton);
-            map.createFromObjects('Ennemies', 2342, 'characters', 52, true, false, ennemiesGroup, Bat);
-            for (var i = 0; i < ennemiesGroup.hash.length; i++) {
-
-                ennemiesGroup.hash[i].body.setSize(13, 14, 2, 2);
-                ennemiesGroup.hash[i].scale.setTo(Application.SCALE);
-                ennemiesGroup.hash[i].position.x *= Application.SCALE;
-                ennemiesGroup.hash[i].position.y *= Application.SCALE;
-            }
-
-        /* Items */
-            itemsGroup = game.add.group();
-
-        /* Blocs */
-            blocsGroup = game.add.physicsGroup();
+        console.log("Game Screen");
+        game.time.advancedTiming = true;
+        game.world.setBounds(-Application.WORLD_SIZE.WIDTH / 2, -Application.WORLD_SIZE.HEIGHT / 2,Application.WORLD_SIZE.WIDTH / 2, Application.WORLD_SIZE.HEIGHT / 2);
+        Application.Sounds["sword"] = game.add.audio('sword');
+        Application.Sounds["pain"] = game.add.audio('pain');
+        Application.Sounds["plouf"] = game.add.audio('plouf');
     
-            map.createFromObjects('PushableBloc', 1186, 'bloc', 0, true, false, blocsGroup);
-            for (var i = 0; i < blocsGroup.hash.length; i++) {
-                blocsGroup.hash[i].body.mass = -100;
-                blocsGroup.hash[i].body.setSize(13, 14, 2, 2);
-                blocsGroup.hash[i].scale.setTo(Application.SCALE);
-                blocsGroup.hash[i].position.x *= Application.SCALE;
-                blocsGroup.hash[i].position.y *= Application.SCALE;
-                blocsGroup.hash[i].smoothed = false;
-            }
+        /* MAP */
+            game.physics.startSystem(Phaser.Physics.ARCADE);
+    
+            map = game.add.tilemap('map');
+            map.addTilesetImage('Cave');
+            map.addTilesetImage('Rogue');
+            map.addTilesetImage('Wall');
+            map.addTilesetImage('Ground0');
+            map.addTilesetImage('Floor');
+            map.addTilesetImage('Door0');
+            map.addTilesetImage('Decor0');
+            map.addTilesetImage('Pit0');
+            map.addTilesetImage('Chest0');
+            map.addTilesetImage('Chest1');
+            map.addTilesetImage('LongWep');
+            map.addTilesetImage('Shield');
+            map.addTilesetImage('Fence');
+            map.addTilesetImage('Tile');
+    
+            layerGround = map.createLayer('Ground');
+            layerGroundOverlay = map.createLayer('GroundOverlay');
+            layerWalls = map.createLayer('Walls');
+            layerBackgroundObject = map.createLayer('BackgroundObject');
+            layerObjects = map.createLayer('Objects');
+    
+            layerGround.setScale(Application.SCALE);
+            layerGroundOverlay.setScale(Application.SCALE);
+            layerWalls.setScale(Application.SCALE);
+            layerBackgroundObject.setScale(Application.SCALE);
+            layerObjects.setScale(Application.SCALE);        
+    
+            layerGround.smoothed = false;
+            layerGroundOverlay.smoothed = false;
+            layerWalls.smoothed = false;
+            layerBackgroundObject.smoothed = false;
+            layerObjects.smoothed = false;
+    
+            layerWalls.resizeWorld();
+    
+            // collisions sur les tiles des layers voulu
+            map.setCollisionBetween(1, 10000, true, layerWalls);
+            map.setCollisionBetween(1, 10000, true, layerObjects);
+    
+        /* INPUTS */
+            cursors = game.input.keyboard.createCursorKeys();
+            inventoryInput = game.input.keyboard.addKey(Phaser.KeyCode.I);
+            invOpen = false;
+            
+            inventoryInput.onDown.add(pause, self);
+            inventoryInput.onUp.add(pause, self);
+    
+        /* GROUPS */
+            /* Ennemies */
+                ennemiesGroup = game.add.group();
+                map.createFromObjects('Ennemies', 2300, 'characters', 10, true, false, ennemiesGroup, Skeleton, false);
+                map.createFromObjects('Ennemies', 2342, 'characters', 52, true, false, ennemiesGroup, Bat, false);
+                for (var i = 0; i < ennemiesGroup.hash.length; i++) {
+                    ennemiesGroup.hash[i].body.setSize(13, 14, 2, 2);
+                    ennemiesGroup.hash[i].scale.setTo(Application.SCALE);
+                    ennemiesGroup.hash[i].position.x *= Application.SCALE;
+                    ennemiesGroup.hash[i].position.y *= Application.SCALE;
+                }
+    
+            /* Items */
+                itemsGroup = game.add.group();
+                map.createFromObjects('Items', 5329, 'LongWep', 8, true, false, itemsGroup, Weapon,false);
+                for (var i = 0; i < itemsGroup.children.length; i++) {
+                    itemsGroup.children[i].scale.setTo(Application.SCALE);
+                    itemsGroup.children[i].position.x *= Application.SCALE;
+                    itemsGroup.children[i].position.y *= Application.SCALE;
+                    itemsGroup.children[i].smoothed = false;
+                    itemsGroup.children[i].durability = itemsGroup.children[i].maxDurability;
+                }
 
- 		/* PLAYER */
+            /* Blocs */
+                blocsGroup = game.add.physicsGroup();
+        
+                map.createFromObjects('PushableBloc', 1186, 'bloc', 0, true, false, blocsGroup);
+                for (var i = 0; i < blocsGroup.hash.length; i++) {
+                    blocsGroup.hash[i].body.mass = -100;
+                    blocsGroup.hash[i].body.setSize(13, 14, 2, 2);
+                    blocsGroup.hash[i].scale.setTo(Application.SCALE);
+                    blocsGroup.hash[i].position.x *= Application.SCALE;
+                    blocsGroup.hash[i].position.y *= Application.SCALE;
+                    blocsGroup.hash[i].smoothed = false;
+                }
+    
+     /* PLAYER */
+    
+            player = new Player(game.world.centerX + 312, game.world.centerY);
+            game.add.existing(player);
+    
+            // le joueur passe dessous ce layer
+            layerRoof = map.createLayer('Roof');
+            layerRoof.setScale(Application.SCALE);
+            layerRoof.smoothed = false;
 
-        player = new Player(game.world.centerX + 312, game.world.centerY);
-        game.add.existing(player);
-
-        // le joueur passe dessous ce layer
-        layerRoof = map.createLayer('Roof');
-        layerRoof.setScale(Application.SCALE);
-        layerRoof.smoothed = false;
-
-        /* INIT */
+        /* INIT MENU */
             menuInv = game.add.sprite(0, 0, 'interface');
             menuInv.scale.setTo(Application.SCALE);
             menuInv.smoothed = false;
@@ -150,44 +157,45 @@ Application.Game.prototype = {
                                     y : 224 * Application.SCALE + 32 + Math.floor(i / 12) * 64 }
             }*/
             menuInvGroup.setAllChildren("visible", false);
-
-   
-
-    /* CAMERA */
-        game.camera.follow(player);
-        //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
-
-    /* GUI */
-        gui = new GUI();
-},
+    
+       
+    
+        /* CAMERA */
+            game.camera.follow(player);
+            //game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
+    
+        /* GUI */
+            gui = new GUI();
+    },
 
 	update : function () {
 
-     /* COLLIDE */
-        game.physics.arcade.collide(player, layerWalls);
-        game.physics.arcade.collide(player, blocsGroup);
-        game.physics.arcade.collide(player, layerObjects, collideObject, null, this);
-        game.physics.arcade.collide(player, ennemiesGroup, combatHandler, processAttack, this);
-        game.physics.arcade.collide(layerWalls, blocsGroup, blocInWater, null, this);
-
-    /* OVERLAP */
-        game.physics.arcade.overlap(player, itemsGroup, collectItem,
-            function (spritePlayer,item) {
-                return !spritePlayer.inCombat;
-            }, this);
-
-    /* Player Methods */
-        //player.move();
-        player.moveVelocity();        
-        player.percentHP = numberToPercent(player.HP, player.maxHP);        
-
-    /* GUI UPDATE */
-        for(var i in player.equipement){
-            if (player.equipement[i]) {
-                player.equipement[i].percentDurability = numberToPercent(player.equipement[i].durability, player.equipement[i].maxDurability);
-                setEquipementStatus(player.equipement[i]); 
+        /* COLLIDE */
+            game.physics.arcade.collide(player, layerWalls);
+            game.physics.arcade.collide(player, blocsGroup);
+            game.physics.arcade.collide(player, layerObjects, collideObject, null, this);
+            game.physics.arcade.collide(player, ennemiesGroup, combatHandler, processAttack, this);
+            game.physics.arcade.collide(layerWalls, blocsGroup, blocInWater, null, this);
+    
+        /* OVERLAP */
+            game.physics.arcade.overlap(player, itemsGroup, collectItem,
+                function (spritePlayer,item) {
+                    return !spritePlayer.inCombat;
+                }, this);
+    
+        /* Player Methods */
+            //player.move();
+            player.moveVelocity();        
+            player.percentHP = numberToPercent(player.HP, player.maxHP);        
+    
+        /* GUI UPDATE */
+            for(var i in player.equipement){
+                if (player.equipement[i]) {
+                    player.equipement[i].percentDurability = numberToPercent(player.equipement[i].durability, player.equipement[i].maxDurability);
+                    setEquipementStatus(player.equipement[i]); 
+                }
             }
-        }
+        
 
         gui.healthBar.setPercent(player.percentHP);
         gui.textHP.text = player.HP + " / " + player.maxHP;
@@ -201,6 +209,7 @@ Application.Game.prototype = {
 
 
 }
+
 }
 
 function combatHandler(sprite, target) {
@@ -261,14 +270,18 @@ function combatHandler(sprite, target) {
 }
 
 function collectItem(player, item){
+
     if (item instanceof Item) {
         player.inventory[item.key]++; 
         item.destroy();
     }
+
     else if (item instanceof Equipement) {
+
         var i = player.inventory.slot.length;
         item.position.x = 16 * Application.SCALE + (i%12) * 64;
         item.position.y = 224 * Application.SCALE + 32 + Math.floor(i / 12) * 64;
+        item.anchor.setTo(0.5);
         item.inputEnabled = true;
         item.events.onInputUp.add(function () {
             if (repareMode) {
@@ -281,10 +294,8 @@ function collectItem(player, item){
         }, item);
         player.inventory.slot.push(item);
 
-        menuInvGroup.add(item);
-        
-    }
-    
+        menuInvGroup.add(item);        
+    }    
 }
 
 function blocInWater(bloc, tile){
@@ -417,6 +428,7 @@ function pause(event){
 function returnToGame(){
     invOpen = false;
     selectedItem = null;
+    player.canWalking = true;
     game.input.onDown.remove(checkClick, game);
     menuInvGroup.setAllChildren("visible", false);
     this.game.canvas.style.cursor = "default";
@@ -463,6 +475,7 @@ function setSelectedItem(value){
         }
     }
 }
+
 function equipItem(){
     if (selectedItem && selectedItem != player.equipement.weapon && selectedItem != player.equipement.shield) {
         if (selectedItem instanceof Equipement) {

@@ -1,12 +1,19 @@
-function Equipement(attack, defense, maxDurability, x, y , key, frame){
-	Phaser.Sprite.call(this, game, x, y, key, frame);
-
-	this.attack = attack;
-	this.defense = defense;
-	this.maxDurability = maxDurability;
-	this.durability = maxDurability;
-	this.percentDurability = 100;
-	this.break = false;
+/*function Equipement(attack, defense, maxDurability, x, y , key, frame){*/
+function Equipement(){
+	if (arguments.length == 5) {
+		if (arguments[0] == game) {
+			//game, x, y, key, frame
+			Phaser.Sprite.call(this, arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
+		}
+	}
+	else if (arguments.length == 7) {
+		// x, y, key, frame, attack, defense, maxDurability
+		console.log(arguments);
+		Phaser.Sprite.call(this, game, arguments[0], arguments[1], arguments[2], arguments[3])
+		this.attack = arguments[4];
+		this.defense = arguments[5];
+		this.maxDurability = arguments[6];
+	}
 
 	this.looseDurability = function(){
 		this.setDurability(this.durability--);
@@ -41,9 +48,18 @@ function Equipement(attack, defense, maxDurability, x, y , key, frame){
 		 	this.setDurability(this.durability + Application.REPARE);
 		 }
 	}
-	this.scale.setTo(Application.SCALE);
-	this.anchor.setTo(0.5);
-	//this.kill();
+
+	this.Awake = function () {
+		game.physics.enable(this, Phaser.Physics.ARCADE);
+		this.anchor.setTo(0,1);
+		this.scale.set(Application.SCALE);
+		this.smoothed = false;
+		this.durability = this.maxDurability;
+		this.percentDurability = 100;
+		this.break = false;
+	}
+
+	this.Awake();
 }
 
 Equipement.prototype = Object.create(Phaser.Sprite.prototype);

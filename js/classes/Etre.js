@@ -27,7 +27,7 @@ function Etre(game, x, y, key, frame){
 		
 		game.physics.enable(this, Phaser.Physics.ARCADE);
 	    this.body.collideWorldBounds = true
-		//this.anchor.setTo(0.5);
+		this.anchor.setTo(0,1);
 		this.scale.set(Application.SCALE);
 		this.smoothed = false;
 
