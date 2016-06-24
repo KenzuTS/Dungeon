@@ -10,9 +10,10 @@ function Player(x, y){
 		//[new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45)]
 	};
 
+
 	this.equipement = {
-		weapon: new Weapon(10, 0, 50),
-		shield: new Shield(0, 5, 50)
+		weapon: null /*new Weapon(1950, 1650, 10, 0, 50)*/,
+		shield: null /*new Shield(2000, 1700, 0, 5, 50)*/
 	};
 
 	this.damage = {
@@ -181,6 +182,7 @@ function Player(x, y){
     }
 
     this.takeDamage = function(damage){
+    	console.log(damage);
     	Application.Sounds["pain"].play();
 
     	if (this.equipement.shield && !this.equipement.shield.break) {
