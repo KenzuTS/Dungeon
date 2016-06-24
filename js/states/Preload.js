@@ -14,10 +14,6 @@ Application.Preload.prototype = {
 	    game.load.image('Door0', 'assets/DawnLike/Objects/Door0.png');
 	    game.load.image('Decor0', 'assets/DawnLike/Objects/Decor0.png');
 	    game.load.image('Pit0', 'assets/DawnLike/Objects/Pit0.png');
-	    game.load.image('Chest0', 'assets/DawnLike/Items/Chest0.png');
-	    game.load.image('Chest1', 'assets/DawnLike/Items/Chest1.png');
-	    game.load.image('LongWep', 'assets/DawnLike/Items/LongWep.png');
-	    game.load.image('Shield', 'assets/DawnLike/Items/Shield.png');
 	    game.load.image('Fence', 'assets/DawnLike/Objects/Fence.png');
 	    game.load.image('Tile', 'assets/DawnLike/Objects/Tile.png');
 
@@ -25,6 +21,10 @@ Application.Preload.prototype = {
 	    game.load.image('ressource', 'assets/DawnLike/Items/Rock.png');
 	    game.load.image('interface', 'assets/DawnLike/GUI/interface.png');
 
+	    game.load.spritesheet('Chest0', 'assets/DawnLike/Items/Chest0.png');
+	    game.load.spritesheet('Chest1', 'assets/DawnLike/Items/Chest1.png');
+	    game.load.spritesheet('LongWep', 'assets/DawnLike/Items/LongWep.png');
+	    game.load.spritesheet('Shield', 'assets/DawnLike/Items/Shield.png');
 	    game.load.spritesheet('sword', 'assets/DawnLike/GUI/sword.png', Application.TILE_SIZE, Application.TILE_SIZE);
 	    game.load.spritesheet('shield', 'assets/DawnLike/GUI/shield.png', Application.TILE_SIZE, Application.TILE_SIZE);
 	    game.load.spritesheet('bloc', 'assets/DawnLike/Objects/bloc.png', Application.TILE_SIZE, Application.TILE_SIZE);
