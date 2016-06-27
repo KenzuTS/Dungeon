@@ -182,7 +182,6 @@ function Player(x, y){
     }
 
     this.takeDamage = function(damage){
-    	console.log(damage);
     	Application.Sounds["pain"].play();
 
     	if (this.equipement.shield && !this.equipement.shield.break) {
