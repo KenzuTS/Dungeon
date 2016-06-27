@@ -31,6 +31,7 @@ Application.Preload.prototype = {
 	    game.load.spritesheet('bloc', 'assets/DawnLike/Objects/bloc.png', Application.TILE_SIZE, Application.TILE_SIZE);
 		game.load.spritesheet('characters', 'assets/Characters/characters.png', Application.TILE_SIZE, Application.TILE_SIZE);
 	    game.load.spritesheet('dead', 'assets/Characters/dead.png', Application.TILE_SIZE, Application.TILE_SIZE);
+	    game.load.spritesheet('pics', 'assets/Objects/pics.png', Application.TILE_SIZE, Application.TILE_SIZE);
 
 	    game.load.audio('pain', 'assets/audio/pain.ogg');
 	    game.load.audio('sword', 'assets/audio/ZBOUB.wav');

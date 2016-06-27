@@ -5,7 +5,7 @@ Application.Game = function(){}
     var map, layerWalls, layerGround, layerGroundOverlay, layerBackgroundObject, layerObjects, layerRoof, layerEnnemies, layerPushableBloc;
     var player;
     var cursors;
-    var ennemiesGroup, itemsGroup, blocsGroup, menuInvGroup,
+    var ennemiesGroup, itemsGroup, blocsGroup, menuInvGroup, picsGroup,
         groundGroup, groundOverlayGroup, wallsGroup, backgroundObjectGroup, objectsGroup;
     var gui;
     var inventoryInput, invOpen, menuInv, selectedItem, graphicSelectedItem;
@@ -75,7 +75,7 @@ Application.Game.prototype = {
     
         /* GROUPS */
 
-            /* layerGround*/            
+            /* layerGround*/
                 groundGroup = game.add.group();
                 groundGroup.add(layerGround);
 
@@ -127,7 +127,19 @@ Application.Game.prototype = {
                     blocsGroup.hash[i].position.x *= Application.SCALE;
                     blocsGroup.hash[i].position.y *= Application.SCALE;
                     blocsGroup.hash[i].smoothed = false;
-                }            
+                }
+
+            /* Pics */          
+                picsGroup = game.add.group();
+                map.createFromObjects('pics', 5433, 'pics', 0, true, false, picsGroup);
+                for (var i = 0; i < picsGroup.hash.length; i++) {
+                    picsGroup.hash[i].scale.setTo(Application.SCALE);
+                    picsGroup.hash[i].position.x *= Application.SCALE;
+                    picsGroup.hash[i].position.y *= Application.SCALE;
+                    picsGroup.hash[i].smoothed = false;
+                    picsGroup.hash[i].animations.add('activate', [0,1], 3, true);
+                    picsGroup.hash[i].animations.play();
+                }
 
         /* PLAYER */
             
