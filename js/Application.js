@@ -23,6 +23,7 @@ var Application = {
 		TWEEN_ATTACK : 250
 	},
 	SCALE : 2,
-	Sounds : {}
+	Sounds : {},
+	REPARE : 10
 }
 
