@@ -108,7 +108,7 @@ Application.Game.prototype = {
                     blocsGroup.hash[i].smoothed = false;
                 }
     
-     /* PLAYER */
+        /* PLAYER */
     
             player = new Player(game.world.centerX + 312, game.world.centerY);
             game.add.existing(player);
@@ -156,9 +156,7 @@ Application.Game.prototype = {
                 menuInv.slot[i] = { x : 16 * Application.SCALE + (i%12) * 64, 
                                     y : 224 * Application.SCALE + 32 + Math.floor(i / 12) * 64 }
             }*/
-            menuInvGroup.setAllChildren("visible", false);
-    
-       
+            menuInvGroup.setAllChildren("visible", false); 
     
         /* CAMERA */
             game.camera.follow(player);
@@ -196,20 +194,16 @@ Application.Game.prototype = {
                 }
             }
         
-
         gui.healthBar.setPercent(player.percentHP);
         gui.textHP.text = player.HP + " / " + player.maxHP;
         gui.textKey.text = player.inventory.key;
         gui.textRessource.text = player.inventory.ressource;
 
 
-    game.debug.body(player);
-    game.debug.text(game.time.fps, Application.Canvas.WIDTH / 2,
-         Application.Canvas.HEIGHT / 2);
-
-
-}
-
+        game.debug.body(player);
+        game.debug.text(game.time.fps, Application.Canvas.WIDTH / 2,
+        Application.Canvas.HEIGHT / 2);
+    }
 }
 
 function combatHandler(sprite, target) {
@@ -431,16 +425,22 @@ function returnToGame(){
     player.canWalking = true;
     game.input.onDown.remove(checkClick, game);
     menuInvGroup.setAllChildren("visible", false);
-    this.game.canvas.style.cursor = "default";
     var description = menuInvGroup.children.find(x => x.name == "description");
         description.removeAll(true);
     menuInvGroup.remove(graphicSelectedItem);
     game.paused = false;
+
+    document.body.style.cursor = 'auto';
+    repareMode = false;
 }
 
 function toggleRepareMode(){
     repareMode = !repareMode;
-    console.log(repareMode);
+    if (repareMode) {
+        document.body.style.cursor = 'url(assets/hammer.png) 2 2, pointer';
+    } else {
+        document.body.style.cursor = 'auto';
+    }
 }
 
 function checkClick(event) {
