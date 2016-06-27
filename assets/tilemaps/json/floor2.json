@@ -989,8 +989,32 @@
          "width":100,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":100,
+         "name":"StartPoint",
+         "objects":[
+                {
+                 "gid":2294,
+                 "height":16,
+                 "id":114,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":429.5,
+                 "y":881.5
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":100,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":113,
+ "nextobjectid":115,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,
@@ -1191,6 +1215,20 @@
          "spacing":0,
          "tilecount":176,
          "tileheight":16,
+         "tileproperties":
+            {
+             "164":
+                {
+                 "used":false
+                }
+            },
+         "tilepropertytypes":
+            {
+             "164":
+                {
+                 "used":"bool"
+                }
+            },
          "tilewidth":16
         }, 
         {

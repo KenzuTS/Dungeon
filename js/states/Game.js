@@ -10,6 +10,7 @@ Application.Game = function(){}
     var gui;
     var inventoryInput, invOpen, menuInv, selectedItem, graphicSelectedItem;
     var repareMode = false;
+    var torchs;
 
 Application.Game.prototype = {
  	create : function(){
@@ -39,7 +40,7 @@ Application.Game.prototype = {
             map.addTilesetImage('Shield');
             map.addTilesetImage('Fence');
             map.addTilesetImage('Tile');
-    
+
             layerGround = map.createLayer('Ground');
             layerGroundOverlay = map.createLayer('GroundOverlay');
             layerWalls = map.createLayer('Walls');
@@ -73,6 +74,7 @@ Application.Game.prototype = {
             inventoryInput.onUp.add(pause, self);
     
         /* GROUPS */
+
             /* Ennemies */
                 ennemiesGroup = game.add.group();
                 map.createFromObjects('Ennemies', 2300, 'characters', 10, true, false, ennemiesGroup, Skeleton, false);
@@ -108,9 +110,12 @@ Application.Game.prototype = {
                     blocsGroup.hash[i].smoothed = false;
                 }
     
+        /* START POINTS */
+            
+
         /* PLAYER */
-    
-            player = new Player(game.world.centerX + 312, game.world.centerY);
+            
+            player = new Player(map.objects.StartPoint[0].x * Application.SCALE, map.objects.StartPoint[0].y * Application.SCALE);
             game.add.existing(player);
     
             // le joueur passe dessous ce layer
@@ -169,7 +174,7 @@ Application.Game.prototype = {
 	update : function () {
 
         /* COLLIDE */
-            //game.physics.arcade.collide(player, layerWalls);
+            game.physics.arcade.collide(player, layerWalls);
             game.physics.arcade.collide(player, blocsGroup);
             game.physics.arcade.collide(player, layerObjects, collideObject, null, this);
             game.physics.arcade.collide(player, ennemiesGroup, combatHandler, processAttack, this);
@@ -198,6 +203,7 @@ Application.Game.prototype = {
         gui.textHP.text = player.HP + " / " + player.maxHP;
         gui.textKey.text = player.inventory.key;
         gui.textRessource.text = player.inventory.ressource;
+
 
 
         game.debug.body(player);
@@ -425,9 +431,6 @@ function returnToGame(){
     player.canWalking = true;
     game.input.onDown.remove(checkClick, game);
     menuInvGroup.setAllChildren("visible", false);
-    var description = menuInvGroup.children.find(x => x.name == "description");
-        description.removeAll(true);
-    menuInvGroup.remove(graphicSelectedItem);
     game.paused = false;
 
     document.body.style.cursor = 'auto';
@@ -500,8 +503,6 @@ function equipItem(){
             var index = player.inventory.slot.indexOf(selectedItem);
             if (temp != null) {
                 player.inventory.slot[index] = temp;
-            } else {
-                player.inventory.slot.splice(index,1);
             }
             menuInvGroup.remove(graphicSelectedItem);
         }
