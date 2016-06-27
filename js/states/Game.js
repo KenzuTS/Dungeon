@@ -17,7 +17,7 @@ Application.Game.prototype = {
 
         console.log("Game Screen");
         game.time.advancedTiming = true;
-        game.world.setBounds(-Application.WORLD_SIZE.WIDTH / 2, -Application.WORLD_SIZE.HEIGHT / 2,Application.WORLD_SIZE.WIDTH / 2, Application.WORLD_SIZE.HEIGHT / 2);
+        game.world.setBounds(-Application.WORLD_SIZE.WIDTH / 2, -Application.WORLD_SIZE.HEIGHT / 2, Application.WORLD_SIZE.WIDTH / 2, Application.WORLD_SIZE.HEIGHT / 2);
         Application.Sounds["sword"] = game.add.audio('sword');
         Application.Sounds["pain"] = game.add.audio('pain');
         Application.Sounds["plouf"] = game.add.audio('plouf');
@@ -108,10 +108,7 @@ Application.Game.prototype = {
                     blocsGroup.hash[i].position.x *= Application.SCALE;
                     blocsGroup.hash[i].position.y *= Application.SCALE;
                     blocsGroup.hash[i].smoothed = false;
-                }
-    
-        /* START POINTS */
-            
+                }            
 
         /* PLAYER */
             
