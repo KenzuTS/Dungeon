@@ -1255,6 +1255,20 @@
          "spacing":0,
          "tilecount":32,
          "tileheight":16,
+         "tileproperties":
+            {
+             "29":
+                {
+                 "mapName":"tuto"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "29":
+                {
+                 "mapName":"string"
+                }
+            },
          "tilewidth":16
         }, 
         {

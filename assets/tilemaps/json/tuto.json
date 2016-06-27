@@ -200,8 +200,32 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":881.833333333333,
-                 "y":1248.5
+                 "x":824,
+                 "y":703.083333333333
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":100,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":100,
+         "name":"Spawn",
+         "objects":[
+                {
+                 "gid":2327,
+                 "height":16,
+                 "id":40,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":880,
+                 "y":1249.33333333333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -210,7 +234,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":40,
+ "nextobjectid":44,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,
@@ -437,6 +461,20 @@
          "spacing":0,
          "tilecount":32,
          "tileheight":16,
+         "tileproperties":
+            {
+             "29":
+                {
+                 "mapName":"floor2"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "29":
+                {
+                 "mapName":"string"
+                }
+            },
          "tilewidth":16
         }, 
         {

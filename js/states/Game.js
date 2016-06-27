@@ -358,102 +358,7 @@ function collideObject(player, tile){
 
         //stairs
         case 5318:
-        // vider groups
-            groundGroup.removeAll();
-            groundGroup.remove();
-            groundOverlayGroup.removeAll();
-            wallsGroup.removeAll();
-            backgroundObjectGroup.removeAll();
-            objectsGroup.removeAll();
-
-            ennemiesGroup.removeAll();
-            itemsGroup.removeAll();
-            blocsGroup.removeAll();
-            roofGroup.removeAll();
-
-        map = game.add.tilemap('floor2');
-            map.addTilesetImage('Cave');
-            map.addTilesetImage('Rogue');
-            map.addTilesetImage('Wall');
-            map.addTilesetImage('Ground0');
-            map.addTilesetImage('Floor');
-            map.addTilesetImage('Door0');
-            map.addTilesetImage('Decor0');
-            map.addTilesetImage('Pit0');
-            map.addTilesetImage('Chest0');
-            map.addTilesetImage('Chest1');
-            map.addTilesetImage('LongWep');
-            map.addTilesetImage('Shield');
-            map.addTilesetImage('Fence');
-            map.addTilesetImage('Tile');
-
-            layerGround = map.createLayer('Ground');
-            layerGroundOverlay = map.createLayer('GroundOverlay');
-            layerWalls = map.createLayer('Walls');
-            layerBackgroundObject = map.createLayer('BackgroundObject');
-            layerObjects = map.createLayer('Objects');
-    
-            layerGround.setScale(Application.SCALE);
-            layerGroundOverlay.setScale(Application.SCALE);
-            layerWalls.setScale(Application.SCALE);
-            layerBackgroundObject.setScale(Application.SCALE);
-            layerObjects.setScale(Application.SCALE);        
-    
-            layerGround.smoothed = false;
-            layerGroundOverlay.smoothed = false;
-            layerWalls.smoothed = false;
-            layerBackgroundObject.smoothed = false;
-            layerObjects.smoothed = false;
-    
-            layerWalls.resizeWorld();
-    
-            // collisions sur les tiles des layers voulu
-            map.setCollisionBetween(1, 10000, true, layerWalls);
-            map.setCollisionBetween(1, 10000, true, layerObjects);
-
-            // reremplir groups
-                groundGroup.add(layerGround);
-                groundOverlayGroup.add(layerGroundOverlay);
-                wallsGroup.add(layerWalls);
-                backgroundObjectGroup.add(layerBackgroundObject);
-                objectsGroup.add(layerObjects);
-
-                map.createFromObjects('Ennemies', 2300, 'characters', 10, true, false, ennemiesGroup, Skeleton, false);
-                map.createFromObjects('Ennemies', 2342, 'characters', 52, true, false, ennemiesGroup, Bat, false);
-                for (var i = 0; i < ennemiesGroup.hash.length; i++) {
-                    ennemiesGroup.hash[i].body.setSize(13, 14, 2, 2);
-                    ennemiesGroup.hash[i].scale.setTo(Application.SCALE);
-                    ennemiesGroup.hash[i].position.x *= Application.SCALE;
-                    ennemiesGroup.hash[i].position.y *= Application.SCALE;
-                }
-
-                map.createFromObjects('Items', 5329, 'LongWep', 8, true, false, itemsGroup, Weapon,false);
-                for (var i = 0; i < itemsGroup.children.length; i++) {
-                    itemsGroup.children[i].scale.setTo(Application.SCALE);
-                    itemsGroup.children[i].position.x *= Application.SCALE;
-                    itemsGroup.children[i].position.y *= Application.SCALE;
-                    itemsGroup.children[i].smoothed = false;
-                    itemsGroup.children[i].durability = itemsGroup.children[i].maxDurability;
-                }
-
-                map.createFromObjects('PushableBloc', 1186, 'bloc', 0, true, false, blocsGroup);
-                for (var i = 0; i < blocsGroup.hash.length; i++) {
-                    blocsGroup.hash[i].body.mass = -100;
-                    blocsGroup.hash[i].body.setSize(13, 14, 2, 2);
-                    blocsGroup.hash[i].scale.setTo(Application.SCALE);
-                    blocsGroup.hash[i].position.x *= Application.SCALE;
-                    blocsGroup.hash[i].position.y *= Application.SCALE;
-                    blocsGroup.hash[i].smoothed = false;
-                }
-
-                layerRoof = map.createLayer('Roof');
-                layerRoof.setScale(Application.SCALE);
-                layerRoof.smoothed = false;
-                roofGroup.add(layerRoof);                 
-
-            player.position.x = map.objects.StartPoint[0].x * Application.SCALE;
-            player.position.y = map.objects.StartPoint[0].y * Application.SCALE;
-
+        loadMap(tile.properties.mapName);
         break;
 
         // gold closed door
@@ -620,4 +525,103 @@ function equipItem(){
             menuInvGroup.remove(graphicSelectedItem);
         }
     }
+}
+
+function loadMap(mapName){
+    // vider groups
+            groundGroup.removeAll();
+            groundGroup.remove();
+            groundOverlayGroup.removeAll();
+            wallsGroup.removeAll();
+            backgroundObjectGroup.removeAll();
+            objectsGroup.removeAll();
+
+            ennemiesGroup.removeAll();
+            itemsGroup.removeAll();
+            blocsGroup.removeAll();
+            roofGroup.removeAll();
+
+        // create map
+            map = game.add.tilemap(mapName);
+            map.addTilesetImage('Cave');
+            map.addTilesetImage('Rogue');
+            map.addTilesetImage('Wall');
+            map.addTilesetImage('Ground0');
+            map.addTilesetImage('Floor');
+            map.addTilesetImage('Door0');
+            map.addTilesetImage('Decor0');
+            map.addTilesetImage('Pit0');
+            map.addTilesetImage('Chest0');
+            map.addTilesetImage('Chest1');
+            map.addTilesetImage('LongWep');
+            map.addTilesetImage('Shield');
+            map.addTilesetImage('Fence');
+            map.addTilesetImage('Tile');
+    
+            layerGround = map.createLayer('Ground');
+            layerGroundOverlay = map.createLayer('GroundOverlay');
+            layerWalls = map.createLayer('Walls');
+            layerBackgroundObject = map.createLayer('BackgroundObject');
+            layerObjects = map.createLayer('Objects');
+    
+            layerGround.setScale(Application.SCALE);
+            layerGroundOverlay.setScale(Application.SCALE);
+            layerWalls.setScale(Application.SCALE);
+            layerBackgroundObject.setScale(Application.SCALE);
+            layerObjects.setScale(Application.SCALE);        
+    
+            layerGround.smoothed = false;
+            layerGroundOverlay.smoothed = false;
+            layerWalls.smoothed = false;
+            layerBackgroundObject.smoothed = false;
+            layerObjects.smoothed = false;
+    
+            layerWalls.resizeWorld();
+    
+            // collisions sur les tiles des layers voulu
+            map.setCollisionBetween(1, 10000, true, layerWalls);
+            map.setCollisionBetween(1, 10000, true, layerObjects);
+
+        // reremplir groups
+            groundGroup.add(layerGround);
+            groundOverlayGroup.add(layerGroundOverlay);
+            wallsGroup.add(layerWalls);
+            backgroundObjectGroup.add(layerBackgroundObject);
+            objectsGroup.add(layerObjects);
+
+            map.createFromObjects('Ennemies', 2300, 'characters', 10, true, false, ennemiesGroup, Skeleton, false);
+            map.createFromObjects('Ennemies', 2342, 'characters', 52, true, false, ennemiesGroup, Bat, false);
+            for (var i = 0; i < ennemiesGroup.hash.length; i++) {
+                ennemiesGroup.hash[i].body.setSize(13, 14, 2, 2);
+                ennemiesGroup.hash[i].scale.setTo(Application.SCALE);
+                ennemiesGroup.hash[i].position.x *= Application.SCALE;
+                ennemiesGroup.hash[i].position.y *= Application.SCALE;
+            }
+
+            map.createFromObjects('Items', 5329, 'LongWep', 8, true, false, itemsGroup, Weapon,false);
+            for (var i = 0; i < itemsGroup.children.length; i++) {
+                itemsGroup.children[i].scale.setTo(Application.SCALE);
+                itemsGroup.children[i].position.x *= Application.SCALE;
+                itemsGroup.children[i].position.y *= Application.SCALE;
+                itemsGroup.children[i].smoothed = false;
+                itemsGroup.children[i].durability = itemsGroup.children[i].maxDurability;
+            }
+
+            map.createFromObjects('PushableBloc', 1186, 'bloc', 0, true, false, blocsGroup);
+            for (var i = 0; i < blocsGroup.hash.length; i++) {
+                blocsGroup.hash[i].body.mass = -100;
+                blocsGroup.hash[i].body.setSize(13, 14, 2, 2);
+                blocsGroup.hash[i].scale.setTo(Application.SCALE);
+                blocsGroup.hash[i].position.x *= Application.SCALE;
+                blocsGroup.hash[i].position.y *= Application.SCALE;
+                blocsGroup.hash[i].smoothed = false;
+            }
+
+            layerRoof = map.createLayer('Roof');
+            layerRoof.setScale(Application.SCALE);
+            layerRoof.smoothed = false;
+            roofGroup.add(layerRoof);                 
+
+        player.position.x = map.objects.StartPoint[0].x * Application.SCALE;
+        player.position.y = map.objects.StartPoint[0].y * Application.SCALE;
 }
