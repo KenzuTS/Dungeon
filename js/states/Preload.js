@@ -4,7 +4,8 @@ Application.Preload.prototype = {
 	preload : function () {
 		console.log("Preload preload");
 		//game.load.tilemap('map', 'assets/tilemaps/json/dungeonTest.json', null, Phaser.Tilemap.TILED_JSON);
-	    game.load.tilemap('map', 'assets/tilemaps/json/tuto.json', null, Phaser.Tilemap.TILED_JSON);
+	    game.load.tilemap('tuto', 'assets/tilemaps/json/tuto.json', null, Phaser.Tilemap.TILED_JSON);
+	    game.load.tilemap('floor2', 'assets/tilemaps/json/floor2.json', null, Phaser.Tilemap.TILED_JSON);
 	    game.load.image('Cave', 'assets/roguelike-cave-pack/Spritesheet/roguelikeDungeon_transparent.png');
 	    game.load.image('Rogue', 'assets/roguelike-pack/Spritesheet/roguelikeSheet_transparent.png');
 
