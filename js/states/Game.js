@@ -171,7 +171,7 @@ Application.Game.prototype = {
 	update : function () {
 
         /* COLLIDE */
-            game.physics.arcade.collide(player, layerWalls);
+            //game.physics.arcade.collide(player, layerWalls);
             game.physics.arcade.collide(player, blocsGroup);
             game.physics.arcade.collide(player, layerObjects, collideObject, null, this);
             game.physics.arcade.collide(player, ennemiesGroup, combatHandler, processAttack, this);
@@ -432,6 +432,9 @@ function returnToGame(){
     game.input.onDown.remove(checkClick, game);
     menuInvGroup.setAllChildren("visible", false);
     this.game.canvas.style.cursor = "default";
+    var description = menuInvGroup.children.find(x => x.name == "description");
+        description.removeAll(true);
+    menuInvGroup.remove(graphicSelectedItem);
     game.paused = false;
 }
 
@@ -497,6 +500,8 @@ function equipItem(){
             var index = player.inventory.slot.indexOf(selectedItem);
             if (temp != null) {
                 player.inventory.slot[index] = temp;
+            } else {
+                player.inventory.slot.splice(index,1);
             }
             menuInvGroup.remove(graphicSelectedItem);
         }

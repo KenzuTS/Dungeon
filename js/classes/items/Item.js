@@ -6,6 +6,7 @@ function Item(game, x, y, key, frame){
 		game.physics.enable(this, Phaser.Physics.ARCADE);
 		this.scale.setTo(Application.SCALE);
 		//this.anchor.setTo(0.5);
+		this.anchor.setTo(0,1);
 		this.smoothed = false;
 		this.body.setSize(13, 14, 2, 2);
 	}

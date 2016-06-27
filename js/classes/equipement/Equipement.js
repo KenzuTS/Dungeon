@@ -16,12 +16,7 @@ function Equipement(){
 	}
 
 	this.looseDurability = function(){
-		this.setDurability(this.durability--);
-/*		this.durability--;
-		if (this.durability <= 0) {
-			this.break = true;
-			this.durability = 0;
-		}*/
+		this.setDurability(this.durability - 1);
 	}
 
 	this.setDurability = function(value) {
@@ -46,6 +41,7 @@ function Equipement(){
 	this.repare = function () {
 		 if (player.inventory.ressource) {
 		 	this.setDurability(this.durability + Application.REPARE);
+		 	player.inventory.ressource--;
 		 }
 	}
 
