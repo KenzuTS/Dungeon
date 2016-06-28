@@ -4,6 +4,8 @@ function Etre(game, x, y, key, frame){
 	this.idDeadTexture = 1;
 	this.inCombat = false;
 	this.canWalking = true;
+	this.tweenProgress = null;
+	this.tweens = {};
 
 	this.HP = 100;
 	this.maxHP = this.HP;
@@ -15,6 +17,9 @@ function Etre(game, x, y, key, frame){
 	this.attackDamage = 0;
 
 	this.setHP = function (value) {
+		if (this instanceof Player) {
+			Application.Sounds["pain"].play();
+		}
 		this.HP = value;
 		if (this.HP <= 0) {
 			this.HP = 0;
@@ -24,7 +29,7 @@ function Etre(game, x, y, key, frame){
 	}
 
 	this.Awake = function() {
-		
+		this.delay = Math.RandomTime(0,300);
 		game.physics.enable(this, Phaser.Physics.ARCADE);
 	    this.body.collideWorldBounds = true
 		this.anchor.setTo(0,1);
@@ -86,4 +91,73 @@ Etre.prototype.takeDamage = function (damage) {
 
 Etre.prototype.calculDamage = function(){
 	this.attackDamage = this.damage.min + Math.random() * (this.damage.max - this.damage.min)|0;
+}
+
+Etre.prototype.move = function () {
+	if (!this.pattern) {
+		if (this.delay <= 0){
+			var right = {
+				x : this.position.x + Application.TILE_SIZE * Application.SCALE,
+				y : this.position.y
+			}
+			var left = {
+				x : this.position.x,
+				y : this.position.y + Application.TILE_SIZE * Application.SCALE
+			}
+			var up = {
+				x : this.position.x,
+				y : this.position.y
+			}
+			var down = {
+				x : this.position.x + Application.TILE_SIZE * Application.SCALE,
+				y : this.position.y + Application.TILE_SIZE * Application.SCALE
+			}
+			if (this.canWalking) {
+				this.tweens["right"] = game.add.tween(this).to(right, Math.RandomTime(1000, 2500), "Linear");
+				this.tweens["down"] = game.add.tween(this).to(down, Math.RandomTime(1000, 2500), "Linear");
+				this.tweens["left"] = game.add.tween(this).to(left, Math.RandomTime(1000, 2500), "Linear");
+				this.tweens["up"] = game.add.tween(this).to(up, Math.RandomTime(1000, 2500), "Linear");
+	/*			this.tweens.right.chain(this.tweens.down);
+				this.tweens.down.chain(this.tweens.left);
+				this.tweens.left.chain(this.tweens.up);
+				this.tweens.up.chain(this.tweens.right);*/
+				this.tweens.right.onComplete.add(function (self) {
+					self.animations.stop();
+					self.animations.play('down');
+					self.tweenProgress = self.tweens.down;
+					self.tweenProgress.start();
+				})
+				this.tweens.down.onComplete.add(function (self) {
+					self.animations.stop();
+					self.animations.play('left');
+					self.tweenProgress = self.tweens.left;
+					self.tweenProgress.start();
+				})
+				this.tweens.left.onComplete.add(function (self) {
+					self.animations.stop();
+					self.animations.play('up');
+					self.tweenProgress = self.tweens.up;
+					self.tweenProgress.start();
+				})
+				this.tweens.up.onComplete.add(function (self) {
+					self.animations.stop();
+					self.animations.play('right');
+					self.tweenProgress = self.tweens.right;
+					self.tweens.right.start();
+				})
+				this.tweenProgress = this.tweens.right;
+				this.tweens.right.start();
+				this.animations.play('right');
+				this.canWalking = false;	
+			}
+		}
+		else {
+			this.delay--;
+		}
+	}
+}
+
+Math.RandomTime = function (min, max) {
+	var value = min + (Math.random() * (max - min));
+	return value| 0;
 }

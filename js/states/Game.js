@@ -21,7 +21,11 @@ Application.Game.prototype = {
         Application.Sounds["sword"] = game.add.audio('sword');
         Application.Sounds["pain"] = game.add.audio('pain');
         Application.Sounds["plouf"] = game.add.audio('plouf');
-    
+        Application.Sounds["repare"] = game.add.audio('repare');
+        Application.Sounds["heal"] = game.add.audio('heal');
+        Application.Sounds["dead"] = game.add.audio('dead');
+        Application.Sounds["door"] = game.add.audio('door');
+
         /* MAP */
             game.physics.startSystem(Phaser.Physics.ARCADE);
     
@@ -222,7 +226,13 @@ Application.Game.prototype = {
         /* Player Methods */
             //player.move();
             player.moveVelocity();        
-            player.percentHP = numberToPercent(player.HP, player.maxHP);        
+            player.percentHP = numberToPercent(player.HP, player.maxHP);   
+
+            for(var ennemy of ennemiesGroup.children.filter(x => x instanceof Skeleton)){
+                //console.log(ennemy);
+                ennemy.move();
+            }
+                
     
         /* GUI UPDATE */
             for(var i in player.equipement){
@@ -244,6 +254,9 @@ Application.Game.prototype = {
 }
 
 function combatHandler(sprite, target) {
+    if (target.tweenProgress) {
+        target.tweenProgress.pause();
+    }
     switch(sprite.animations.currentAnim.name){
         case "down":
             sprite.animations.stop();
@@ -353,15 +366,13 @@ function collideObject(player, tile){
 
     switch(tile.index){
 
-        //sword
-        case 5329:
-        console.log("Getsword");
-        console.log(tile);
-        break;
-
         //statue
         case 5181:
-        console.log("statue");
+        if (!tile.used) {
+            tile.used = true;
+            player.setHP(player.maxHP);
+            Application.Sounds["heal"].play();
+        }
         break;
 
         //closedChest
@@ -371,7 +382,7 @@ function collideObject(player, tile){
 
         //stairs
         case 5318:
-        loadMap(tile.properties.mapName);
+            loadMap(tile.properties.mapName);
         break;
 
         // gold closed door
@@ -386,8 +397,8 @@ function collideObject(player, tile){
     }
 
     function openDoor(player, door){
-
         if (player.inventory.key) {
+            Application.Sounds["door"].play();
             map.removeTile(door.x, door.y, "Objects");
             player.inventory.key--;
         }

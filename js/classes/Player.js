@@ -206,6 +206,10 @@ function Player(x, y){
     	}
     }
 
+    this.onDead = function() {
+    	Application.Sounds["dead"].play();
+    	Etre.prototype.onDead.call(this);
+    }
     this.Awake();
 }
 
