@@ -1,7 +1,7 @@
 function Etre(game, x, y, key, frame){
 
 	Phaser.Sprite.call(this, game, x, y, key, frame);
-	this.idDeadTexture = 4;
+	this.idDeadTexture = 1;
 	this.inCombat = false;
 	this.canWalking = true;
 
@@ -40,11 +40,14 @@ Etre.prototype = Object.create(Phaser.Sprite.prototype);
 Etre.prototype.constructor = Etre;
 
 Etre.prototype.onDead = function(){
+	console.log(this.idDeadTexture);
 	this.loadTexture('dead', this.idDeadTexture);
 	if (!(this instanceof Player)) {
 		game.time.events.add(Application.Time.FADE_DEATH, function(){
 			this.destroy();
 		},this);
+	} else {
+		this.canWalking = false;
 	}
 }
 
