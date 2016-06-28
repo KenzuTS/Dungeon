@@ -17,14 +17,16 @@ function Etre(game, x, y, key, frame){
 	this.attackDamage = 0;
 
 	this.setHP = function (value) {
-		if (this instanceof Player) {
-			Application.Sounds["pain"].play();
-		}
-		this.HP = value;
-		if (this.HP <= 0) {
-			this.HP = 0;
-			this.isAlive = false;
-			this.onDead();
+		if (this.isAlive) {
+			if (this instanceof Player) {
+				Application.Sounds["pain"].play();
+			}
+			this.HP = value;
+			if (this.HP <= 0) {
+				this.HP = 0;
+				this.isAlive = false;
+				this.onDead();
+			}
 		}
 	}
 
@@ -45,7 +47,6 @@ Etre.prototype = Object.create(Phaser.Sprite.prototype);
 Etre.prototype.constructor = Etre;
 
 Etre.prototype.onDead = function(){
-	console.log(this.idDeadTexture);
 	this.loadTexture('dead', this.idDeadTexture);
 	if (!(this instanceof Player)) {
 		game.time.events.add(Application.Time.FADE_DEATH, function(){
