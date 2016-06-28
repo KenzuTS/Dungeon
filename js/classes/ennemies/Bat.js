@@ -12,14 +12,6 @@ function Bat(game, x, y, key, frame){
 	    this.play('down');
 	}
 
-	// TODO
-	this.onDead = function(){
-		Etre.prototype.onDead.call(this);
-		var ressource = new Ressource(this.position.x, this.position.y)
-		itemsGroup.add(ressource);
-		//this.sprite.kill();
-	}
-
     this.Awake();
 }
 

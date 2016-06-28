@@ -150,10 +150,12 @@
                  "name":"",
                  "properties":
                     {
+                     "Ikey":true,
                      "pattern":"none"
                     },
                  "propertytypes":
                     {
+                     "Ikey":"bool",
                      "pattern":"string"
                     },
                  "rotation":0,
