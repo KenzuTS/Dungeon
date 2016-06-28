@@ -184,10 +184,14 @@ Application.Game.prototype = {
             menuInvGroup.add(repare_label);
 
             equip_label = game.add.text(640, 100, 'Equip', { font: '24px Arial', fill: '#fff' });
-            equip_label.visible = false;
             equip_label.inputEnabled = true;
             equip_label.events.onInputUp.add(equipItem);
             menuInvGroup.add(equip_label);
+
+            ressource = game.add.sprite(575, 400, 'ressource')
+            ressource.scale.setTo(Application.SCALE);
+            menuInvGroup.add(ressource);
+            menuInvGroup.add(game.add.text(600, 400, ' = ' + Application.REPARE + ' durability',{ font: '24px Arial', fill: '#fff' }));
 
             var description = game.add.group();
             description.name = "description";

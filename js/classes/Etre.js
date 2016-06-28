@@ -6,9 +6,10 @@ function Etre(game, x, y, key, frame){
 	this.canWalking = true;
 	this.tweenProgress = null;
 	this.tweens = {};
+	this.pattern = null;
+	this.maxHP = 100;
 
-	this.HP = 100;
-	this.maxHP = this.HP;
+	this.HP = this.maxHP;
 	this.isAlive = true;
 	this.damage = {
 		min : 1,
