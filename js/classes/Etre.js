@@ -21,7 +21,7 @@ function Etre(game, x, y, key, frame){
 			Application.Sounds["pain"].play();
 		}
 		this.HP = value;
-		if (this.HP <= 0) {
+		if (this.HP <= 0 && this.alive) {
 			this.HP = 0;
 			this.isAlive = false;
 			this.onDead();
