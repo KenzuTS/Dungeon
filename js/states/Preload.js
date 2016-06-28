@@ -33,10 +33,13 @@ Application.Preload.prototype = {
 	    game.load.spritesheet('dead', 'assets/Characters/dead.png', Application.TILE_SIZE, Application.TILE_SIZE);
 	    game.load.spritesheet('pics', 'assets/Objects/pics.png', Application.TILE_SIZE, Application.TILE_SIZE);
 
-	    game.load.audio('pain', 'assets/audio/pain.ogg');
-	    game.load.audio('sword', 'assets/audio/ZBOUB.wav');
+	    game.load.audio('pain', 'assets/audio/Hurt.wav');
+	    game.load.audio('sword', 'assets/audio/Sword.wav');
 	    game.load.audio('repare', 'assets/audio/repare.wav');
 	    game.load.audio('plouf', 'assets/audio/PLOUF.wav');
+	    game.load.audio('heal', 'assets/audio/Heal.wav');
+	    game.load.audio('dead', 'assets/audio/Dying.wav');
+	    game.load.audio('door', 'assets/audio/Door.wav');
 	},
 
 	create : function(){

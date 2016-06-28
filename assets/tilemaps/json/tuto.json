@@ -148,6 +148,14 @@
                  "height":16,
                  "id":36,
                  "name":"",
+                 "properties":
+                    {
+                     "pattern":"none"
+                    },
+                 "propertytypes":
+                    {
+                     "pattern":"string"
+                    },
                  "rotation":0,
                  "type":"",
                  "visible":true,

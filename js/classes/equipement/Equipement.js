@@ -39,10 +39,11 @@ function Equipement(){
 	}
 
 	this.repare = function () {
-		 if (player.inventory.ressource) {
+		if (player.inventory.ressource) {
+			Application.Sounds["repare"].play();
 		 	this.setDurability(this.durability + Application.REPARE);
-		 	player.inventory.ressource--;
-		 }
+			player.inventory.ressource--;
+		}
 	}
 
 	this.Awake = function () {
