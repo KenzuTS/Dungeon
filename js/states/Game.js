@@ -148,7 +148,7 @@ Application.Game.prototype = {
 
         /* PLAYER */
             
-            player = new Player(map.objects.StartPoint[0].x * Application.SCALE, map.objects.StartPoint[0].y * Application.SCALE);
+            player = new Player(map.objects.Spawn[0].x * Application.SCALE, map.objects.Spawn[0].y * Application.SCALE);
             game.add.existing(player);
     
             // le joueur passe dessous ce layer
@@ -204,6 +204,9 @@ Application.Game.prototype = {
     
         /* GUI */
             gui = new GUI();
+
+        /* MUSIC */
+            
     },
 
 	update : function () {
