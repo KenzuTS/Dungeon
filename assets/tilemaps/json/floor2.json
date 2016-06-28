@@ -254,11 +254,11 @@
                  "name":"",
                  "properties":
                     {
-                     "key":false
+                     "Ikey":false
                     },
                  "propertytypes":
                     {
-                     "key":"bool"
+                     "Ikey":"bool"
                     },
                  "rotation":0,
                  "type":"",
@@ -530,11 +530,11 @@
                  "name":"",
                  "properties":
                     {
-                     "key":true
+                     "Ikey":true
                     },
                  "propertytypes":
                     {
-                     "key":"bool"
+                     "Ikey":"bool"
                     },
                  "rotation":0,
                  "type":"",
@@ -782,11 +782,11 @@
                  "name":"",
                  "properties":
                     {
-                     "key":true
+                     "Ikey":true
                     },
                  "propertytypes":
                     {
-                     "key":"bool"
+                     "Ikey":"bool"
                     },
                  "rotation":0,
                  "type":"",

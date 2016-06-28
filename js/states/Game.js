@@ -666,7 +666,6 @@ function loadMap(mapName){
         player.position.y = map.objects.StartPoint[0].y * Application.SCALE;
 }
 
-
 var canPicDamage = true;
 function picDamage(player, pic){
     if (pic.frame == 1 && canPicDamage) {

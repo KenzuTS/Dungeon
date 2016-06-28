@@ -12,14 +12,6 @@ function Skeleton(game, x, y, key, frame){
 	    //this.play('down');
 	}
 
-	// TODO
-	this.onDead = function(){
-		Etre.prototype.onDead.call(this);
-		var key = new Key(this.position.x, this.position.y);
-		itemsGroup.add(key);
-		//this.sprite.kill();
-	}
-
     this.Awake();
 }
 

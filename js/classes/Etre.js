@@ -37,9 +37,22 @@ function Etre(game, x, y, key, frame){
 		this.anchor.setTo(0,1);
 		this.scale.set(Application.SCALE);
 		this.smoothed = false;
-
-
 	}
+
+	this.Drop = function(){
+
+		if (this.Ikey) {
+
+			var key = new Key(this.position.x, this.position.y);
+			itemsGroup.add(key);
+
+		} else if (game.rnd.integerInRange(0, 3) == 0) {
+
+			var ressource = new Ressource(this.position.x, this.position.y);
+			itemsGroup.add(ressource);
+		}
+	}
+
 	this.Awake();
 }
 
@@ -49,6 +62,8 @@ Etre.prototype.constructor = Etre;
 Etre.prototype.onDead = function(){
 	this.loadTexture('dead', this.idDeadTexture);
 	if (!(this instanceof Player)) {
+
+		this.Drop();		
 		game.time.events.add(Application.Time.FADE_DEATH, function(){
 			this.destroy();
 		},this);
