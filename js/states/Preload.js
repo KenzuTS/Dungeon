@@ -40,6 +40,7 @@ Application.Preload.prototype = {
 	    game.load.audio('heal', 'assets/audio/Heal.wav');
 	    game.load.audio('dead', 'assets/audio/Dying.wav');
 	    game.load.audio('door', 'assets/audio/Door.wav');
+	    game.load.audio('music', 'assets/audio/music.mp3');
 
 		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		game.scale.pageAlignHorizontally = true;
