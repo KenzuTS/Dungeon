@@ -134,15 +134,16 @@ Application.Game.prototype = {
                 }
 
             /* Pics */          
-                picsGroup = game.add.group();
-                map.createFromObjects('pics', 5433, 'pics', 0, true, false, picsGroup);
-                for (var i = 0; i < picsGroup.hash.length; i++) {
-                    picsGroup.hash[i].scale.setTo(Application.SCALE);
-                    picsGroup.hash[i].position.x *= Application.SCALE;
-                    picsGroup.hash[i].position.y *= Application.SCALE;
-                    picsGroup.hash[i].smoothed = false;
-                    picsGroup.hash[i].animations.add('activate', [0,1], 3, true);
-                    picsGroup.hash[i].animations.play();
+                picsGroup = game.add.physicsGroup();
+                map.createFromObjects('Trap', 5433, 'pics', 0, true, false, picsGroup);
+                for (var i = 0; i < picsGroup.children.length; i++) {
+                    picsGroup.children[i].scale.setTo(Application.SCALE);
+                    picsGroup.children[i].position.x *= Application.SCALE;
+                    picsGroup.children[i].position.y *= Application.SCALE;
+                    picsGroup.children[i].smoothed = false;
+                    var anim = picsGroup.children[i].animations.add('activate');
+                    picsGroup.children[i].animations.play('activate', 1, true, false);
+                    anim.onLoop.add(picAnimationLooped, this);
                 }
 
         /* PLAYER */
@@ -219,6 +220,8 @@ Application.Game.prototype = {
                 function (spritePlayer,item) {
                     return !spritePlayer.inCombat;
                 }, this);
+
+            game.physics.arcade.overlap(player, picsGroup, picDamage, null, this);
     
         /* Player Methods */
             //player.move();
@@ -239,16 +242,14 @@ Application.Game.prototype = {
                 }
             }
         
-        gui.healthBar.setPercent(player.percentHP);
-        gui.textHP.text = player.HP + " / " + player.maxHP;
-        gui.textKey.text = player.inventory.key;
-        gui.textRessource.text = player.inventory.ressource;
+            gui.healthBar.setPercent(player.percentHP);
+            gui.textHP.text = player.HP + " / " + player.maxHP;
+            gui.textKey.text = player.inventory.key;
+            gui.textRessource.text = player.inventory.ressource;
 
-
-
-        game.debug.body(player);
-        game.debug.text(game.time.fps, Application.Canvas.WIDTH / 2,
-        Application.Canvas.HEIGHT / 2);
+        // game.debug.body(player);
+        // game.debug.text(    game.time.fps, Application.Canvas.WIDTH / 2,
+        //                     Application.Canvas.HEIGHT / 2 );
     }
 }
 
@@ -563,6 +564,7 @@ function loadMap(mapName){
             itemsGroup.removeAll();
             blocsGroup.removeAll();
             roofGroup.removeAll();
+            picsGroup.removeAll();
 
         // create map
             map = game.add.tilemap(mapName);
@@ -640,6 +642,17 @@ function loadMap(mapName){
                 blocsGroup.hash[i].smoothed = false;
             }
 
+            map.createFromObjects('Trap', 5433, 'pics', 0, true, false, picsGroup);
+            for (var i = 0; i < picsGroup.children.length; i++) {
+                picsGroup.children[i].scale.setTo(Application.SCALE);
+                picsGroup.children[i].position.x *= Application.SCALE;
+                picsGroup.children[i].position.y *= Application.SCALE;
+                picsGroup.children[i].smoothed = false;
+                var anim = picsGroup.children[i].animations.add('activate');
+                picsGroup.children[i].animations.play('activate', 1, true, false);
+                anim.onLoop.add(picAnimationLooped, this);
+            }
+
             layerRoof = map.createLayer('Roof');
             layerRoof.setScale(Application.SCALE);
             layerRoof.smoothed = false;
@@ -647,4 +660,21 @@ function loadMap(mapName){
 
         player.position.x = map.objects.StartPoint[0].x * Application.SCALE;
         player.position.y = map.objects.StartPoint[0].y * Application.SCALE;
+}
+
+
+var canPicDamage = true;
+function picDamage(player, pic){
+
+    
+    if (pic.frame == 1 && canPicDamage) {
+        
+        player.setHP(player.HP - 20);
+        canPicDamage = false;
+    }
+}
+
+function picAnimationLooped(sprite, animation){
+
+    canPicDamage = true;
 }
