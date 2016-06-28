@@ -25,6 +25,8 @@ Application.Game.prototype = {
         Application.Sounds["heal"] = game.add.audio('heal');
         Application.Sounds["dead"] = game.add.audio('dead');
         Application.Sounds["door"] = game.add.audio('door');
+        Application.Sounds["music"] = game.add.audio('music');
+        Application.Sounds["music"].loop = true;
 
         /* MAP */
             game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -206,7 +208,7 @@ Application.Game.prototype = {
             gui = new GUI();
 
         /* MUSIC */
-            
+            Application.Sounds["music"].play();
     },
 
 	update : function () {

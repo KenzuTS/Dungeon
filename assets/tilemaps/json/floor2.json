@@ -252,6 +252,14 @@
                  "height":16,
                  "id":46,
                  "name":"",
+                 "properties":
+                    {
+                     "key":false
+                    },
+                 "propertytypes":
+                    {
+                     "key":"bool"
+                    },
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -520,6 +528,14 @@
                  "height":16,
                  "id":74,
                  "name":"",
+                 "properties":
+                    {
+                     "key":true
+                    },
+                 "propertytypes":
+                    {
+                     "key":"bool"
+                    },
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -616,6 +632,14 @@
                  "height":16,
                  "id":82,
                  "name":"",
+                 "properties":
+                    {
+                     "key":true
+                    },
+                 "propertytypes":
+                    {
+                     "key":"bool"
+                    },
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -640,6 +664,14 @@
                  "height":16,
                  "id":84,
                  "name":"",
+                 "properties":
+                    {
+                     "key":true
+                    },
+                 "propertytypes":
+                    {
+                     "key":"bool"
+                    },
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -748,6 +780,14 @@
                  "height":16,
                  "id":93,
                  "name":"",
+                 "properties":
+                    {
+                     "key":true
+                    },
+                 "propertytypes":
+                    {
+                     "key":"bool"
+                    },
                  "rotation":0,
                  "type":"",
                  "visible":true,
