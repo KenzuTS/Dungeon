@@ -74,7 +74,7 @@ Application.Game.prototype = {
             inventoryInput = game.input.keyboard.addKey(Phaser.KeyCode.I);
             invOpen = false;
             
-            inventoryInput.onDown.add(pause, self);
+            //inventoryInput.onDown.add(pause, self);
             inventoryInput.onUp.add(pause, self);
     
         /* GROUPS */
@@ -405,7 +405,8 @@ function collideObject(player, tile){
     }
 
     function useForge(player, forge){
-        console.log("use forge");
+        pause();
+        toggleRepareMode();
     }
 }
 
@@ -448,7 +449,6 @@ function numberToPercent(number, max){
 
 function pause(event){
 
-    if (inventoryInput.isDown) {
         if (!invOpen) {
             invOpen = true;
             player.canWalking = false;
@@ -464,7 +464,6 @@ function pause(event){
         else {
             returnToGame();
         }
-    }
 }
 
 function returnToGame(){
@@ -665,10 +664,7 @@ function loadMap(mapName){
 
 var canPicDamage = true;
 function picDamage(player, pic){
-
-    
     if (pic.frame == 1 && canPicDamage) {
-        
         player.setHP(player.HP - 20);
         canPicDamage = false;
     }
