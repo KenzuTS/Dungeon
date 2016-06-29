@@ -8,7 +8,6 @@ function Equipement(){
 	}
 	else if (arguments.length == 7) {
 		// x, y, key, frame, attack, defense, maxDurability
-		console.log(arguments);
 		Phaser.Sprite.call(this, game, arguments[0], arguments[1], arguments[2], arguments[3])
 		this.attack = arguments[4];
 		this.defense = arguments[5];

@@ -214,7 +214,7 @@ Application.Game.prototype = {
 	update : function () {
 
         /* COLLIDE */
-            //game.physics.arcade.collide(player, layerWalls);
+            game.physics.arcade.collide(player, layerWalls);
             game.physics.arcade.collide(player, blocsGroup);
             game.physics.arcade.collide(player, layerObjects, collideObject, null, this);
             game.physics.arcade.collide(player, ennemiesGroup, combatHandler, processAttack, this);

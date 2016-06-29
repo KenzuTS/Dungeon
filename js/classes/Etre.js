@@ -46,6 +46,11 @@ function Etre(game, x, y, key, frame){
 			var key = new Key(this.position.x, this.position.y);
 			itemsGroup.add(key);
 
+		} else if (this.equipement) {
+			switch(this.equipement){
+				
+			}
+
 		} else if (game.rnd.integerInRange(0, 3) == 0) {
 
 			var ressource = new Ressource(this.position.x, this.position.y);
