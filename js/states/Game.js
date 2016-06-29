@@ -27,6 +27,8 @@ Application.Game.prototype = {
         Application.Sounds["door"] = game.add.audio('door');
         Application.Sounds["music"] = game.add.audio('music');
         Application.Sounds["music"].loop = true;
+        Application.Sounds["musicCastle"] = game.add.audio('musicCastle');
+        Application.Sounds["musicCastle"].loop = true;
 
         /* MAP */
             game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -220,7 +222,7 @@ Application.Game.prototype = {
             gui = new GUI();
 
         /* MUSIC */
-            Application.Sounds["music"].play();
+            Application.Sounds["musicCastle"].play();
 
         /* TUTO TEXT */
             var style = { font: "bold 16px Arial", fill: "#fff" };
@@ -269,8 +271,7 @@ Application.Game.prototype = {
             for(var ennemy of ennemiesGroup.children.filter(x => x instanceof Skeleton)){
                 //console.log(ennemy);
                 ennemy.move();
-            }
-                
+            }                
     
         /* GUI UPDATE */
             for(var i in player.equipement){
@@ -475,13 +476,17 @@ function setEquipementStatus(equipement){
             guiElem.tint = "0xff0000";
         }
         else if (equipement.percentDurability <= 10) {
+            guiElem.frame = 0;
             guiElem.visible = true;
             guiElem.tint = "0xff0000";
         }
         else if (equipement.percentDurability <= 50) {
-
+            guiElem.frame = 0;
             guiElem.visible = true;
             guiElem.tint = "0xffb000";
+        }
+        else {
+            guiElem.visible = false;
         }
     }
 }
