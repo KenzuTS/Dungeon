@@ -242,10 +242,10 @@ Application.Game.prototype = {
             var tuto4 = game.add.text(tuto3.position.x + 480, tuto3.position.y, "Open Inventory with 'I'", style);
             FormatText(tuto4);
 
-            var tuto5 = game.add.text(tuto3.position.x - 120, tuto3.position.y - 180, "fight him", style);
+            var tuto5 = game.add.text(tuto3.position.x - 120, tuto3.position.y - 180, "touch him to fight", style);
             FormatText(tuto5);
 
-            var tuto6 = game.add.text(tuto3.position.x + 150, tuto3.position.y - 150, "You can repare your equipements with the anvil", style);
+            var tuto6 = game.add.text(tuto3.position.x + 150, tuto3.position.y - 150, "repare equipements with an anvil", style);
             FormatText(tuto6);
     },
 
