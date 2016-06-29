@@ -247,7 +247,7 @@ Application.Game.prototype = {
 	update : function () {
 
         /* COLLIDE */
-            //game.physics.arcade.collide(player, layerWalls);
+            game.physics.arcade.collide(player, layerWalls);
             game.physics.arcade.collide(player, blocsGroup);
             game.physics.arcade.collide(player, layerObjects, collideObject, null, this);
             game.physics.arcade.collide(player, ennemiesGroup, combatHandler, processAttack, this);
@@ -295,27 +295,8 @@ function combatHandler(sprite, target) {
     if (target.tweenProgress) {
         target.tweenProgress.pause();
     }
-    switch(sprite.animations.currentAnim.name){
-        case "down":
-            sprite.animations.stop();
-            sprite.frame = Application.Player.Frame.DOWN;
-        break;
-
-        case "left":
-            sprite.animations.stop();
-            sprite.frame = Application.Player.Frame.LEFT;
-        break;
-
-        case "right":
-            sprite.animations.stop();
-            sprite.frame = Application.Player.Frame.RIGHT;
-        break;
-
-        case "up":
-            sprite.animations.stop();
-            sprite.frame = Application.Player.Frame.UP;
-        break;
-    }
+    sprite.stopAnimations();
+    target.stopAnimations();
     target.body.enable = false;
     target.body.velocity.set(0);
     var diff = {
@@ -325,27 +306,27 @@ function combatHandler(sprite, target) {
     if (diff.x > Application.TILE_SIZE / 4) {
         if (diff.y > Application.TILE_SIZE / 2) {
             sprite.animations.currentAnim.name = "up";
-            sprite.frame = Application.Player.Frame.UP;
+            sprite.frame = sprite.Frame.UP;
         }
         else if(diff.y < -Application.TILE_SIZE / 2){
             sprite.animations.currentAnim.name = "down";
-            sprite.frame = Application.Player.Frame.DOWN;
+            sprite.frame = sprite.Frame.DOWN;
         }
         else {
-            sprite.frame = Application.Player.Frame.LEFT;
+            sprite.frame = sprite.Frame.LEFT;
         }
     }
     else if (diff.x < -Application.TILE_SIZE / 4) {
         if (diff.y > Application.TILE_SIZE / 2) {
             sprite.animations.currentAnim.name = "up";
-            sprite.frame = Application.Player.Frame.UP;
+            sprite.frame = sprite.Frame.UP;
         }
         else if(diff.y < -Application.TILE_SIZE / 2){
-            sprite.frame = Application.Player.Frame.DOWN;
+            sprite.frame = sprite.Frame.DOWN;
             sprite.animations.currentAnim.name = "down";
         }
         else {
-            sprite.frame = Application.Player.Frame.RIGHT;
+            sprite.frame = sprite.Frame.RIGHT;
         }
     }
     player.attack(target);
@@ -749,14 +730,19 @@ function loadMap(mapName){
 
 var canPicDamage = true;
 function picDamage(player, pic){
-    if (pic.frame == 1 && canPicDamage) {
+    if (pic.frame == 1 && canPicDamage && player.isAlive) {
+        player.stopAnimations();
         player.setHP(player.HP - 20);
         canPicDamage = false;
+        player.canWalking = false;
+        game.camera.flash(0x8a0707, 100);
     }
 }
 
 function picAnimationLooped(sprite, animation){
-
+    if (player.isAlive) {
+        player.canWalking = true;
+    }
     canPicDamage = true;
 }
 

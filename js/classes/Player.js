@@ -1,5 +1,13 @@
 function Player(x, y){
-	Etre.call(this, game, x, y, 'characters', Application.Player.Frame.DOWN);
+	this.Frame =
+	{
+			DOWN : 4,
+			LEFT : 16,
+			RIGHT : 28,
+			UP : 40
+	};
+
+	Etre.call(this, game, x, y, 'characters', this.Frame.DOWN);
 	//this.tween;
 	this.idDeadTexture = 1;
 
@@ -10,6 +18,7 @@ function Player(x, y){
 		//[new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45), new Shield(0, 7, 45)]
 	};
 
+	
 
 	this.equipement = {
 		weapon: null /*new Weapon(1950, 1650, 10, 0, 50)*/,
@@ -147,29 +156,8 @@ function Player(x, y){
 
 	    	if (cursors.down.isUp && cursors.left.isUp && cursors.right.isUp && cursors.up.isUp)
 	    	{
-		    	switch(this.animations.currentAnim.name){
-		
-		    	    case "down":
-		    	        this.animations.stop();
-		    	        this.frame = Application.Player.Frame.DOWN;
-		    	    break;
-		
-		    	    case "left":
-		    	        this.animations.stop();
-		    	        this.frame = Application.Player.Frame.LEFT;
-		    	    break;
-		
-		    	    case "right":
-		    	        this.animations.stop();
-		    	        this.frame = Application.Player.Frame.RIGHT;
-		    	    break;
-		
-		    	    case "up":
-		    	        this.animations.stop();
-		    	        this.frame = Application.Player.Frame.UP;
-		    	    break;
-	    	    }
-	    	}
+		    	this.stopAnimations();
+		    }
     	}
     }
 
@@ -223,6 +211,8 @@ function Player(x, y){
     	Application.Sounds["dead"].play();
     	Etre.prototype.onDead.call(this);
     }
+
+    
     this.Awake();
 }
 

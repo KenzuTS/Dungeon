@@ -1,7 +1,13 @@
 function Boo(game, x, y, key, frame){
 	Etre.call(this, game, x, y, key, frame);
 	this.idDeadTexture = 9;
-
+	this.Frame =
+	{
+			DOWN : 55,
+			LEFT : 67,
+			RIGHT : 79,
+			UP : 91
+	};
 	this.Awake = function(){
 
 	    this.animations.add('down', [54,55,56], 6, true);
