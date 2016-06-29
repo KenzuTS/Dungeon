@@ -324,26 +324,34 @@ function combatHandler(sprite, target) {
 
 function collectItem(player, item){
     if (item instanceof Item) {
-        player.inventory[item.key]++; 
-        item.destroy();
+        if (!item.price || (item.price && player.inventory.ressource >= item.price)) {
+            if (item.key == "Food") {
+                player.heal(item.restoreHP);
+            }else {
+                player.inventory[item.key]++; 
+            }
+            item.destroy(); 
+        }
     }
     else if (item instanceof Equipement) {
-        var i = player.inventory.slot.length;
-        item.position.x = 16 * Application.SCALE + (i%12) * 64;
-        item.position.y = 224 * Application.SCALE + 32 + Math.floor(i / 12) * 64;
-        item.anchor.setTo(0.5);
-        item.inputEnabled = true;
-        item.events.onInputUp.add(function () {
-            if (repareMode) {
-                this.repare();
-            }
-            else {
-              setSelectedItem(this);  
-            }
-            this.Describe();
-        }, item);
-        player.inventory.slot.push(item);
-        menuInvGroup.add(item);        
+        if (!item.price || (item.price && player.inventory.ressource >= item.price)) {
+            var i = player.inventory.slot.length;
+            item.position.x = 16 * Application.SCALE + (i%12) * 64;
+            item.position.y = 224 * Application.SCALE + 32 + Math.floor(i / 12) * 64;
+            item.anchor.setTo(0.5);
+            item.inputEnabled = true;
+            item.events.onInputUp.add(function () {
+                if (repareMode) {
+                    this.repare();
+                }
+                else {
+                  setSelectedItem(this);  
+                }
+                this.Describe();
+            }, item);
+            player.inventory.slot.push(item);
+            menuInvGroup.add(item);    
+        }    
     }    
 }
 
@@ -375,8 +383,7 @@ function collideObject(player, tile){
         case 5181:
         if (!tile.used) {
             tile.used = true;
-            player.setHP(player.maxHP);
-            Application.Sounds["heal"].play();
+            player.heal(999);
         }
         break;
 
@@ -632,16 +639,23 @@ function loadMap(mapName){
             }
 
             map.createFromObjects('Items', 5329, 'LongWep', 8, true, false, itemsGroup, Weapon,false);
-            map.createFromObjects('Items', 5435, 'Potion', 0, true, false, itemsGroup);
+            map.createFromObjects('Items', 5435, 'Potion', 0, true, false, itemsGroup, Potion, false);
             map.createFromObjects('Items', 5378, 'Shield', 1, true, false, itemsGroup, Shield, false);
             map.createFromObjects('Items', 5333, 'LongWep', 12, true, false, itemsGroup, Weapon,false);
-            map.createFromObjects('Items', 5491, 'Food', 16, true, false, itemsGroup);
+            map.createFromObjects('Items', 5491, 'Food', 16, true, false, itemsGroup, Item, false);
+            var el;
             for (var i = 0; i < itemsGroup.children.length; i++) {
-                itemsGroup.children[i].scale.setTo(Application.SCALE);
-                itemsGroup.children[i].position.x *= Application.SCALE;
-                itemsGroup.children[i].position.y *= Application.SCALE;
-                itemsGroup.children[i].smoothed = false;
-                itemsGroup.children[i].durability = itemsGroup.children[i].maxDurability;
+                el = itemsGroup.children[i];
+                el.scale.setTo(Application.SCALE);
+                el.position.x *= Application.SCALE;
+                el.position.y *= Application.SCALE;
+                el.smoothed = false;
+                el.durability = el.maxDurability;
+                if (el.price) {
+                    //posY = (el.anchor.y) ? 0 : Application.TILE_SIZE * Application.SCALE;
+                    groundGroup.add(game.add.text(el.position.x, el.position.y, el.price ,{ font: '12px Arial', fill: '#fff' }));
+                    groundGroup.add(game.add.sprite(el.position.x + 16, el.position.y, 'ressource'));
+                }
             }
 
             map.createFromObjects('PushableBloc', 1186, 'bloc', 0, true, false, blocsGroup);

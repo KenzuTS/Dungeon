@@ -20,9 +20,8 @@ function Equipement(){
 	}
 
 	this.setDurability = function(value) {
-		if (this.durability != value) {
-			this.durability = value;
-		} else if (this.durability <= 0) {
+		this.durability = value;
+		if (this.durability <= 0) {
 			this.break = true;
 			this.durability = 0;
 		} else if (this.durability > maxDurability) {

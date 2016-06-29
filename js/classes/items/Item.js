@@ -9,6 +9,14 @@ function Item(game, x, y, key, frame){
 		this.anchor.setTo(0,1);
 		this.smoothed = false;
 		this.body.setSize(13, 14, 2, 2);
+		switch (key) {
+			case "Potion":
+				this.restoreHP = 20;
+				break;
+			default:
+				this.restoreHP = 5;
+				break;
+		}
 	}
 
 	this.Awake();

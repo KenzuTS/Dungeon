@@ -206,6 +206,11 @@ function Player(x, y){
     	}
     }
 
+    this.heal = function (heal) {
+    	player.setHP(player.HP + heal);
+        Application.Sounds["heal"].play();
+    }
+
     this.onDead = function() {
     	Application.Sounds["dead"].play();
     	Etre.prototype.onDead.call(this);
