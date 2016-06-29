@@ -239,14 +239,17 @@ Application.Game.prototype = {
             var tuto3 = game.add.text(tuto2.position.x, tuto2.position.y - 250, "Take this →", style);
             FormatText(tuto3);
 
-            var tuto4 = game.add.text(tuto3.position.x + 480, tuto3.position.y, "Open Inventory with 'I'", style);
+            var tuto4 = game.add.text(tuto3.position.x + 380, tuto3.position.y, "Open Inventory with 'I'", style);
             FormatText(tuto4);
 
             var tuto5 = game.add.text(tuto3.position.x - 120, tuto3.position.y - 180, "touch him to fight", style);
             FormatText(tuto5);
 
-            var tuto6 = game.add.text(tuto3.position.x + 150, tuto3.position.y - 150, "repare equipements with an anvil", style);
+            var tuto6 = game.add.text(tuto3.position.x + 120, tuto3.position.y - 385, "repare equipements", style);
             FormatText(tuto6);
+
+            var tuto7 = game.add.text(tuto6.position.x - 440, tuto6.position.y, "once full heal", style);
+            FormatText(tuto7);
     },
 
 	update : function () {
