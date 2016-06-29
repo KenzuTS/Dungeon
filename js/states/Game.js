@@ -494,6 +494,8 @@ function pause(event){
             invOpen = true;
             player.canWalking = false;
             menuInv.smoothed = false;
+            menuInvGroup.children.find(x => x.name == "description").removeAll();
+            menuInvGroup.remove(graphicSelectedItem);
             menuInvGroup.setAllChildren("visible", true);
             repare_label.visible = false;
             var x = (Application.Canvas.WIDTH - menuInv.width) / 2;
