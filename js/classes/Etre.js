@@ -1,7 +1,7 @@
 function Etre(game, x, y, key, frame){
 
 	Phaser.Sprite.call(this, game, x, y, key, frame);
-	this.idDeadTexture = 1;
+	this.idDeadTexture = 0;
 	this.inCombat = false;
 	this.canWalking = true;
 	this.tweenProgress = null;
@@ -70,6 +70,30 @@ function Etre(game, x, y, key, frame){
 			itemsGroup.add(ressource);
 		}
 	}
+
+	this.stopAnimations = function () {
+    	switch(this.animations.currentAnim.name){
+    	    case "down":
+    	        this.animations.stop();
+    	        this.frame = this.Frame.DOWN;
+    	    break;
+
+    	    case "left":
+    	        this.animations.stop();
+    	        this.frame = this.Frame.LEFT;
+    	    break;
+
+    	    case "right":
+    	        this.animations.stop();
+    	        this.frame = this.Frame.RIGHT;
+    	    break;
+
+    	    case "up":
+    	        this.animations.stop();
+    	        this.frame = this.Frame.UP;
+    	    break;
+	    }
+    }
 
 	this.Awake();
 }

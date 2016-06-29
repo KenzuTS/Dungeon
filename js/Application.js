@@ -11,13 +11,7 @@ var Application = {
 	},
 	TILE_SIZE : 16,
 	Player : {
-		Frame : 
-		{
-			DOWN : 4,
-			LEFT : 16,
-			RIGHT : 28,
-			UP : 40
-		},
+		
 		VELOCITY : 200
 	},
 	Time : {
@@ -26,6 +20,8 @@ var Application = {
 	},
 	SCALE : 2,
 	Sounds : {},
-	REPARE : 10
+	REPARE : 10,
+	FOOD : 20,
+	POTION : 80
 }
 

@@ -2,6 +2,14 @@ function Bat(game, x, y, key, frame){
 	Etre.call(this, game, x, y, key, frame);
 	this.idDeadTexture = 8;
 
+	this.Frame =
+	{
+			DOWN : 52,
+			LEFT : 64,
+			RIGHT : 76,
+			UP : 88
+	};
+
 	this.Awake = function(){
 
 	    this.animations.add('down', [51,52,53], 6, true);
