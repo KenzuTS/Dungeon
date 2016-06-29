@@ -10,20 +10,23 @@ function GUI() {
     this.ressourceGUI;
     this.swordGUI;
     this.shieldGUI;
+    this.potionGUI;
 
     this.Awake = function() {
     	
     	/* HealthBar */
     		this.barConfig = {  x: -game.camera.world.position.x + 150,
-        	                   y: -game.camera.world.position.y + 20,
-        	                   width: 250,
-        	                   height: 20,
-        	                   bg: {
-        	                       color: '#651828'
-        	                   },
-        	                   bar: {
-        	                     color: 'lime'
-        	                   }};
+        	                    y: -game.camera.world.position.y + 20,
+        	                    width: 250,
+        	                    height: 20,
+        	                    bg: {
+        	                        color: '#651828'
+        	                    },
+        	                    bar: {
+        	                      color: 'lime'
+        	                    },
+                                animationDuration: 50};
+
 			this.healthBar = new HealthBar(game, this.barConfig);
         	this.healthBar.setFixedToCamera(true);
         	this.healthBar.setPercent(player.poucentHP);
@@ -52,6 +55,13 @@ function GUI() {
             this.ressourceGUI.fixedToCamera = true;
             this.ressourceGUI.scale.setTo(Application.SCALE);
             this.ressourceGUI.smoothed = false;
+
+        /* icon Potion */
+            this.potionGUI = game.add.sprite(16 + this.healthBar.x + this.healthBar.barSprite.width / 2, this.healthBar.y, 'Potion', 23);
+            this.potionGUI.anchor.setTo(0.5);
+            this.potionGUI.fixedToCamera = true;
+            this.potionGUI.scale.setTo(Application.SCALE);
+            this.potionGUI.smoothed = false;
 
         /* Text Keys */
             this.style = { font: "bold 16px Arial", fill: "#fff" };
