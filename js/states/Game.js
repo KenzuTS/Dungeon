@@ -25,8 +25,10 @@ Application.Game.prototype = {
         Application.Sounds["heal"] = game.add.audio('heal');
         Application.Sounds["dead"] = game.add.audio('dead');
         Application.Sounds["door"] = game.add.audio('door');
-        Application.Sounds["music"] = game.add.audio('music');
-        Application.Sounds["music"].loop = true;
+        Application.Sounds["key"] = game.add.audio('getKey');
+
+/*        Application.Sounds["music"] = game.add.audio('music');
+        Application.Sounds["music"].loop = true;*/
         Application.Sounds["musicCastle"] = game.add.audio('musicCastle');
         Application.Sounds["musicCastle"].loop = true;
 
@@ -356,6 +358,9 @@ function collectItem(player, item){
                     }
                     break;
                 default:
+                    if (item.key == "key") {
+                        Application.Sounds["key"].play();
+                    }
                     player.inventory[item.key]++; 
                     break;
             }
