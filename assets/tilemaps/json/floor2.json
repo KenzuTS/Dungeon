@@ -892,32 +892,6 @@
                  "y":609.5
                 }, 
                 {
-                 "gid":2300,
-                 "height":16,
-                 "id":103,
-                 "name":"",
-                 "properties":
-                    {
-                     "dropAttack":0,
-                     "dropDefense":20,
-                     "dropMaxDurability":180,
-                     "equipement":"shield"
-                    },
-                 "propertytypes":
-                    {
-                     "dropAttack":"int",
-                     "dropDefense":"int",
-                     "dropMaxDurability":"int",
-                     "equipement":"string"
-                    },
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":1073,
-                 "y":960
-                }, 
-                {
                  "gid":2342,
                  "height":16,
                  "id":108,
@@ -928,6 +902,34 @@
                  "width":16,
                  "x":695.5,
                  "y":757.5
+                }, 
+                {
+                 "gid":2345,
+                 "height":16,
+                 "id":161,
+                 "name":"",
+                 "properties":
+                    {
+                     "dropAttack":0,
+                     "dropDefense":20,
+                     "dropMaxDurability":180,
+                     "equipement":"shield",
+                     "pattern":"none"
+                    },
+                 "propertytypes":
+                    {
+                     "dropAttack":"int",
+                     "dropDefense":"int",
+                     "dropMaxDurability":"int",
+                     "equipement":"string",
+                     "pattern":"string"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":1072,
+                 "y":960
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1532,7 +1534,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":161,
+ "nextobjectid":162,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,

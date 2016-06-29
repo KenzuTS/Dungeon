@@ -180,17 +180,17 @@ Application.Game.prototype = {
 
             menuInvGroup.add(menuInv);
 
-             back_label = game.add.text(640, 20, 'Back', { font: '24px Arial', fill: '#fff' });
+            back_label = game.add.text(640, 20, 'Back', { font: '24px Arial', fill: '#fff' });
             back_label.inputEnabled = true;
             back_label.events.onInputUp.add(returnToGame);
             menuInvGroup.add(back_label);
 
-            repare_label = game.add.text(640, 60, 'Repare', { font: '24px Arial', fill: '#fff' });
+            repare_label = game.add.text(640, 100, 'Repare', { font: '24px Arial', fill: '#fff' });
             repare_label.inputEnabled = true;
             repare_label.events.onInputUp.add(toggleRepareMode);
             menuInvGroup.add(repare_label);
 
-            equip_label = game.add.text(640, 100, 'Equip', { font: '24px Arial', fill: '#fff' });
+            equip_label = game.add.text(640, 60, 'Equip', { font: '24px Arial', fill: '#fff' });
             equip_label.inputEnabled = true;
             equip_label.events.onInputUp.add(equipItem);
             menuInvGroup.add(equip_label);
@@ -334,12 +334,18 @@ function collectItem(player, item){
         if (!item.price || (item.price && player.inventory.ressource >= item.price)) {
             switch (item.key) {
                 case "Food":
-                    player.inventory.ressource -= item.price;
+                    if (item.price) {
+                        player.inventory.ressource -= item.price;
+                        groundGroup.children.find(x => x.name == item.key).destroy();
+                    }
                     player.heal(5);
                     break;
                 case "Potion":
                     if (!player.potion) {
-                        player.inventory.ressource -= item.price;
+                        if (item.price) {
+                            player.inventory.ressource -= item.price;
+                            groundGroup.children.find(x => x.name == item.key).destroy();
+                        }
                         player.potion = true;
                         gui.potionGUI.frame = 22;
                     }
@@ -353,6 +359,10 @@ function collectItem(player, item){
     }
     else if (item instanceof Equipement) {
         if (!item.price || (item.price && player.inventory.ressource >= item.price)) {
+            if (item.price) {
+                player.inventory.ressource -= item.price;
+                groundGroup.children.find(x => x.name == item.key).destroy();
+            }
             var i = player.inventory.slot.length;
             item.position.x = 16 * Application.SCALE + (i%12) * 64;
             item.position.y = 224 * Application.SCALE + 32 + Math.floor(i / 12) * 64;
@@ -436,6 +446,7 @@ function collideObject(player, tile){
 
     function useForge(player, forge){
         pause();
+        repare_label.visible = true;
         toggleRepareMode();
     }
 }
@@ -484,9 +495,9 @@ function pause(event){
             player.canWalking = false;
             menuInv.smoothed = false;
             menuInvGroup.setAllChildren("visible", true);
+            repare_label.visible = false;
             var x = (Application.Canvas.WIDTH - menuInv.width) / 2;
             var y = (Application.Canvas.HEIGHT - menuInv.height) / 2;
-
             menuInvGroup.position.x = -game.camera.world.position.x + x;
             menuInvGroup.position.y = -game.camera.world.position.y + y;
 
@@ -559,6 +570,7 @@ function equipItem(){
             var temp, tempPos;
             if (selectedItem instanceof Weapon)
             {
+               tempPos = { x : selectedItem.position.x , y : selectedItem.position.y };
                temp = player.equipement.weapon;
                player.equipement.weapon = selectedItem;
                player.equipement.weapon.position.x = 192;
@@ -572,6 +584,7 @@ function equipItem(){
             }
             var index = player.inventory.slot.indexOf(selectedItem);
             if (temp != null) {
+                temp.position = tempPos;
                 player.inventory.slot[index] = temp;
             }
             else {
@@ -649,6 +662,8 @@ function loadMap(mapName){
 
             map.createFromObjects('Ennemies', 2300, 'characters', 10, true, false, ennemiesGroup, Skeleton, false);
             map.createFromObjects('Ennemies', 2342, 'characters', 52, true, false, ennemiesGroup, Bat, false);
+            map.createFromObjects('Ennemies', 2345, 'characters', 52, true, false, ennemiesGroup, Boo, false);
+
             for (var i = 0; i < ennemiesGroup.hash.length; i++) {
                 ennemiesGroup.hash[i].body.setSize(13, 14, 2, 2);
                 ennemiesGroup.hash[i].scale.setTo(Application.SCALE);
@@ -661,7 +676,7 @@ function loadMap(mapName){
             map.createFromObjects('Items', 5378, 'Shield', 1, true, false, itemsGroup, Shield, false);
             map.createFromObjects('Items', 5333, 'LongWep', 12, true, false, itemsGroup, Weapon,false);
             map.createFromObjects('Items', 5491, 'Food', 16, true, false, itemsGroup, Item, false);
-            var el;
+            var el, group;
             for (var i = 0; i < itemsGroup.children.length; i++) {
                 el = itemsGroup.children[i];
                 el.scale.setTo(Application.SCALE);
@@ -671,8 +686,11 @@ function loadMap(mapName){
                 el.durability = el.maxDurability;
                 if (el.price) {
                     //posY = (el.anchor.y) ? 0 : Application.TILE_SIZE * Application.SCALE;
-                    groundGroup.add(game.add.text(el.position.x, el.position.y, el.price ,{ font: '12px Arial', fill: '#fff' }));
-                    groundGroup.add(game.add.sprite(el.position.x + 16, el.position.y, 'ressource'));
+                    group = game.add.group();
+                    group.name = el.key;
+                    group.add(game.add.text(el.position.x, el.position.y, el.price ,{ font: '12px Arial', fill: '#fff' }));
+                    group.add(game.add.sprite(el.position.x + 16, el.position.y, 'ressource'));
+                    groundGroup.add(group);
                 }
             }
 

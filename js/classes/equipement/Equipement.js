@@ -23,7 +23,7 @@ function Equipement(){
 		if (this.durability <= 0) {
 			this.break = true;
 			this.durability = 0;
-		} else if (this.durability > maxDurability) {
+		} else if (this.durability > this.maxDurability) {
 			this.durability = this.maxDurability;
 		}
 	}
