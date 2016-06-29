@@ -27,6 +27,8 @@ Application.Game.prototype = {
         Application.Sounds["door"] = game.add.audio('door');
         Application.Sounds["music"] = game.add.audio('music');
         Application.Sounds["music"].loop = true;
+        Application.Sounds["musicCastle"] = game.add.audio('musicCastle');
+        Application.Sounds["musicCastle"].loop = true;
 
         /* MAP */
             game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -220,7 +222,7 @@ Application.Game.prototype = {
             gui = new GUI();
 
         /* MUSIC */
-            Application.Sounds["music"].play();
+            Application.Sounds["musicCastle"].play();
 
         /* TUTO TEXT */
             var style = { font: "bold 16px Arial", fill: "#fff" };
