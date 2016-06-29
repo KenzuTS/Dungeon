@@ -78,6 +78,10 @@ Application.Game.prototype = {
             
             //inventoryInput.onDown.add(pause, self);
             inventoryInput.onUp.add(pause, self);
+
+            potionInput = game.input.keyboard.addKey(Phaser.KeyCode.P);
+
+
     
         /* GROUPS */
 
@@ -152,6 +156,9 @@ Application.Game.prototype = {
             
             player = new Player(map.objects.Spawn[0].x * Application.SCALE, map.objects.Spawn[0].y * Application.SCALE);
             game.add.existing(player);
+            potionInput.onUp.add(function(){
+                this.usePotion(); }
+            , player);
     
             // le joueur passe dessous ce layer
             roofGroup = game.add.group();
@@ -328,13 +335,13 @@ function collectItem(player, item){
             switch (item.key) {
                 case "Food":
                     player.inventory.ressource -= item.price;
-                    player.heal(item.restoreHP);
+                    player.heal(5);
                     break;
                 case "Potion":
                     if (!player.potion) {
                         player.inventory.ressource -= item.price;
                         player.potion = true;
-                        GUI.potionGUI.frame = 22;
+                        gui.potionGUI.frame = 22;
                     }
                     break;
                 default:

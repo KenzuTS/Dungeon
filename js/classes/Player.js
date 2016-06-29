@@ -211,6 +211,14 @@ function Player(x, y){
         Application.Sounds["heal"].play();
     }
 
+    this.usePotion = function () {
+    	if (this.potion) {
+    		player.heal(20);
+    		this.potion = false;
+    		gui.potionGUI.frame = 23;
+    	}
+    }
+
     this.onDead = function() {
     	Application.Sounds["dead"].play();
     	Etre.prototype.onDead.call(this);
