@@ -269,8 +269,7 @@ Application.Game.prototype = {
             for(var ennemy of ennemiesGroup.children.filter(x => x instanceof Skeleton)){
                 //console.log(ennemy);
                 ennemy.move();
-            }
-                
+            }                
     
         /* GUI UPDATE */
             for(var i in player.equipement){
@@ -494,13 +493,17 @@ function setEquipementStatus(equipement){
             guiElem.tint = "0xff0000";
         }
         else if (equipement.percentDurability <= 10) {
+            guiElem.frame = 0;
             guiElem.visible = true;
             guiElem.tint = "0xff0000";
         }
         else if (equipement.percentDurability <= 50) {
-
+            guiElem.frame = 0;
             guiElem.visible = true;
             guiElem.tint = "0xffb000";
+        }
+        else {
+            guiElem.visible = false;
         }
     }
 }
