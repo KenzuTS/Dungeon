@@ -28,6 +28,9 @@ function Etre(game, x, y, key, frame){
 				this.isAlive = false;
 				this.onDead();
 			}
+			else if(this.HP > this.maxHP){
+				this.HP = this.maxHP;
+			}
 		}
 	}
 
