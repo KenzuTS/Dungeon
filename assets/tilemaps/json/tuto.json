@@ -186,7 +186,7 @@
                     {
                      "attack":0,
                      "defense":10,
-                     "maxDurability":10
+                     "maxDurability":20
                     },
                  "propertytypes":
                     {
@@ -210,7 +210,7 @@
                     {
                      "attack":10,
                      "defense":0,
-                     "maxDurability":10
+                     "maxDurability":20
                     },
                  "propertytypes":
                     {

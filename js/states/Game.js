@@ -222,6 +222,7 @@ Application.Game.prototype = {
             gui = new GUI();
 
         /* MUSIC */
+            Application.Sounds["musicCastle"].volume  = 0.6;
             Application.Sounds["musicCastle"].play();
 
         /* TUTO TEXT */
@@ -342,7 +343,7 @@ function collectItem(player, item){
                         player.inventory.ressource -= item.price;
                         backgroundObjectGroup.children.find(x => x.name == item.key).destroy();
                     }
-                    player.heal(5);
+                    player.heal(Application.FOOD);
                     break;
                 case "Potion":
                     if (!player.potion) {
@@ -382,6 +383,7 @@ function collectItem(player, item){
                 this.Describe();
             }, item);
             player.inventory.slot.push(item);
+            item.kill();
             menuInvGroup.add(item);    
         }    
     }    
@@ -578,9 +580,10 @@ function equipItem(){
     if (selectedItem && selectedItem != player.equipement.weapon && selectedItem != player.equipement.shield) {
         if (selectedItem instanceof Equipement) {
             var temp, tempPos;
+            tempPos = { x : selectedItem.position.x , y : selectedItem.position.y };
+
             if (selectedItem instanceof Weapon)
             {
-               tempPos = { x : selectedItem.position.x , y : selectedItem.position.y };
                temp = player.equipement.weapon;
                player.equipement.weapon = selectedItem;
                player.equipement.weapon.position.x = 192;
@@ -589,7 +592,7 @@ function equipItem(){
             else if(selectedItem instanceof Shield) {
                 temp = player.equipement.shield;
                 player.equipement.shield = selectedItem;
-                player.equipement.shield.position.x = 192 + 186;
+                player.equipement.shield.position.x = 378;
                 player.equipement.shield.position.y = 176;
             }
             var index = player.inventory.slot.indexOf(selectedItem);

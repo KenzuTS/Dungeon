@@ -20,6 +20,8 @@ var Application = {
 	},
 	SCALE : 2,
 	Sounds : {},
-	REPARE : 10
+	REPARE : 10,
+	FOOD : 20,
+	POTION : 80
 }
 

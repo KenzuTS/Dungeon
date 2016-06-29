@@ -201,7 +201,7 @@ function Player(x, y){
 
     this.usePotion = function () {
     	if (this.potion) {
-    		player.heal(20);
+    		player.heal(Application.POTION);
     		this.potion = false;
     		gui.potionGUI.frame = 23;
     	}
