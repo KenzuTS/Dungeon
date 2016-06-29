@@ -896,6 +896,20 @@
                  "height":16,
                  "id":103,
                  "name":"",
+                 "properties":
+                    {
+                     "dropAttack":0,
+                     "dropDefense":20,
+                     "dropMaxDurability":180,
+                     "equipement":"shield"
+                    },
+                 "propertytypes":
+                    {
+                     "dropAttack":"int",
+                     "dropDefense":"int",
+                     "dropMaxDurability":"int",
+                     "equipement":"string"
+                    },
                  "rotation":0,
                  "type":"",
                  "visible":true,

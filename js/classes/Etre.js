@@ -47,6 +47,20 @@ function Etre(game, x, y, key, frame){
 			var key = new Key(this.position.x, this.position.y);
 			itemsGroup.add(key);
 
+		} else if (this.equipement) {
+			switch(this.equipement){
+				
+				case 'shield':
+					var shield = new Shield(this.position.x, this.position.y-16, 'Shield', 1, this.dropAttack, this.dropDefense, this.dropMaxDurability);
+					itemsGroup.add(shield);
+				break;
+
+				case 'weapon':
+					var weapon = new Shield(this.position.x, this.position.y-16, 'LongWep', 8, this.dropAttack, this.dropDefense, this.dropMaxDurability);
+					itemsGroup.add(weapon);
+				break;
+			}
+
 		} else if (game.rnd.integerInRange(0, 3) == 0) {
 
 			var ressource = new Ressource(this.position.x, this.position.y);
