@@ -64,7 +64,7 @@ function Etre(game, x, y, key, frame){
 				break;
 			}
 
-		} else if (game.rnd.integerInRange(0, 3) == 0) {
+		} else if (game.rnd.integerInRange(0, 100) < 60) {
 
 			var ressource = new Ressource(this.position.x, this.position.y);
 			itemsGroup.add(ressource);
