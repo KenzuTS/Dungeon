@@ -184,10 +184,14 @@ Application.Game.prototype = {
             menuInvGroup.add(repare_label);
 
             equip_label = game.add.text(640, 100, 'Equip', { font: '24px Arial', fill: '#fff' });
-            equip_label.visible = false;
             equip_label.inputEnabled = true;
             equip_label.events.onInputUp.add(equipItem);
             menuInvGroup.add(equip_label);
+
+            ressource = game.add.sprite(575, 400, 'ressource')
+            ressource.scale.setTo(Application.SCALE);
+            menuInvGroup.add(ressource);
+            menuInvGroup.add(game.add.text(600, 400, ' = ' + Application.REPARE + ' durability',{ font: '24px Arial', fill: '#fff' }));
 
             var description = game.add.group();
             description.name = "description";
@@ -319,14 +323,11 @@ function combatHandler(sprite, target) {
 }
 
 function collectItem(player, item){
-
     if (item instanceof Item) {
         player.inventory[item.key]++; 
         item.destroy();
     }
-
     else if (item instanceof Equipement) {
-
         var i = player.inventory.slot.length;
         item.position.x = 16 * Application.SCALE + (i%12) * 64;
         item.position.y = 224 * Application.SCALE + 32 + Math.floor(i / 12) * 64;
@@ -342,7 +343,6 @@ function collectItem(player, item){
             this.Describe();
         }, item);
         player.inventory.slot.push(item);
-
         menuInvGroup.add(item);        
     }    
 }
@@ -538,7 +538,6 @@ function equipItem(){
                player.equipement.weapon = selectedItem;
                player.equipement.weapon.position.x = 192;
                player.equipement.weapon.position.y = 176;
-
             }
             else if(selectedItem instanceof Shield) {
                 temp = player.equipement.shield;
@@ -549,6 +548,9 @@ function equipItem(){
             var index = player.inventory.slot.indexOf(selectedItem);
             if (temp != null) {
                 player.inventory.slot[index] = temp;
+            }
+            else {
+                player.inventory.slot.splice(index, 1);
             }
             menuInvGroup.remove(graphicSelectedItem);
         }
@@ -586,6 +588,8 @@ function loadMap(mapName){
             map.addTilesetImage('Shield');
             map.addTilesetImage('Fence');
             map.addTilesetImage('Tile');
+            map.addTilesetImage('Food');
+
     
             layerGround = map.createLayer('Ground');
             layerGroundOverlay = map.createLayer('GroundOverlay');
@@ -628,6 +632,10 @@ function loadMap(mapName){
             }
 
             map.createFromObjects('Items', 5329, 'LongWep', 8, true, false, itemsGroup, Weapon,false);
+            map.createFromObjects('Items', 5435, 'Potion', 0, true, false, itemsGroup);
+            map.createFromObjects('Items', 5378, 'Shield', 1, true, false, itemsGroup, Shield, false);
+            map.createFromObjects('Items', 5333, 'LongWep', 12, true, false, itemsGroup, Weapon,false);
+            map.createFromObjects('Items', 5491, 'Food', 16, true, false, itemsGroup);
             for (var i = 0; i < itemsGroup.children.length; i++) {
                 itemsGroup.children[i].scale.setTo(Application.SCALE);
                 itemsGroup.children[i].position.x *= Application.SCALE;
