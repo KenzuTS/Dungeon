@@ -45,6 +45,7 @@ Application.Preload.prototype = {
 	    game.load.audio('door', 'assets/audio/Door.wav');
 	    game.load.audio('music', 'assets/audio/music.mp3');
 	    game.load.audio('musicCastle', 'assets/audio/Castle.mp3');
+	    game.load.audio('getKey', 'assets/audio/Key.wav');
 
 		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		game.scale.pageAlignHorizontally = true;
