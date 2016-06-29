@@ -469,7 +469,7 @@ function collideObject(player, tile){
     function useForge(player, forge){
         pause();
         repare_label.visible = true;
-        toggleRepareMode();
+        //toggleRepareMode();
     }
 }
 
