@@ -37,9 +37,10 @@ function Equipement(){
 	}
 
 	this.repare = function () {
-		if (player.inventory.ressource) {
+		if (player.inventory.ressource && this.durability != this.maxDurability) {
 			Application.Sounds["repare"].play();
 		 	this.setDurability(this.durability + Application.REPARE);
+		 	this.break = false;
 			player.inventory.ressource--;
 		}
 	}
