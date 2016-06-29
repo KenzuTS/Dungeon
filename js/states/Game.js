@@ -325,12 +325,23 @@ function combatHandler(sprite, target) {
 function collectItem(player, item){
     if (item instanceof Item) {
         if (!item.price || (item.price && player.inventory.ressource >= item.price)) {
-            if (item.key == "Food") {
-                player.heal(item.restoreHP);
-            }else {
-                player.inventory[item.key]++; 
+            switch (item.key) {
+                case "Food":
+                    player.inventory.ressource -= item.price;
+                    player.heal(item.restoreHP);
+                    break;
+                case "Potion":
+                    if (!player.potion) {
+                        player.inventory.ressource -= item.price;
+                        player.potion = true;
+                        GUI.potionGUI.frame = 22;
+                    }
+                    break;
+                default:
+                    player.inventory[item.key]++; 
+                    break;
             }
-            item.destroy(); 
+            item.destroy();
         }
     }
     else if (item instanceof Equipement) {
