@@ -210,10 +210,12 @@
                  "name":"",
                  "properties":
                     {
+                     "Ikey":true,
                      "pattern":"none"
                     },
                  "propertytypes":
                     {
+                     "Ikey":"bool",
                      "pattern":"string"
                     },
                  "rotation":0,
@@ -666,11 +668,11 @@
                  "name":"",
                  "properties":
                     {
-                     "key":true
+                     "Ikey":true
                     },
                  "propertytypes":
                     {
-                     "key":"bool"
+                     "Ikey":"bool"
                     },
                  "rotation":0,
                  "type":"",

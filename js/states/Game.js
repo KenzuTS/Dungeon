@@ -247,7 +247,7 @@ Application.Game.prototype = {
 	update : function () {
 
         /* COLLIDE */
-            game.physics.arcade.collide(player, layerWalls);
+            //game.physics.arcade.collide(player, layerWalls);
             game.physics.arcade.collide(player, blocsGroup);
             game.physics.arcade.collide(player, layerObjects, collideObject, null, this);
             game.physics.arcade.collide(player, ennemiesGroup, combatHandler, processAttack, this);
@@ -358,7 +358,7 @@ function collectItem(player, item){
                 case "Food":
                     if (item.price) {
                         player.inventory.ressource -= item.price;
-                        groundGroup.children.find(x => x.name == item.key).destroy();
+                        backgroundObjectGroup.children.find(x => x.name == item.key).destroy();
                     }
                     player.heal(5);
                     break;
@@ -366,7 +366,7 @@ function collectItem(player, item){
                     if (!player.potion) {
                         if (item.price) {
                             player.inventory.ressource -= item.price;
-                            groundGroup.children.find(x => x.name == item.key).destroy();
+                            backgroundObjectGroup.children.find(x => x.name == item.key).destroy();
                         }
                         player.potion = true;
                         gui.potionGUI.frame = 22;
@@ -383,7 +383,7 @@ function collectItem(player, item){
         if (!item.price || (item.price && player.inventory.ressource >= item.price)) {
             if (item.price) {
                 player.inventory.ressource -= item.price;
-                groundGroup.children.find(x => x.name == item.key).destroy();
+                backgroundObjectGroup.children.find(x => x.name == item.key).destroy();
             }
             var i = player.inventory.slot.length;
             item.position.x = 16 * Application.SCALE + (i%12) * 64;
@@ -622,7 +622,6 @@ function equipItem(){
 function loadMap(mapName){
     // vider groups
             groundGroup.removeAll();
-            groundGroup.remove();
             groundOverlayGroup.removeAll();
             wallsGroup.removeAll();
             backgroundObjectGroup.removeAll();
@@ -714,7 +713,7 @@ function loadMap(mapName){
                     group.name = el.key;
                     group.add(game.add.text(el.position.x, el.position.y, el.price ,{ font: '12px Arial', fill: '#fff' }));
                     group.add(game.add.sprite(el.position.x + 16, el.position.y, 'ressource'));
-                    groundGroup.add(group);
+                    backgroundObjectGroup.add(group);
                 }
             }
 
