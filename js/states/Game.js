@@ -118,7 +118,8 @@ Application.Game.prototype = {
     
             /* Items */
                 itemsGroup = game.add.group();
-                map.createFromObjects('Items', 5329, 'LongWep', 8, true, false, itemsGroup, Weapon,false);
+                map.createFromObjects('Items', 5329, 'LongWep', 8, true, false, itemsGroup, Weapon, false);
+                map.createFromObjects('Items', 5382, 'Shield', 5, true, false, itemsGroup, Shield, false);
                 for (var i = 0; i < itemsGroup.children.length; i++) {
                     itemsGroup.children[i].scale.setTo(Application.SCALE);
                     itemsGroup.children[i].position.x *= Application.SCALE;
@@ -220,12 +221,33 @@ Application.Game.prototype = {
 
         /* MUSIC */
             Application.Sounds["music"].play();
+
+        /* TUTO TEXT */
+            var style = { font: "bold 16px Arial", fill: "#fff" };
+
+            var tuto1 = game.add.text(player.position.x, player.position.y + 32, "Move with arrows keys", style);
+            FormatText(tuto1);
+
+            var tuto2 = game.add.text(player.position.x, player.position.y - 500, "You can push bloc in water", style);
+            FormatText(tuto2);
+
+            var tuto3 = game.add.text(tuto2.position.x, tuto2.position.y - 250, "Take this →", style);
+            FormatText(tuto3);
+
+            var tuto4 = game.add.text(tuto3.position.x + 480, tuto3.position.y, "Open Inventory with 'I'", style);
+            FormatText(tuto4);
+
+            var tuto5 = game.add.text(tuto3.position.x - 120, tuto3.position.y - 180, "fight him", style);
+            FormatText(tuto5);
+
+            var tuto6 = game.add.text(tuto3.position.x + 150, tuto3.position.y - 150, "You can repare your equipements with the anvil", style);
+            FormatText(tuto6);
     },
 
 	update : function () {
 
         /* COLLIDE */
-            //game.physics.arcade.collide(player, layerWalls);
+            game.physics.arcade.collide(player, layerWalls);
             game.physics.arcade.collide(player, blocsGroup);
             game.physics.arcade.collide(player, layerObjects, collideObject, null, this);
             game.physics.arcade.collide(player, ennemiesGroup, combatHandler, processAttack, this);
@@ -737,4 +759,12 @@ function picDamage(player, pic){
 function picAnimationLooped(sprite, animation){
 
     canPicDamage = true;
+}
+
+function FormatText(text){
+    text.smoothed = false;
+    text.stroke = "black";
+    text.strokeThickness = 5;
+    text.anchor.setTo(0.5);
+    wallsGroup.add(text);
 }
