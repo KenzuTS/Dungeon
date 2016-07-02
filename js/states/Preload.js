@@ -30,8 +30,7 @@ Application.Preload.prototype = {
 	    game.load.spritesheet('Potion', 'assets/DawnLike/Items/Potion.png', Application.TILE_SIZE, Application.TILE_SIZE);
 	    game.load.spritesheet('sword', 'assets/DawnLike/GUI/sword.png', Application.TILE_SIZE, Application.TILE_SIZE);
 	    game.load.spritesheet('shield', 'assets/DawnLike/GUI/shield.png', Application.TILE_SIZE, Application.TILE_SIZE);
-	    game.load.spritesheet('bloc', 'assets/DawnLike/Objects/bloc.png', Application.TILE_SIZE, Application.TILE_SIZE);
-	    game.load.spritesheet('bloc', 'assets/DawnLike/Objects/bloc.png', Application.TILE_SIZE, Application.TILE_SIZE);
+	    game.load.spritesheet('bloc', 'assets/DawnLike/Objects/Bloc.png', Application.TILE_SIZE, Application.TILE_SIZE);
 		game.load.spritesheet('characters', 'assets/Characters/characters.png', Application.TILE_SIZE, Application.TILE_SIZE);
 	    game.load.spritesheet('dead', 'assets/Characters/dead.png', Application.TILE_SIZE, Application.TILE_SIZE);
 	    game.load.spritesheet('pics', 'assets/DawnLike/Objects/pics.png', Application.TILE_SIZE, Application.TILE_SIZE);
